@@ -24,6 +24,8 @@
 
 `kubectl scale deployments/first-app --replicas=3` - Scale the deployment
 
+## Declarative
+
 # Minikube
 
 `minikube service first-app` - Open the service in the browser
