@@ -1,8 +1,10 @@
 # Kubernetes
 
-## Service Object
+## Imperative
 
-## Commands
+### Service Object
+
+### Commands
 
 `kubectl create deployment first-app --image=tobsirl/kub-first-app` - Create a deployment
 
@@ -26,6 +28,6 @@
 
 `minikube service first-app` - Open the service in the browser
 
-## Commands
+### Commands
 
 `minikube start` - Start minikube
