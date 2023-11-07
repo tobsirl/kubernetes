@@ -20,6 +20,8 @@
 
 `kubectl get services` - List all services
 
+`kubectl scale deployments/first-app --replicas=3` - Scale the deployment
+
 # Minikube
 
 `minikube service first-app` - Open the service in the browser
