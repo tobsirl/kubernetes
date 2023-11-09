@@ -19,5 +19,13 @@ spec:
       containers:
         - name: second-node
           image: tobsirl/kub-first-app:3
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+            initialDelaySeconds: 15
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 1
           # ports:
           #   - containerPort: 80
