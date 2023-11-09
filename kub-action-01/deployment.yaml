@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
         - name: second-node
-          image: tobsirl/kub-first-app:2
+          image: tobsirl/kub-first-app:3
           # ports:
           #   - containerPort: 80
