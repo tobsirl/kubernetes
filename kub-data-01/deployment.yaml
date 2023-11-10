@@ -14,4 +14,4 @@ spec:
     spec:
       containers:
         - name: story
-          image: tobsirl/kub-data-demo
+          image: tobsirl/kub-data-demo:1
