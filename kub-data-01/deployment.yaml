@@ -15,3 +15,9 @@ spec:
       containers:
         - name: story
           image: tobsirl/kub-data-demo:1
+          volumeMounts:
+            - name: story-volume
+              mountPath: /app/story
+      volumes:
+        - name: story-volume
+          emptyDir: {}
