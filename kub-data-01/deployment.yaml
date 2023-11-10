@@ -4,6 +4,9 @@ metadata:
   name: story-deployment
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: story
   template:
     metadata:
       labels:
