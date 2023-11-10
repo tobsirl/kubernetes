@@ -61,3 +61,13 @@ spec:
 ### Commands
 
 `minikube start` - Start minikube
+
+`minikube status` - Get the status of minikube
+
+`minikube stop` - Stop minikube
+
+`minikube services list` - List all services
+
+`minikube dashboard` - Open the dashboard in the browser
+
+`minikube delete` - Delete minikube
