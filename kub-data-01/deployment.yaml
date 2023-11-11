@@ -20,6 +20,5 @@ spec:
               mountPath: /app/story
       volumes:
         - name: story-volume
-          hostPath:
-            path: /data
-            type: DirectoryOrCreate
+          persistentVolumeClaim:
+            claimName: host-pvc
