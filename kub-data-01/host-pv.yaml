@@ -10,5 +10,5 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    hostPath: /data
+    path: /data
     type: DirectoryOrCreate
