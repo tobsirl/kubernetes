@@ -54,9 +54,13 @@ app.post("/login", async (req, res) => {
 
   // normally, we'd find a user by email and grab his/ her ID and hashed password
   const hashedPassword = password + "_hash";
-  const response = await axios.get(
-    "http://auth/token/" + hashedPassword + "/" + password
-  );
+  // const response = await axios.get(
+  //   "http://auth/token/" + hashedPassword + "/" + password
+  // );
+  const response = { status: 200, data: { token: "abc" } };
+  // const response = await axios.get(
+  //   "http://auth/token/" + hashedPassword + "/" + password
+  // );
   if (response.status === 200) {
     return res.status(200).json({ token: response.data.token });
   }
