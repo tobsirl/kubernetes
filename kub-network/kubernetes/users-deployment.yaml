@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
         - name: users
-          image: tobsirl/kub-demo-users:lastest
+          image: tobsirl/kub-demo-users:latest
         - name: auth
-          image: tobsirl/kub-demo-auth:lastest
+          image: tobsirl/kub-demo-auth:latest
