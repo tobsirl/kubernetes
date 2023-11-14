@@ -15,3 +15,6 @@ spec:
       containers:
         - name: tasks
           image: tobsirl/kub-demo-tasks:latest
+          env:
+            - name: AUTH_ADDRESS
+              value: "auth-service.default"
