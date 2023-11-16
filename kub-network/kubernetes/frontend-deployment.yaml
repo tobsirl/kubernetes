@@ -1,22 +1,17 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: tasks-deployment
+  name: frontend-deployment
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: tasks
+      app: frontend
   template:
     metadata:
       labels:
-        app: tasks
+        app: frontend
     spec:
       containers:
-        - name: tasks
-          image: tobsirl/kub-demo-tasks:latest
-          env:
-            - name: AUTH_ADDRESS
-              value: "auth-service.default"
-            - name: TASKS_FOLDER
-              value: tasks
+        - name: frontend
+          image: tobsirl/kub-demo-frontend:latest
