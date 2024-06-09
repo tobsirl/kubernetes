@@ -52,6 +52,10 @@ spec:
                 - containerPort: 8080
 ```
 
+### Oh My Zsh - kubectl plugin
+
+[Kubectl plugin](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/kubectl)https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/kubectl
+
 ### Commands
 
 # Minikube
