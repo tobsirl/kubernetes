@@ -54,7 +54,7 @@ spec:
 
 ### Oh My Zsh - kubectl plugin
 
-[Kubectl plugin](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/kubectl)https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/kubectl
+[Kubectl plugin](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/kubectl)
 
 ### Commands
 
