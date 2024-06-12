@@ -83,3 +83,5 @@ spec:
 Kustomize is a tool that lets you create an entire Kubernetes application out of individual pieces of YAML. It lets you customize each piece of YAML with different values for different environments, and then combine them all together into a single YAML file.
 
 Kustomize is built into kubectl, so you can use it without installing anything extra.
+
+### Kubernetes Deployments
