@@ -85,3 +85,5 @@ Kustomize is a tool that lets you create an entire Kubernetes application out of
 Kustomize is built into kubectl, so you can use it without installing anything extra.
 
 ### Kubernetes Deployments
+
+ReplicaSet controller ensures that a specified number of pod replicas are running at any given time.
