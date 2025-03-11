@@ -4,13 +4,17 @@
 
 ### Imperative Commands
 
-Create a pod
+#### Create a pod
 
 ```bash
+Create a NGINX pod
+
 kubectl run nginx --image=nginx
 ```
-Generate a pod manifest
 
 ```bash
+Generate a pod manifest
+
 kubectl run nginx --image=nginx --dry-run=client -o yaml
+
 ```
