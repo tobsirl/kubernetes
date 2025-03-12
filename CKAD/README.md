@@ -66,3 +66,36 @@ Here are some of the formats you can use:
 1. `-o name` Print only the resource name and nothing else.
 1. `-o wide` Output in the plain-text format with any additional information.
 1. `-o yaml` Output a YAML formatted API object.
+
+Examples:
+
+- Output with JSON format
+
+```bash
+master $ kubectl create namespace test-123 --dry-run -o json
+{
+    "kind": "Namespace",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "test-123",
+        "creationTimestamp": null
+    },
+    "spec": {},
+    "status": {}
+}
+master $
+```
+
+- Output with YAML format
+
+```bash
+master $ kubectl create namespace test-123 --dry-run -o yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  creationTimestamp: null
+  name: test-123
+spec: {}
+status: {}
+
+```
