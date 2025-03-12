@@ -38,3 +38,11 @@ Generate a deployment manifest with 4 replicas
 
 kubectl create deployment nginx --image=nginx --replicas=4 --dry-run=client -o yaml
 ```
+
+```bash
+
+Another way to do this is to save the YAML definition to a file and modify
+
+kubectl create deployment nginx --image=nginx --dry-run=client -o yaml > nginx-deployment.yaml
+
+```
