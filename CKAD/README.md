@@ -46,3 +46,13 @@ Another way to do this is to save the YAML definition to a file and modify
 kubectl create deployment nginx --image=nginx --dry-run=client -o yaml > nginx-deployment.yaml
 
 ```
+
+#### Create a service
+
+```bash
+
+Create a Service named redis-service of type ClusterIP to expose pod redis on port 6379
+
+kubectl expose pod redis --port=6379 --name redis-service --dry-run=client -o yaml
+
+```
