@@ -121,3 +121,9 @@ master $
 ```bash
 kubectl delete pod <pod-name>
 ```
+
+4. You can extract the resource definition to a file and then apply the changes.
+
+```bash
+kubectl get pod <pod-name> -o yaml > pod-definition.yaml
+```
