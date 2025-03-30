@@ -155,3 +155,9 @@ spec:
       image: busybox
       command: \['sh', '-c', 'git clone &nbsp;;'\]
 ```
+
+When a POD is first created the initContainer is run, and the process in the initContainer must run to a completion before the real container hosting the application starts.
+
+You can configure multiple such initContainers as well, like how we did for multi-pod containers. In that case, each init container is run one at a time in sequential order.
+
+If any of the initContainers fail to complete, Kubernetes restarts the Pod repeatedly until the Init Container succeeds.
