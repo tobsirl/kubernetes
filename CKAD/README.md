@@ -106,9 +106,9 @@ status: {}
 ```bash
 master $ kubectl get pods -o wide
 NAME      READY   STATUS    RESTARTS   AGE     IP          NODE     NOMINATED NODE   READINESS GATES
-busybox   1/1     Running   0          3m39s   10.36.0.2   node01          <​none​>         <​none​>  
-ningx     1/1     Running   0          7m32s   10.44.0.1   node03          <​none​>         <​none​> 
-redis     1/1     Running   0          3m59s   10.36.0.1   node01          <​none​>         <​none​> 
+busybox   1/1     Running   0          3m39s   10.36.0.2   node01          <​none​>         <​none​>
+ningx     1/1     Running   0          7m32s   10.44.0.1   node03          <​none​>         <​none​>
+redis     1/1     Running   0          3m59s   10.36.0.1   node01          <​none​>         <​none​>
 master $
 ```
 
@@ -127,3 +127,13 @@ kubectl delete pod <pod-name>
 ```bash
 kubectl get pod <pod-name> -o yaml > pod-definition.yaml
 ```
+
+## Multi Container Pods
+
+### Init Containers
+
+In a multi-container pod, each container is expected to run a process that stays alive as long as the POD’s lifecycle. For example in the multi-container pod that we talked about earlier that has a web application and logging agent, both the containers are expected to stay alive at all times. The process running in the log agent container is expected to stay alive as long as the web application is running. If any of them fail, the POD restarts.
+
+But at times you may want to run a process that runs to completion in a container. For example, a process that pulls a code or binary from a repository that will be used by the main web application. That is a task that will be run only one time when the pod is first created. Or a process that waits for an external service or database to be up before the actual application starts. That’s where initContainers comes in.
+
+An initContainer is configured in a pod-like all other containers, except that it is specified inside a `initContainers` section, like this:
