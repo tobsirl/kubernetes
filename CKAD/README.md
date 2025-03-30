@@ -182,3 +182,5 @@ spec:
       image: busybox:1.28
       command: \['sh', '-c', 'until nslookup mydb; do echo waiting for mydb; sleep 2; done;'\]
 ```
+
+[Init Containers Documentation](https://kubernetes.io/docs/concepts/workloads/pods/init-containers/)
