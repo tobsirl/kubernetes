@@ -197,4 +197,13 @@ In this example below, we will first **create** a simple deployment and inspect 
 kubectl create deployment nginx --image=nginx:1.16
 
 deployment.apps/nginx created
+
+kubectl rollout status deployment nginx
+Waiting for deployment "nginx" rollout to finish: 0 of 1 updated replicas are available...
+deployment "nginx" successfully rolled out
+
+kubectl rollout history deployment nginx
+deployment.apps/nginx
+REVISION  CHANGE-CAUSE
+1     <​none​>
 ```
