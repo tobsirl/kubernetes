@@ -313,3 +313,26 @@ kubectl describe deployments. nginx | grep -i image:
     Image:        nginx:1.17
 
 ```
+
+With this, we have rolled back to the previous version of the deployment with the image = nginx:1.17.
+
+#### Rollback to a specific revision:
+
+```bash
+kubectl rollout history deployment nginx --revision=1
+deployment.apps/nginx with revision #1
+Pod Template:
+  Labels:       app=nginx
+        pod-template-hash=78449c65d4
+  Containers:
+   nginx:
+    Image:      nginx:1.16
+    Port:         <​none​>
+    Host Port:     <​none​>
+    Environment:       <​none​>
+    Mounts:      <​none​>
+  Volumes:
+
+kubectl rollout undo deployment nginx --to-revision=1
+deployment.apps/nginx rolled back
+```
