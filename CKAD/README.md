@@ -207,3 +207,25 @@ deployment.apps/nginx
 REVISION  CHANGE-CAUSE
 1     <​none​>
 ```
+
+- Using the – -revision flag:
+
+Here revision 1 is the first version where the deployment was created.
+
+You can check the status of each revision individually by using the – -revision flag:
+
+```bash
+kubectl rollout history deployment nginx --revision=1
+deployment.apps/nginx with revision #1
+Pod Template:
+Labels:       app=nginx
+pod-template-hash=78449c65d4
+Containers:
+nginx:
+Image:      nginx:1.16
+Port:       <​none​>
+Host Port:  <​none​>
+Environment: <​none​>
+Mounts:      <​none​>
+Volumes:
+```
