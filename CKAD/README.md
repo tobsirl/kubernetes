@@ -336,3 +336,12 @@ Pod Template:
 kubectl rollout undo deployment nginx --to-revision=1
 deployment.apps/nginx rolled back
 ```
+
+To rollback to specific revision we will use the --to-revision flag.
+
+With `--to-revision=1`, it will be rolled back with the first image we used to create a deployment as we can see in the `rollout history` output.
+
+```bash
+kubectl describe deployments. nginx | grep -i image:
+Image: nginx:1.16
+```
