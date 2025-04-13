@@ -184,3 +184,17 @@ spec:
 ```
 
 [Init Containers Documentation](https://kubernetes.io/docs/concepts/workloads/pods/init-containers/)
+
+## Updating a Deployment
+
+### Examples
+
+- Creating a deployment, checking the rollout status and history
+
+In this example below, we will first **create** a simple deployment and inspect the **rollout status** and the **history** of the deployment.
+
+```bash
+kubectl create deployment nginx --image=nginx:1.16
+
+deployment.apps/nginx created
+```
