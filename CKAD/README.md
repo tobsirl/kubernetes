@@ -189,7 +189,7 @@ spec:
 
 ### Examples
 
-- Creating a deployment, checking the rollout status and history
+#### Creating a deployment, checking the rollout status and history
 
 In this example below, we will first **create** a simple deployment and inspect the **rollout status** and the **history** of the deployment.
 
@@ -208,7 +208,7 @@ REVISION  CHANGE-CAUSE
 1     <​none​>
 ```
 
-- Using the – -revision flag:
+#### Using the – -revision flag:
 
 Here revision 1 is the first version where the deployment was created.
 
@@ -230,7 +230,7 @@ Mounts:      <​none​>
 Volumes:
 ```
 
-- Using the – -record flag:
+#### Using the – -record flag:
 
 You would have noticed that the “change-cause” field is empty in the rollout history output. We can use the – -record flag to save the command used to create/update a deployment against the revision number.
 
@@ -263,7 +263,6 @@ REVISION  CHANGE-CAUSE
 3         kubectl edit deployments.apps nginx --record=true
 
 
-
 kubectl rollout history deployment nginx --revision=3
 deployment.apps/nginx with revision #3
 Pod Template:
@@ -278,5 +277,39 @@ Pod Template:
     Environment:        <​none​>
     Mounts:     <​none​>
   Volumes:
+
+```
+
+#### Undo a change:
+
+Let's now rollback to the previous revision:
+
+```bash
+kubectl rollout history deployment nginx
+deployment.apps/nginx
+REVISION  CHANGE-CAUSE
+1
+3         kubectl edit deployments.apps nginx --record=true
+4         kubectl set image deployment nginx nginx=nginx:1.17 --record=true
+
+
+
+kubectl rollout history deployment nginx --revision=3
+deployment.apps/nginx with revision #3
+Pod Template:
+  Labels:       app=nginx
+        pod-template-hash=787f54657b
+  Annotations:  kubernetes.io/change-cause: kubectl edit deployments.apps nginx --record=true
+  Containers:
+   nginx:
+    Image:      nginx:latest
+    Port:
+    Host Port:
+    Environment:
+    Mounts:
+  Volumes:
+
+kubectl describe deployments. nginx | grep -i image:
+    Image:        nginx:1.17
 
 ```
