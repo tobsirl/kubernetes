@@ -244,5 +244,39 @@ deployment.apps/nginx
 REVISION  CHANGE-CAUSE
 1         <​none​>
 2         kubectl set image deployment nginx nginx=nginx:1.17 --record=true
+```
+
+You can now see that the change-cause is recorded for revision 2 of this deployment.
+
+Let's make some more changes. In the example below, we are editing the deployment and changing the image from nginx:1.17 to nginx:latest while making use of the –record flag.
+
+```bash
+kubectl edit deployments.apps nginx --record
+Flag --record has been deprecated, --record will be removed in the future
+deployment.apps/nginx edited
+
+kubectl rollout history deployment nginx
+deployment.apps/nginx
+REVISION  CHANGE-CAUSE
+1         <​none​>
+2         kubectl set image deployment nginx nginx=nginx:1.17 --record=true
+3         kubectl edit deployments.apps nginx --record=true
+
+
+
+kubectl rollout history deployment nginx --revision=3
+deployment.apps/nginx with revision #3
+Pod Template:
+  Labels:       app=nginx
+        pod-template-hash=787f54657b
+  Annotations:  kubernetes.io/change-cause: kubectl edit deployments.apps nginx --record=true
+  Containers:
+   nginx:
+    Image:      nginx
+    Port:       <​none​>
+    Host Port:  <​none​>
+    Environment:        <​none​>
+    Mounts:     <​none​>
+  Volumes:
 
 ```
