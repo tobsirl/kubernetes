@@ -229,3 +229,20 @@ Environment: <​none​>
 Mounts:      <​none​>
 Volumes:
 ```
+
+- Using the – -record flag:
+
+You would have noticed that the “change-cause” field is empty in the rollout history output. We can use the – -record flag to save the command used to create/update a deployment against the revision number.
+
+```bash
+kubectl set image deployment nginx nginx=nginx:1.17 --record
+Flag --record has been deprecated, --record will be removed in the future
+deployment.apps/nginx image updated
+
+kubectl rollout history deployment nginx
+deployment.apps/nginx
+REVISION  CHANGE-CAUSE
+1         <​none​>
+2         kubectl set image deployment nginx nginx=nginx:1.17 --record=true
+
+```
