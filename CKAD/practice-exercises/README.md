@@ -32,3 +32,12 @@ kubectl logs busybox
 ```bash
 kubectl create namespace myns --dry-run=client -o yaml
 ```
+
+## Create a busybox pod (using YAML) that runs the command "env". Run it and see the output
+
+```bash
+kubectl run busybox --image=busybox --restart=Never --command --dry-run=client -- env -o yaml > envpod.yaml
+cat envpod.yaml
+kubectl apply -f envpod.yaml
+kubectl logs busybox
+```
