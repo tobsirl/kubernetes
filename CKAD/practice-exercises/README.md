@@ -26,3 +26,9 @@ kubectl run busybox --image=busybox --command --restart=Never -- env
 
 kubectl logs busybox
 ```
+
+## Get the YAML for a new namespace called 'myns' without creating it
+
+```bash
+kubectl create namespace myns --dry-run=client -o yaml
+```
