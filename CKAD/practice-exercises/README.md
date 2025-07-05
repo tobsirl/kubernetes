@@ -16,3 +16,13 @@ cat pod.yaml
 
 kubectl apply -f pod.yaml -n mynamespace
 ```
+
+## Create a busybox pod (using kubectl command) that runs the command "env". Run it and see the output
+
+```bash
+kubectl run busybox --image=busybox --restart=Never --command -it --rm -- env
+
+kubectl run busybox --image=busybox --command --restart=Never -- env
+
+kubectl logs busybox
+```
