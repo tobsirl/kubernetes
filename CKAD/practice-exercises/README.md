@@ -54,3 +54,27 @@ kubectl create resourcequota myrq --hard=cpu=1,memory=1Gi,pods=2 --dry-run=clien
 kubectl get pods --all-namespaces
 kubectl get pods -A
 ```
+
+## Create a pod with image nginx called nginx and expose traffic on port 80
+
+```bash
+kubectl run nginx --image=nginx --restart=Never --port=80
+kubectl expose pod nginx --port=80 --target-port=80 --type=NodePort
+kubectl get svc nginx
+```
+
+## Change pod's image to nginx:1.7.1. Observe that the container will be restarted as soon as the image gets pulled
+
+Note: The RESTARTS column should contain 0 initially (ideally - it could be any number)
+
+```bash
+# Note: The RESTARTS column should contain 0 initially (ideally - it could be any number)
+kubectl set image pod/nginx nginx=nginx:1.7.1
+kubectl get pods nginx
+kubectl describe pod nginx # you will see an event "Container will be killed and re-created" in the events section
+kubectl get pod nginx -w # Watch it
+# Note: some time after changing the image, you should see that the value in the RESTARTS column has been increased by 1, because the container has been restarted, as stated in the events shown at the bottom of the kubectl describe pod command:
+
+# Note: you can check pod's image by running:
+kubectl get pod nginx -o jsonpath='{.spec.containers[].image}{"\n"}'
+```
