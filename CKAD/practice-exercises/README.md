@@ -47,3 +47,10 @@ kubectl logs busybox
 ```bash
 kubectl create resourcequota myrq --hard=cpu=1,memory=1Gi,pods=2 --dry-run=client -o yaml
 ```
+
+## Get pods on all namespaces
+
+```bash
+kubectl get pods --all-namespaces
+kubectl get pods -A
+```
