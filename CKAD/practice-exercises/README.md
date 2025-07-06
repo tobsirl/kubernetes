@@ -78,3 +78,11 @@ kubectl get pod nginx -w # Watch it
 # Note: you can check pod's image by running:
 kubectl get pod nginx -o jsonpath='{.spec.containers[].image}{"\n"}'
 ```
+
+## Get nginx pod's ip created in previous step, use a temp busybox image to wget its '/'
+
+```bash
+kubectl get po -o wide # get the IP, will be something like '10.1.1.131'
+# create a temp busybox pod
+kubectl run busybox --image=busybox --rm -it --restart=Never -- wget -O- 10.1.1.131:80
+```
