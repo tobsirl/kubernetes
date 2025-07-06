@@ -59,8 +59,6 @@ kubectl get pods -A
 
 ```bash
 kubectl run nginx --image=nginx --restart=Never --port=80
-kubectl expose pod nginx --port=80 --target-port=80 --type=NodePort
-kubectl get svc nginx
 ```
 
 ## Change pod's image to nginx:1.7.1. Observe that the container will be restarted as soon as the image gets pulled
