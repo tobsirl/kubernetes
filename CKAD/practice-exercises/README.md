@@ -41,3 +41,9 @@ cat envpod.yaml
 kubectl apply -f envpod.yaml
 kubectl logs busybox
 ```
+
+## Get the YAML for a new ResourceQuota called 'myrq' with hard limits of 1 CPU, 1G memory and 2 pods without creating it
+
+```bash
+kubectl create resourcequota myrq --hard=cpu=1,memory=1Gi,pods=2 --dry-run=client -o yaml
+```
