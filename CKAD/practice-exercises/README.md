@@ -96,3 +96,9 @@ kubectl get pod nginx -o yaml
 ```bash
 kubectl describe pod nginx
 ```
+
+## Get pod's logs
+
+```bash
+kubectl logs nginx
+```
