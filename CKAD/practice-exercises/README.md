@@ -109,3 +109,9 @@ kubectl logs nginx
 kubectl logs nginx -p
 kubectl logs nginx --previous
 ```
+
+## Execute a simple shell on the nginx pod
+
+```bash
+kubectl exec -it nginx -- /bin/sh
+```
