@@ -102,3 +102,10 @@ kubectl describe pod nginx
 ```bash
 kubectl logs nginx
 ```
+
+## If the pod crashed and restarted, get the logs of the previous instance
+
+```bash
+kubectl logs nginx -p
+kubectl logs nginx --previous
+```
