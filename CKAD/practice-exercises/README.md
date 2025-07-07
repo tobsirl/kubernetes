@@ -84,3 +84,10 @@ kubectl get po -o wide # get the IP, will be something like '10.1.1.131'
 # create a temp busybox pod
 kubectl run busybox --image=busybox --rm -it --restart=Never -- wget -O- 10.1.1.131:80
 ```
+
+## Get pod's YAML
+
+```bash
+kubectl get pod nginx -o yaml
+
+```
