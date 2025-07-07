@@ -89,5 +89,10 @@ kubectl run busybox --image=busybox --rm -it --restart=Never -- wget -O- 10.1.1.
 
 ```bash
 kubectl get pod nginx -o yaml
+```
 
+## Get information about the pod, including details about potential issues (e.g. pod hasn't started)
+
+```bash
+kubectl describe pod nginx
 ```
