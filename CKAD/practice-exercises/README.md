@@ -131,3 +131,14 @@ kubectl logs busybox
 # Note: you will not be able to get the logs after the pod is deleted
 # kubectl logs busybox # will not work, because the pod is deleted
 ```
+
+## Create an nginx pod and set an env value as 'var1=val1'. Check the env value existence within the pod
+
+```bash
+kubectl run nginx --image=nginx --restart=Never --env="var1=val1"
+kubectl exec -it nginx -- env   # This will show all environment variables, including 'var1=val1'
+kubectl exec -it nginx -- sh -c 'echo $var1'
+kubectl describe pod nginx | grep -i env
+kubectl run nginx --restart=Never --image=nginx --env=var1=val1 -it --rm -- env
+kubectl run nginx --image nginx --restart=Never --env=var1=val1 -it --rm -- sh -c 'echo $var1'
+```
