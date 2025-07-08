@@ -115,3 +115,10 @@ kubectl logs nginx --previous
 ```bash
 kubectl exec -it nginx -- /bin/sh
 ```
+
+## Create a busybox pod that echoes 'hello world' and then exits
+
+```bash
+kubectl run busybox --image=busybox --restart=Never --command -- echo "hello world"
+kubectl logs busybox
+```
