@@ -122,3 +122,12 @@ kubectl exec -it nginx -- /bin/sh
 kubectl run busybox --image=busybox --restart=Never --command -- echo "hello world"
 kubectl logs busybox
 ```
+
+## Create a busybox pod that echoes 'hello world' and then exits, but have the pod deleted automatically when it's completed
+
+```bash
+kubectl run busybox --image=busybox --restart=Never --command -it --rm -- echo "hello world"
+kubectl logs busybox
+# Note: you will not be able to get the logs after the pod is deleted
+# kubectl logs busybox # will not work, because the pod is deleted
+```
