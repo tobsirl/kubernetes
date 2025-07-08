@@ -142,3 +142,10 @@ kubectl describe pod nginx | grep -i env
 kubectl run nginx --restart=Never --image=nginx --env=var1=val1 -it --rm -- env
 kubectl run nginx --image nginx --restart=Never --env=var1=val1 -it --rm -- sh -c 'echo $var1'
 ```
+
+## If pod crashed and restarted, get logs about the previous instance
+
+```bash
+kubectl logs nginx -p
+kubectl logs nginx --previous
+```
