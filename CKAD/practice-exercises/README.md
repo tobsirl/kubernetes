@@ -278,3 +278,9 @@ $> kubectl run box-test --image=busybox --restart=Never -it --rm -- /bin/sh -c "
 # you can do some cleanup
 $> kubectl delete po box
 ```
+
+## Show all labels of the pods
+
+```bash
+kubectl get pods --show-labels
+```
