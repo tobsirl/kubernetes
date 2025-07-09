@@ -187,3 +187,9 @@ kubectl exec -it busybox -c busybox2 -- ls
 # you can do some cleanup
 
 ```
+
+## Get pod logs
+
+```bash
+kubectl logs busybox
+```
