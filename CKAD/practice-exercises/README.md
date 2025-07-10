@@ -284,3 +284,9 @@ $> kubectl delete po box
 ```bash
 kubectl get pods --show-labels
 ```
+
+## Get the label 'app' for the pods (show a column with APP labels)
+
+```bash
+kubectl get pods -L app
+```
