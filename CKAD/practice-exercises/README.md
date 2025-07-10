@@ -308,3 +308,11 @@ kubectl label po -l "app in(v1,v2)" tier=web
 ```bash
 kubectl annotate pod -l app=v2 owner=marketing
 ```
+
+## Remove the 'app' label from the pods we created before
+
+```bash
+kubectl label pod nginx1 nginx2 nginx3 app-
+kubectl label pod nginx{1..3} app-
+kubectl label pod -l app app-
+```
