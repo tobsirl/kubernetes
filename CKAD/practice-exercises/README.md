@@ -302,3 +302,9 @@ kubectl get pods -l app=v2
 ```bash
 kubectl label po -l "app in(v1,v2)" tier=web
 ```
+
+## Add an annotation 'owner: marketing' to all pods having 'app=v2' label
+
+```bash
+kubectl annotate pod -l app=v2 owner=marketing
+```
