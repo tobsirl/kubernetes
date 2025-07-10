@@ -296,3 +296,9 @@ kubectl get pods -L app
 ```bash
 kubectl get pods -l app=v2
 ```
+
+## Add a new label tier=web to all pods having 'app=v2' or 'app=v1' labels
+
+```bash
+kubectl label po -l "app in(v1,v2)" tier=web
+```
