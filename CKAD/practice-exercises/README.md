@@ -290,3 +290,9 @@ kubectl get pods --show-labels
 ```bash
 kubectl get pods -L app
 ```
+
+## Get only the 'app=v2' pods
+
+```bash
+kubectl get pods -l app=v2
+```
