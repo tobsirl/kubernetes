@@ -316,3 +316,10 @@ kubectl label pod nginx1 nginx2 nginx3 app-
 kubectl label pod nginx{1..3} app-
 kubectl label pod -l app app-
 ```
+
+## Annotate pods nginx1, nginx2, nginx3 with "description='my description'" value
+
+```bash
+kubectl annotate pod nginx1 nginx2 nginx3 description='my description'
+kubectl annotate pod nginx{1..3} description='my description'
+```
