@@ -345,3 +345,30 @@ kubectl annotate pod nginx{1..3} description-
 kubectl delete pod nginx1 nginx2 nginx3
 kubectl delete pod nginx{1..3}
 ```
+
+## Taint a node with key tier and value frontend with effect NoShedule. Then, create a pod that tolerates this taint.
+
+```bash
+Taint a node:
+
+kubectl taint node node1 tier=frontend:NoSchedule # key=value:Effect
+kubectl describe node node1 # view the taints on a node
+
+And to tolerate the taint:
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: frontend
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+  tolerations:
+  - key: "tier"
+    operator: "Equal"
+    value: "frontend"
+    effect: "NoSchedule"
+---
+```
