@@ -338,3 +338,10 @@ kubectl get pod nginx1 -o jsonpath='{.metadata.annotations}{"\n"}'
 kubectl annotate pod nginx1 nginx2 nginx3 description-
 kubectl annotate pod nginx{1..3} description-
 ```
+
+## Remove these pods to have a clean state in your cluster
+
+```bash
+kubectl delete pod nginx1 nginx2 nginx3
+kubectl delete pod nginx{1..3}
+```
