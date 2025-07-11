@@ -331,3 +331,10 @@ kubectl annotate pod nginx1 --list
 kubectl describe pod nginx1 | grep -i annotation
 kubectl get pod nginx1 -o jsonpath='{.metadata.annotations}{"\n"}'
 ```
+
+## Remove the annotations for these three pods
+
+```bash
+kubectl annotate pod nginx1 nginx2 nginx3 description-
+kubectl annotate pod nginx{1..3} description-
+```
