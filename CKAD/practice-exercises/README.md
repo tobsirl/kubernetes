@@ -397,3 +397,52 @@ spec:
 
 kubectl create -f pod.yaml
 ```
+
+## Create a pod that will be deployed to a Node that has the label 'accelerator=nvidia-tesla-p100'
+
+```bash
+Add the label to a node:
+
+kubectl label nodes <your-node-name> accelerator=nvidia-tesla-p100
+kubectl get nodes --show-labels
+
+We can use the 'nodeSelector' property on the Pod YAML:
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: cuda-test
+spec:
+  containers:
+    - name: cuda-test
+      image: "k8s.gcr.io/cuda-vector-add:v0.1"
+  nodeSelector: # add this
+    accelerator: nvidia-tesla-p100 # the selection label
+---
+
+You can easily find out where in the YAML it should be placed by:
+
+kubectl explain po.spec
+
+OR: Use node affinity (https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/#schedule-a-pod-using-required-node-affinity)
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: affinity-pod
+spec:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: accelerator
+            operator: In
+            values:
+            - nvidia-tesla-p100
+  containers:
+    ...
+---
+```
