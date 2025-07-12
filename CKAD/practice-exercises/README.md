@@ -372,3 +372,28 @@ spec:
     effect: "NoSchedule"
 ---
 ```
+
+## Create a pod that will be placed on node controlplane. Use nodeSelector and tolerations.
+
+```bash
+vi pod.yaml
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: frontend
+spec:
+  image:
+    name: nginx
+    image: nginx
+  nodeSelector:
+    kubernetes.io/hostname: controlplane
+  tolerations:
+  - key: "node-role.kubernetes.io/control-plane"
+    operator: "Exists"
+    effect: "NoSchedule"
+---
+
+kubectl create -f pod.yaml
+```
