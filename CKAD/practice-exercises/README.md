@@ -446,3 +446,10 @@ spec:
     ...
 ---
 ```
+
+## Delete the deployment and the horizontal pod autoscaler you created
+
+```bash
+kubectl delete deployment nginx-deployment
+kubectl delete hpa nginx-deployment
+```
