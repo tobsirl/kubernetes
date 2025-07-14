@@ -596,3 +596,19 @@ version-2
 version-2
 version-2
 ```
+
+## Create a deployment with image nginx:1.18.0, called nginx, having 2 replicas, defining port 80 as the port that this container exposes (don't create a service for this deployment)
+
+```bash
+kubectl create deployment nginx  --image=nginx:1.18.0  --dry-run=client -o yaml > deploy.yaml
+vi deploy.yaml
+
+# change the replicas field from 1 to 2
+# add this section to the container spec and save the deploy.yaml file
+# ports:
+#   - containerPort: 80
+kubectl apply -f deploy.yaml
+
+or,
+kubectl create deploy nginx --image=nginx:1.18.0 --replicas=2 --port=80
+```
