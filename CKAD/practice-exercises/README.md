@@ -612,3 +612,9 @@ kubectl apply -f deploy.yaml
 or,
 kubectl create deploy nginx --image=nginx:1.18.0 --replicas=2 --port=80
 ```
+
+## View the YAML of this deployment
+
+```bash
+kubectl get deploy nginx -o yaml
+```
