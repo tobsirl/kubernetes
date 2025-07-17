@@ -637,3 +637,14 @@ kubectl get rs nginx-7bf7478b77 -o yaml
 ```bash
 kubectl rollout status deploy/nginx
 ```
+
+## Update the nginx image to nginx:1.19.8
+
+```bash
+kubectl set image deploy/nginx nginx=nginx:1.19.8
+
+# alternatively...
+kubectl edit deploy nginx # change the .spec.template.spec.containers[0].image
+
+The syntax of the 'kubectl set image' command is kubectl set image (-f FILENAME | TYPE NAME) CONTAINER_NAME_1=CONTAINER_IMAGE_1 ... CONTAINER_NAME_N=CONTAINER_IMAGE_N [options]
+```
