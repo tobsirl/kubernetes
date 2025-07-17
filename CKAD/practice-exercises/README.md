@@ -631,3 +631,9 @@ kubectl get rs -l app=nginx # if you created deployment by 'create' command
 # you could also just do kubectl get rs
 kubectl get rs nginx-7bf7478b77 -o yaml
 ```
+
+## Check how the deployment rollout is going
+
+```bash
+kubectl rollout status deploy/nginx
+```
