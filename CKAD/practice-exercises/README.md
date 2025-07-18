@@ -657,3 +657,12 @@ kubectl get deploy nginx
 kubectl get rs # check that a new replica set was created
 kubectl get pods -l app=nginx # check that the pods are running
 ```
+
+## Undo the latest rollout and verify that new pods have the old image (nginx:1.18.0)
+
+```bash
+kubectl rollout undo deploy/nginx
+# wait a bit
+kubectl get po # select one 'Running' Pod
+kubectl describe po nginx-5ff4457d65-nslcl | grep -i image # should be nginx:1.18.0
+```
