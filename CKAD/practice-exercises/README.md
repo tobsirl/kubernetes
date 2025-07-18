@@ -648,3 +648,12 @@ kubectl edit deploy nginx # change the .spec.template.spec.containers[0].image
 
 The syntax of the 'kubectl set image' command is kubectl set image (-f FILENAME | TYPE NAME) CONTAINER_NAME_1=CONTAINER_IMAGE_1 ... CONTAINER_NAME_N=CONTAINER_IMAGE_N [options]
 ```
+
+## Check the rollout history and confirm that the replicas are OK
+
+```bash
+kubectl rollout history deploy/nginx
+kubectl get deploy nginx
+kubectl get rs # check that a new replica set was created
+kubectl get pods -l app=nginx # check that the pods are running
+```
