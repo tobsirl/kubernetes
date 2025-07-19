@@ -672,3 +672,11 @@ kubectl describe po nginx-5ff4457d65-nslcl | grep -i image # should be nginx:1.1
 ```bash
 kubectl set image deploy/nginx nginx=nginx:1.91
 ```
+
+## Verify that something's wrong with the rollout
+
+```bash
+kubectl rollout status deploy/nginx
+kubectl get pod nginx
+# check for 'ErrImagePull' or 'ImagePullBackOff' in the REASON column
+```
