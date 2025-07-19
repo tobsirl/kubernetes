@@ -666,3 +666,9 @@ kubectl rollout undo deploy/nginx
 kubectl get po # select one 'Running' Pod
 kubectl describe po nginx-5ff4457d65-nslcl | grep -i image # should be nginx:1.18.0
 ```
+
+## Do an on purpose update of the deployment with a wrong image nginx:1.91
+
+```bash
+kubectl set image deploy/nginx nginx=nginx:1.91
+```
