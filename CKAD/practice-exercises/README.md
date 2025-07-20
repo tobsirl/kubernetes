@@ -680,3 +680,11 @@ kubectl rollout status deploy/nginx
 kubectl get pod nginx
 # check for 'ErrImagePull' or 'ImagePullBackOff' in the REASON column
 ```
+
+## Return the deployment to the second revision (number 2) and verify the image is nginx:1.19.8
+
+```bash
+kubectl rollout undo deploy nginx --to-revision=2
+kubectl describe deploy nginx | grep -i image
+kubectl rollout status deploy nginx # Everything should be OK now
+```
