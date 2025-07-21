@@ -688,3 +688,9 @@ kubectl rollout undo deploy nginx --to-revision=2
 kubectl describe deploy nginx | grep -i image
 kubectl rollout status deploy nginx # Everything should be OK now
 ```
+
+## Check the details of the fourth revision (number 4)
+
+```bash
+kubectl rollout history deploy nginx --revision=4 # You'll see the wrong image displayed here
+```
