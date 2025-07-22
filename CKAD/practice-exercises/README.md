@@ -694,3 +694,11 @@ kubectl rollout status deploy nginx # Everything should be OK now
 ```bash
 kubectl rollout history deploy nginx --revision=4 # You'll see the wrong image displayed here
 ```
+
+## Scale the deployment to 5 replicas
+
+```bash
+kubectl scale deploy nginx --replicas=5
+kubectl get pods
+kubectl describe deploy nginx | grep -i replicas
+```
