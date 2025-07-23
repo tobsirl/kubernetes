@@ -702,3 +702,10 @@ kubectl scale deploy nginx --replicas=5
 kubectl get pods
 kubectl describe deploy nginx | grep -i replicas
 ```
+
+## Autoscale the deployment, pods between 5 and 10, targetting CPU utilization at 80%
+
+```bash
+kubectl autoscale deploy nginx --min=5 --max=10 --cpu-percent=80
+kubectl get hpa nginx # check the Horizontal Pod Autoscaler
+```
