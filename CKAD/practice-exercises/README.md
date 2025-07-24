@@ -709,3 +709,9 @@ kubectl describe deploy nginx | grep -i replicas
 kubectl autoscale deploy nginx --min=5 --max=10 --cpu-percent=80
 kubectl get hpa nginx # check the Horizontal Pod Autoscaler
 ```
+
+## Pause the rollout of the deployment
+
+```bash
+kubectl rollout pause deploy nginx
+```
