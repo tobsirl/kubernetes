@@ -715,3 +715,14 @@ kubectl get hpa nginx # check the Horizontal Pod Autoscaler
 ```bash
 kubectl rollout pause deploy nginx
 ```
+
+## Update the image to nginx:1.19.9 and check that there's nothing going on, since we paused the rollout
+
+```bash
+kubectl set image deploy nginx nginx=nginx:1.19.9
+
+# or
+kubectl edit deploy nginx # change the .spec.template.spec.containers[0].image to nginx:1.19.9
+# change the image to nginx:1.19.9
+kubectl rollout history deploy nginx # no new revision is created
+```
