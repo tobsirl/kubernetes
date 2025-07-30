@@ -726,3 +726,11 @@ kubectl edit deploy nginx # change the .spec.template.spec.containers[0].image t
 # change the image to nginx:1.19.9
 kubectl rollout history deploy nginx # no new revision is created
 ```
+
+## Resume the rollout and check that the nginx:1.19.9 image has been applied
+
+```bash
+kubectl rollout resume deploy nginx
+kubectl rollout status deploy nginx # should be OK
+kubectl rollout history deploy nginx # should show a new revision with nginx:1.19.9
+```
