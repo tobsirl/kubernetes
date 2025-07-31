@@ -734,3 +734,9 @@ kubectl rollout resume deploy nginx
 kubectl rollout status deploy nginx # should be OK
 kubectl rollout history deploy nginx # should show a new revision with nginx:1.19.9
 ```
+
+## Create a job named pi with image perl:5.34 that runs the command with arguments "perl -Mbignum=bpi -wle 'print bpi(2000)'"
+
+```bash
+kubectl create job pi --image=perl:5.34 -- perl -Mbignum=bpi -wle 'print bpi(2000)'
+```
