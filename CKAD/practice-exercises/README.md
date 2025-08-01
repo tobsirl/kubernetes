@@ -740,3 +740,24 @@ kubectl rollout history deploy nginx # should show a new revision with nginx:1.1
 ```bash
 kubectl create job pi --image=perl:5.34 -- perl -Mbignum=bpi -wle 'print bpi(2000)'
 ```
+
+## After creating a job named pi with image perl:5.34 that runs the command with arguments "perl -Mbignum=bpi -wle 'print bpi(2000)'", wait till it's done, get the output
+
+```bash
+kubectl get jobs -w # wait till 'SUCCESSFUL' is 1 (will take some time, perl image might be big)
+kubectl logs pi-**** # get the pi numbers
+kubectl get po # get the pod name
+kubectl delete job pi
+
+OR
+
+kubectl get jobs -w # wait till 'SUCCESSFUL' is 1 (will take some time, perl image might be big)
+kubectl logs job/pi
+kubectl delete job pi
+
+OR
+
+kubectl wait --for=condition=complete --timeout=300s job pi
+kubectl logs job/pi
+kubectl delete job pi
+```
