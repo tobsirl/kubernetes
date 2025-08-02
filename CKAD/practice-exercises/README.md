@@ -761,3 +761,9 @@ kubectl wait --for=condition=complete --timeout=300s job pi
 kubectl logs job/pi
 kubectl delete job pi
 ```
+
+## Create a job with the image busybox that executes the command 'echo hello;sleep 30;echo world'
+
+```bash
+kubectl create job echo-job --image=busybox -- /bin/sh -c 'echo hello;sleep 30;echo world'
+```
