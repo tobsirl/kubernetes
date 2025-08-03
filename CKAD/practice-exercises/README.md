@@ -767,3 +767,10 @@ kubectl delete job pi
 ```bash
 kubectl create job echo-job --image=busybox -- /bin/sh -c 'echo hello;sleep 30;echo world'
 ```
+
+## Follow the logs for the pod (you'll wait for 30 seconds)
+
+```bash
+kubectl get pods # get the pod name
+kubectl logs busybox-ptx58 -f # follow the logs
+```
