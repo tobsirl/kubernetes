@@ -774,3 +774,11 @@ kubectl create job echo-job --image=busybox -- /bin/sh -c 'echo hello;sleep 30;e
 kubectl get pods # get the pod name
 kubectl logs busybox-ptx58 -f # follow the logs
 ```
+
+## See the status of the job, describe it and see the logs
+
+```bash
+kubectl get jobs # check the status of the job
+kubectl describe jobs busybox # see the details of the job
+kubectl logs job/busybox # get the logs of the job
+```
