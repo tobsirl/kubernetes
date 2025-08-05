@@ -782,3 +782,9 @@ kubectl get jobs # check the status of the job
 kubectl describe jobs busybox # see the details of the job
 kubectl logs job/busybox # get the logs of the job
 ```
+
+## Delete the job
+
+```bash
+kubectl delete job busybox
+```
