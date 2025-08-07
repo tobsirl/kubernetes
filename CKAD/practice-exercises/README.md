@@ -824,3 +824,48 @@ spec:
 status: {}
 ---
 ```
+
+## Create a job but ensure that it will be automatically terminated by kubernetes if it takes more than 30 seconds to execute. Make it run 5 paraller times
+
+```bash
+vi job.yaml
+
+# Add job.spec.parallelism=5:
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  creationTimestamp: null
+  labels:
+    run: busybox
+  name: busybox
+spec:
+parallelism: 5 # add this line
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        run: busybox
+    spec:
+      containers:
+      - args:
+        - /bin/sh
+        - -c
+        - echo hello;sleep 30;echo world
+        image: busybox
+        name: busybox
+        resources: {}
+      restartPolicy: OnFailure
+status: {}
+---
+
+kubectl create -f job.yaml
+kubectl get jobs
+
+# -w will watch the job status
+kubectl get jobs -w
+
+# It will take some time for the parallel jobs to finish (>= 30 seconds):
+
+kubectl delete job busybox
+```
