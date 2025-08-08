@@ -869,3 +869,9 @@ kubectl get jobs -w
 
 kubectl delete job busybox
 ```
+
+## Create a cron job with image busybox that runs on a schedule of "_/1 _ \* \* \*" and writes 'date; echo Hello from the Kubernetes cluster' to standard output
+
+```bash
+kubectl create cronjob my-cronjob --image=busybox --schedule="*/1 * * * *" -- /bin/sh -c 'date; echo Hello from the Kubernetes cluster
+```
