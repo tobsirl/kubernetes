@@ -875,3 +875,11 @@ kubectl delete job busybox
 ```bash
 kubectl create cronjob my-cronjob --image=busybox --schedule="*/1 * * * *" -- /bin/sh -c 'date; echo Hello from the Kubernetes cluster
 ```
+
+## See logs of a cron job and delete it
+
+```bash
+kubectl get pods # copy the container just created
+kubectl logs <container> # you will see the date and message
+kubectl delete cj busybox --force # cj stands for cronjob --force to delete it immediately
+```
