@@ -883,3 +883,15 @@ kubectl get pods # copy the container just created
 kubectl logs <container> # you will see the date and message
 kubectl delete cj busybox --force # cj stands for cronjob --force to delete it immediately
 ```
+
+## Create the same cron job again, and watch the status. Once it ran, check which job ran by the created cron job. Check the log, and delete the cron job
+
+```bash
+kubectl get cj
+kubectl get jobs --watch # you will see the job created by the cron job
+kubectl get po --show-labels # observe that the pods have a label that mentions their 'parent' job
+kubectl logs busybox-1529745840-m867r
+
+# Bear in mind that Kubernetes will run a new job/pod for each new cron job
+kubectl delete cj busybox
+```
