@@ -973,3 +973,9 @@ spec:
 status: {}
 ---
 ```
+
+## Create a job from cronjob
+
+```bash
+kubectl create job --from=cronjob/sample-cron-job sample-job
+```
