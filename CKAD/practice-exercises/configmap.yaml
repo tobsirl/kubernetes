@@ -1,0 +1,11 @@
+apiVersion: v1
+data:
+  foo: lala
+  foo2: lolo
+kind: ConfigMap
+metadata:
+  creationTimestamp: "2025-08-15T07:09:49Z"
+  name: config
+  namespace: default
+  resourceVersion: "4033924"
+  uid: ff17a865-23bb-4d33-ac30-cd8bc795e7f3
