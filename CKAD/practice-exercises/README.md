@@ -985,3 +985,10 @@ kubectl create job --from=cronjob/sample-cron-job sample-job
 ```bash
 kubectl create configmap config --from-literal=foo=lala --from-literal=foo2=lolo
 ```
+
+## Display values of a configmap
+
+```bash
+kubectl get configmap config -o yaml
+kubectl describe configmap config
+```
