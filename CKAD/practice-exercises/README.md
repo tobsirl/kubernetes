@@ -992,3 +992,10 @@ kubectl create configmap config --from-literal=foo=lala --from-literal=foo2=lolo
 kubectl get configmap config -o yaml
 kubectl describe configmap config
 ```
+
+## Create and display a configmap from a file. Create the file with: echo -e "foo3=lili\nfoo4=lele" > config.txt
+
+```bash
+kubectl create cm configmap2 --from-file=config.txt
+kubectl get cm configmap2 -o yaml
+```
