@@ -999,3 +999,10 @@ kubectl describe configmap config
 kubectl create cm configmap2 --from-file=config.txt
 kubectl get cm configmap2 -o yaml
 ```
+
+## Create and display a configmap from a .env file. Create the file with the command: echo -e "var1=val1\n# this is a comment\n\nvar2=val2\n#anothercomment" > config.env
+
+```bash
+kubectl create cm configmap3 --from-env-file=config.env
+kubectl get cm configmap3 -o yaml
+```
