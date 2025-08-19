@@ -1006,3 +1006,11 @@ kubectl get cm configmap2 -o yaml
 kubectl create cm configmap3 --from-env-file=config.env
 kubectl get cm configmap3 -o yaml
 ```
+
+## Create and display a configmap from a file, giving the key 'special'. Create the file with: echo -e "var3=val3\nvar4=val4" > config4.txt
+
+```bash
+kubectl create cm configmap4 --from-file=special=config4.txt
+kubectl describe cm configmap4
+kubectl get cm configmap4 -o yaml
+```
