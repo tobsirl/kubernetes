@@ -1014,3 +1014,39 @@ kubectl create cm configmap4 --from-file=special=config4.txt
 kubectl describe cm configmap4
 kubectl get cm configmap4 -o yaml
 ```
+
+## Create a configMap called 'options' with the value var5=val5. Create a new nginx pod that loads the value from variable 'var5' in an env variable called 'option'
+
+```bash
+kubectl create cm options --from-literal=var5=val5
+kubectl run nginx --image=nginx --restart=Never --dry-run=client -o yaml > pod.yaml
+vi pod.yaml
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: nginx
+  name: nginx
+spec:
+  containers:
+  - image: nginx
+    imagePullPolicy: IfNotPresent
+    name: nginx
+    resources: {}
+    env:
+    - name: option # name of the env variable
+      valueFrom:
+        configMapKeyRef:
+          name: options # name of config map
+          key: var5 # name of the entity in config map
+  dnsPolicy: ClusterFirst
+  restartPolicy: Never
+status: {}
+---
+
+kubectl create -f pod.yaml
+kubectl exec -it nginx -- env | grep option # will show 'option=val5'
+```
