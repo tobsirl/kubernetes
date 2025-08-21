@@ -1050,3 +1050,36 @@ status: {}
 kubectl create -f pod.yaml
 kubectl exec -it nginx -- env | grep option # will show 'option=val5'
 ```
+
+## Create a configMap 'anotherone' with values 'var6=val6', 'var7=val7'. Load this configMap as env variables into a new nginx pod
+
+```bash
+kubectl create configmap anotherone --from-literal=var6=val6 --from-literal=var7=val7
+kubectl run --restart=Never nginx --image=nginx -o yaml --dry-run=client > pod.yaml
+vi pod.yaml
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: nginx
+  name: nginx
+spec:
+  containers:
+  - image: nginx
+    imagePullPolicy: IfNotPresent
+    name: nginx
+    resources: {}
+    envFrom: # different than previous one, that was 'env'
+    - configMapRef: # different from the previous one, was 'configMapKeyRef'
+        name: anotherone # the name of the config map
+  dnsPolicy: ClusterFirst
+  restartPolicy: Never
+status: {}
+---
+
+kubectl create -f pod.yaml
+kubectl exec -it nginx -- env
+```
