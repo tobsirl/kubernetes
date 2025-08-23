@@ -1123,3 +1123,31 @@ cd /etc/lala
 ls # will show var8 var9
 cat var8 # will show val8
 ```
+
+## Create the YAML for an nginx pod that runs with the user ID 101. No need to create the pod
+
+```bash
+kubectl run nginx --image=nginx --restart=Never --dry-run=client -o yaml > pod.yaml
+vi pod.yaml
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: nginx
+  name: nginx
+spec:
+  securityContext: # insert this line
+    runAsUser: 101 # UID for the user
+  containers:
+  - image: nginx
+    imagePullPolicy: IfNotPresent
+    name: nginx
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Never
+status: {}
+---
+```
