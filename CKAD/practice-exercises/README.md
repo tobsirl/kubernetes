@@ -1180,3 +1180,34 @@ spec:
 status: {}
 ---
 ```
+
+## Create an nginx pod with requests cpu=100m,memory=256Mi and limits cpu=200m,memory=512Mi
+
+```bash
+kubectl run nginx --image=nginx --dry-run=client -o yaml > pod.yaml
+vi pod.yaml
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: nginx
+  name: nginx
+spec:
+  containers:
+  - image: nginx
+    name: nginx
+    resources:
+      requests:
+        memory: "256Mi"
+        cpu: "100m"
+      limits:
+        memory: "512Mi"
+        cpu: "200m"
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+---
+```
