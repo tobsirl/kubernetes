@@ -1211,3 +1211,27 @@ spec:
 status: {}
 ---
 ```
+
+## Create a namespace with limit range
+
+```bash
+kubectl create ns one
+vi 1.yaml:
+
+---
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: ns-memory-limit
+  namespace: one
+spec:
+  limits:
+  - max: # max and min define the limit range
+      memory: "500Mi"
+    min:
+      memory: "100Mi"
+    type: Container
+---
+
+kubectl apply -f 1.yaml
+```
