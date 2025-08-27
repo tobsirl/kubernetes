@@ -1235,3 +1235,9 @@ spec:
 
 kubectl apply -f 1.yaml
 ```
+
+## Describe the namespace limitrange
+
+```bash
+kubectl describe limitrange ns-memory-limit -n onekubectl describe limitrange -n one
+```
