@@ -1241,3 +1241,32 @@ kubectl apply -f 1.yaml
 ```bash
 kubectl describe limitrange ns-memory-limit -n onekubectl describe limitrange -n one
 ```
+
+## Create a pod with resources requests memory = half of max memory constraint in namespace
+
+```bash
+vi 2.yaml:
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: nginx
+  name: nginx
+  namespace: one
+spec:
+  containers:
+  - image: nginx
+    name: nginx
+    resources:
+      requests:
+        memory: "250Mi"
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+---
+
+kubectl apply -f 2.yaml
+```
