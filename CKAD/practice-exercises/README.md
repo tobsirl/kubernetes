@@ -1270,3 +1270,30 @@ status: {}
 
 kubectl apply -f 2.yaml
 ```
+
+## Create ResourceQuota in namespace one with hard requests cpu=1, memory=1Gi and hard limits cpu=2, memory=2Gi.
+
+```bash
+Create the namespace:
+
+kubectl create ns one
+
+Create the ResourceQuota:
+
+vi rq-one.yaml
+
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: my-rq
+spec:
+  hard:
+    requests.cpu: "1"
+    requests.memory: 1Gi
+    limits.cpu: "2"
+    limits.memory: 2Gi
+---
+
+kubectl apply -f rq-one.yaml
+```
