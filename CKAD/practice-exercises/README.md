@@ -1297,3 +1297,45 @@ spec:
 
 kubectl apply -f rq-one.yaml
 ```
+
+## Attempt to create a pod with resource requests cpu=2, memory=3Gi and limits cpu=3, memory=4Gi in namespace one
+
+```bash
+vi pod.yaml
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: nginx
+  name: nginx
+  namespace: one
+spec:
+  containers:
+  - image: nginx
+    name: nginx
+    resources:
+      requests:
+        memory: "3Gi"
+        cpu: "2"
+      limits:
+        memory: "4Gi"
+        cpu: "3"
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+---
+
+kubectl create -f pod.yaml
+
+Expected error message:
+
+```
+
+Error from server (Forbidden): error when creating "pod.yaml": pods "nginx" is forbidden: exceeded quota: my-rq, requested: limits.cpu=3,limits.memory=4Gi,requests.cpu=2,requests.memory=3Gi, used: limits.cpu=0,limits.memory=0,requests.cpu=0,requests.memory=0, limited: limits.cpu=2,limits.memory=2Gi,requests.cpu=1,requests.memory=1Gi
+
+```
+
+```
