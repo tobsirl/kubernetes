@@ -1339,3 +1339,44 @@ Error from server (Forbidden): error when creating "pod.yaml": pods "nginx" is f
 ```
 
 ```
+
+## Create a pod with resource requests cpu=0.5, memory=1Gi and limits cpu=1, memory=2Gi in namespace one
+
+```bash
+vi pod2.yaml
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: nginx
+  name: nginx
+  namespace: one
+spec:
+  containers:
+  - image: nginx
+    name: nginx
+    resources:
+      requests:
+        memory: "1Gi"
+        cpu: "0.5"
+      limits:
+        memory: "2Gi"
+        cpu: "1"
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+---
+
+kubectl create -f pod2.yaml
+
+Show the ResourceQuota usage in namespace one:
+
+kubectl get resourcequota -n one
+
+
+NAME    AGE   REQUEST                                          LIMIT
+my-rq   10m   requests.cpu: 500m/1, requests.memory: 3Mi/1Gi   limits.cpu: 1/2, limits.memory: 4Mi/2Gi
+```
