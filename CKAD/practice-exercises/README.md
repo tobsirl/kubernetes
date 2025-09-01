@@ -1380,3 +1380,9 @@ kubectl get resourcequota -n one
 NAME    AGE   REQUEST                                          LIMIT
 my-rq   10m   requests.cpu: 500m/1, requests.memory: 3Mi/1Gi   limits.cpu: 1/2, limits.memory: 4Mi/2Gi
 ```
+
+## Create a secret called mysecret with the values password=mypass
+
+```bash
+kubectl create secret generic mysecret --from-literal=password=mypass
+```
