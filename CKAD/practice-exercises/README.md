@@ -1386,3 +1386,9 @@ my-rq   10m   requests.cpu: 500m/1, requests.memory: 3Mi/1Gi   limits.cpu: 1/2, 
 ```bash
 kubectl create secret generic mysecret --from-literal=password=mypass
 ```
+
+## Create a secret called mysecret2 that gets key/value from a file. Create a file called username with the value admin: echo -n admin > username
+
+```bash
+kubectl create secret generic mysecret2 --from-file=username
+```
