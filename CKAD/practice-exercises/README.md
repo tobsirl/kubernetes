@@ -1392,3 +1392,19 @@ kubectl create secret generic mysecret --from-literal=password=mypass
 ```bash
 kubectl create secret generic mysecret2 --from-file=username
 ```
+
+## Get the value of mysecret2
+
+```bash
+kubectl get secret mysecret2 -o yaml
+echo -n YWRtaW4= | base64 -d # on MAC it is -D, which decodes the value and shows 'admin'
+
+Alternative using --jsonpath:
+kubectl get secret mysecret2 -o jsonpath='{.data.username}' | base64 -d # on MAC it is -D
+
+Alternative using --template:
+kubectl get secret mysecret2 --template '{{.data.username}}' | base64 -d # on MAC it is -D
+
+Alternative using jq:
+kubectl get secret mysecret2 -o json | jq -r .data.username | base64 -d # on MAC it is -D
+```
