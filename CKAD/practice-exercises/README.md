@@ -1408,3 +1408,41 @@ kubectl get secret mysecret2 --template '{{.data.username}}' | base64 -d # on MA
 Alternative using jq:
 kubectl get secret mysecret2 -o json | jq -r .data.username | base64 -d # on MAC it is -D
 ```
+
+## Create an nginx pod that mounts the secret mysecret2 in a volume on path /etc/foo
+
+```bash
+kubectl run nginx --image=nginx --restart=Never -o yaml --dry-run=client > pod.yaml
+vi pod.yaml
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: nginx
+  name: nginx
+spec:
+  volumes: # specify the volumes
+  - name: foo # this name will be used for reference inside the container
+    secret: # we want a secret
+      secretName: mysecret2 # name of the secret - this must already exist on pod creation
+  containers:
+  - image: nginx
+    imagePullPolicy: IfNotPresent
+    name: nginx
+    resources: {}
+    volumeMounts: # our volume mounts
+    - name: foo # name on pod.spec.volumes
+      mountPath: /etc/foo #our mount path
+  dnsPolicy: ClusterFirst
+  restartPolicy: Never
+status: {}
+---
+
+kubectl create -f pod.yaml
+kubectl exec -it nginx -- /bin/bash
+ls /etc/foo  # shows username
+cat /etc/foo/username # shows admin
+```
