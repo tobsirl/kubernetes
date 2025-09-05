@@ -1446,3 +1446,39 @@ kubectl exec -it nginx -- /bin/bash
 ls /etc/foo  # shows username
 cat /etc/foo/username # shows admin
 ```
+
+## Delete the pod you just created and mount the variable 'username' from secret mysecret2 onto a new nginx pod in env variable called 'USERNAME'
+
+```bash
+kubectl delete po nginx
+kubectl run nginx --image=nginx --restart=Never -o yaml --dry-run=client > pod.yaml
+vi pod.yaml
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: nginx
+  name: nginx
+spec:
+  containers:
+  - image: nginx
+    imagePullPolicy: IfNotPresent
+    name: nginx
+    resources: {}
+    env: # our env variables
+    - name: USERNAME # asked name
+      valueFrom:
+        secretKeyRef: # secret reference
+          name: mysecret2 # our secret's name
+          key: username # the key of the data in the secret
+  dnsPolicy: ClusterFirst
+  restartPolicy: Never
+status: {}
+---
+
+kubectl create -f pod.yaml
+kubectl exec -it nginx -- env | grep USERNAME | cut -d '=' -f 2 # will show 'admin'
+```
