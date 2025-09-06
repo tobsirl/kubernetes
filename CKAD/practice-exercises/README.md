@@ -1482,3 +1482,10 @@ status: {}
 kubectl create -f pod.yaml
 kubectl exec -it nginx -- env | grep USERNAME | cut -d '=' -f 2 # will show 'admin'
 ```
+
+## See all the service accounts of the cluster in all namespaces
+
+```bash
+kubectl get sa --all-namespaces
+kubectl get sa -A
+```
