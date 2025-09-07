@@ -1489,3 +1489,23 @@ kubectl exec -it nginx -- env | grep USERNAME | cut -d '=' -f 2 # will show 'adm
 kubectl get sa --all-namespaces
 kubectl get sa -A
 ```
+
+## Create a new serviceaccount called 'myuser'
+
+```bash
+kubectl create sa myuser
+
+Alternatively:
+# let's get a template easily
+kubectl get sa default -o yaml > sa.yaml
+vim sa.yaml
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: myuser
+---
+
+kubectl create -f sa.yaml
+```
