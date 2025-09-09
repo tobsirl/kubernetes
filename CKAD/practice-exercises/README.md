@@ -1561,3 +1561,9 @@ status: {}
 kubectl create -f pod.yaml
 kubectl describe pod nginx # will see that a new secret called myuser-token-***** has been mounted
 ```
+
+## Generate an API token for the service account 'myuser'
+
+```bash
+kubectl create token myuser
+```
