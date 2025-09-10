@@ -1567,3 +1567,37 @@ kubectl describe pod nginx # will see that a new secret called myuser-token-****
 ```bash
 kubectl create token myuser
 ```
+
+## Create an nginx pod with a liveness probe that just runs the command 'ls'. Save its YAML in pod.yaml. Run it, check its probe status, delete it.
+
+```bash
+kubectl run nginx --image=nginx --restart=Never --dry-run=client -o yaml > pod.yaml
+vi pod.yaml
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: nginx
+  name: nginx
+spec:
+  containers:
+  - image: nginx
+    imagePullPolicy: IfNotPresent
+    name: nginx
+    resources: {}
+    livenessProbe: # our probe
+      exec: # add this line
+        command: # command definition
+        - ls # ls command
+  dnsPolicy: ClusterFirst
+  restartPolicy: Never
+status: {}
+---
+
+kubectl create -f pod.yaml
+kubectl describe pod nginx | grep -i liveness # run this to see that liveness probe works
+kubectl delete -f pod.yaml
+```
