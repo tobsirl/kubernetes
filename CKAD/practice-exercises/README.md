@@ -1601,3 +1601,38 @@ kubectl create -f pod.yaml
 kubectl describe pod nginx | grep -i liveness # run this to see that liveness probe works
 kubectl delete -f pod.yaml
 ```
+
+## Modify the pod.yaml file so that liveness probe starts kicking in after 5 seconds whereas the interval between probes would be 5 seconds. Run it, check the probe, delete it.
+
+```bash
+kubectl explain pod.spec.containers.livenessProbe # get the exact names
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: nginx
+  name: nginx
+spec:
+  containers:
+  - image: nginx
+    imagePullPolicy: IfNotPresent
+    name: nginx
+    resources: {}
+    livenessProbe:
+      initialDelaySeconds: 5 # add this line
+      periodSeconds: 5 # add this line as well
+      exec:
+        command:
+        - ls
+  dnsPolicy: ClusterFirst
+  restartPolicy: Never
+status: {}
+---
+
+kubectl create -f pod.yaml
+kubectl describe po nginx | grep -i liveness
+kubectl delete -f pod.yaml
+```
