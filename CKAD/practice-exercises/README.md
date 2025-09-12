@@ -1636,3 +1636,39 @@ kubectl create -f pod.yaml
 kubectl describe po nginx | grep -i liveness
 kubectl delete -f pod.yaml
 ```
+
+## Create an nginx pod (that includes port 80) with an HTTP readinessProbe on path '/' on port 80. Again, run it, check the readinessProbe, delete it.
+
+```bash
+kubectl run nginx --image=nginx --dry-run=client -o yaml --restart=Never --port=80 > pod.yaml
+vi pod.yaml
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: nginx
+  name: nginx
+spec:
+  containers:
+  - image: nginx
+    imagePullPolicy: IfNotPresent
+    name: nginx
+    resources: {}
+    ports:
+      - containerPort: 80 # Note: Readiness probes runs on the container during its whole lifecycle. Since nginx exposes 80, containerPort: 80 is not required for readiness to work.
+    readinessProbe: # declare the readiness probe
+      httpGet: # add this line
+        path: / #
+        port: 80 #
+  dnsPolicy: ClusterFirst
+  restartPolicy: Never
+status: {}
+---
+
+kubectl create -f pod.yaml
+kubectl describe pod nginx | grep -i readiness # to see the pod readiness details
+kubectl delete -f pod.yaml
+```
