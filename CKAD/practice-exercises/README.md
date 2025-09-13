@@ -1672,3 +1672,16 @@ kubectl create -f pod.yaml
 kubectl describe pod nginx | grep -i readiness # to see the pod readiness details
 kubectl delete -f pod.yaml
 ```
+
+## Lots of pods are running in qa,alan,test,production namespaces. All of these pods are configured with liveness probe. Please list all pods whose liveness probe are failed in the format of <namespace>/<pod name> per line.
+
+```bash
+A typical liveness probe failure event:
+
+LAST SEEN   TYPE      REASON      OBJECT              MESSAGE
+22m         Warning   Unhealthy   pod/liveness-exec   Liveness probe failed: cat: can't open '/tmp/healthy': No such file or directory
+
+
+collect failed pods namespace by namespace:
+kubectl get events -o json | jq -r '.items[] | select(.message | contains("failed liveness probe")).involvedObject | .namespace + "/" + .name'
+```
