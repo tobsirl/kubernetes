@@ -1692,3 +1692,13 @@ kubectl get events -o json | jq -r '.items[] | select(.message | contains("faile
 kubectl run busybox --image=busybox --restart=Never -- /bin/sh -c 'i=0; while true; do echo "$i: $(date)"; i=$((i+1)); sleep 1; done'
 kubectl logs busybox -f # follow the logs
 ```
+
+## Create a busybox pod that runs 'ls /notexist'. Determine if there's an error (of course there is), see it. In the end, delete the pod
+
+```bash
+kubectl run busybox --restart=Never --image=busybox -- /bin/sh -c 'ls /notexist'
+# show that there's an error
+kubectl logs busybox
+kubectl describe po busybox
+kubectl delete po busybox
+```
