@@ -1702,3 +1702,15 @@ kubectl logs busybox
 kubectl describe po busybox
 kubectl delete po busybox
 ```
+
+## Create a busybox pod that runs 'notexist'. Determine if there's an error (of course there is), see it. In the end, delete the pod forcefully with a 0 grace period
+
+```bash
+kubectl run busybox --restart=Never --image=busybox -- notexist
+kubectl logs busybox # will bring nothing! container never started
+kubectl describe po busybox # in the events section, you'll see the error
+
+# also...
+kubectl get events | grep -i error # you'll see the error here as well
+kubectl delete po busybox --force --grace-period=0
+```
