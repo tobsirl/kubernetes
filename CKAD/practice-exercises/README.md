@@ -1714,3 +1714,9 @@ kubectl describe po busybox # in the events section, you'll see the error
 kubectl get events | grep -i error # you'll see the error here as well
 kubectl delete po busybox --force --grace-period=0
 ```
+
+## Get CPU/memory utilization for nodes (metrics-server must be running)
+
+```bash
+kubectl top nodes
+```
