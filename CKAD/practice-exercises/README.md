@@ -1720,3 +1720,10 @@ kubectl delete po busybox --force --grace-period=0
 ```bash
 kubectl top nodes
 ```
+
+## Create a pod with image nginx called nginx and expose its port 80
+
+```bash
+kubectl run nginx --image=nginx --restart=Never --port=80 --expose
+# observe that a pod as well as a service are created
+```
