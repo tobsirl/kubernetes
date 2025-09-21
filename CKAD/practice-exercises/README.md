@@ -1727,3 +1727,10 @@ kubectl top nodes
 kubectl run nginx --image=nginx --restart=Never --port=80 --expose
 # observe that a pod as well as a service are created
 ```
+
+## Confirm that ClusterIP has been created. Also check endpoints
+
+```bash
+kubectl get svc nginx # will show services
+kubectl get ep nginx # will show endpoints
+```
