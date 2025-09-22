@@ -1734,3 +1734,12 @@ kubectl run nginx --image=nginx --restart=Never --port=80 --expose
 kubectl get svc nginx # will show services
 kubectl get ep nginx # will show endpoints
 ```
+
+## Get service's ClusterIP, create a temp busybox pod and 'hit' that IP with wget
+
+```bash
+kubectl get svc nginx # get the IP (something like 10.108.93.130)
+kubectl run busybox --rm --image=busybox -it --restart=Never -- sh
+wget -O- IP:80
+exit
+```
