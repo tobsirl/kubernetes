@@ -1743,3 +1743,48 @@ kubectl run busybox --rm --image=busybox -it --restart=Never -- sh
 wget -O- IP:80
 exit
 ```
+
+## Convert the ClusterIP to NodePort for the same service and find the NodePort port. Hit service using Node's IP. Delete the service and the pod at the end.
+
+```bash
+kubectl edit svc nginx
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: 2018-06-25T07:55:16Z
+  name: nginx
+  namespace: default
+  resourceVersion: "93442"
+  selfLink: /api/v1/namespaces/default/services/nginx
+  uid: 191e3dac-784d-11e8-86b1-00155d9f663c
+spec:
+  clusterIP: 10.97.242.220
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    run: nginx
+  sessionAffinity: None
+  type: NodePort # change cluster IP to nodeport
+status:
+  loadBalancer: {}
+---
+
+or:
+kubectl patch svc nginx -p '{"spec":{"type":"NodePort"}}'
+kubectl get svc
+
+# result:
+NAME         TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)        AGE
+kubernetes   ClusterIP   10.96.0.1        <none>        443/TCP        1d
+nginx        NodePort    10.107.253.138   <none>        80:31931/TCP   3m
+
+wget -O- NODE_IP:31931 # if you're using Kubernetes with Docker for Windows/Mac, try 127.0.0.1
+#if you're using minikube, try minikube ip, then get the node ip such as 192.168.99.117
+
+kubectl delete svc nginx # Deletes the service
+kubectl delete pod nginx # Deletes the pod
+```
