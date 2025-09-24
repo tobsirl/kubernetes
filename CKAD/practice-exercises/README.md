@@ -1788,3 +1788,11 @@ wget -O- NODE_IP:31931 # if you're using Kubernetes with Docker for Windows/Mac,
 kubectl delete svc nginx # Deletes the service
 kubectl delete pod nginx # Deletes the pod
 ```
+
+## Create a deployment called foo using image 'dgkanatsios/simpleapp' (a simple server that returns hostname) and 3 replicas. Label it as 'app=foo'. Declare that containers in this pod will accept traffic on port 8080 (do NOT create a service yet)
+
+```bash
+kubectl create deploy foo --image=dgkanatsios/simpleapp --port=8080 --replicas=3
+kubectl label deployment foo --overwrite app=foo #This is optional since
+kubectl create deploy foo will create label app=foo by default
+```
