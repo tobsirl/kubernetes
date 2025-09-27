@@ -1820,3 +1820,15 @@ kubectl expose deploy foo --port=6262 --target-port=8080
 kubectl get service foo # you will see ClusterIP as well as port 6262
 kubectl get endpoints foo # you will see the IPs of the three replica pods, listening on port 8080
 ```
+
+## Create a temp busybox pod and connect via wget to foo service. Verify that each time there's a different hostname returned. Delete deployment and services to cleanup the cluster
+
+```bash
+kubectl get svc # get the foo service ClusterIP
+kubectl run busybox --image=busybox -it --rm --restart=Never -- sh
+wget -O- foo:6262 # DNS works! run it many times, you'll see different pods responding
+wget -O- <SERVICE_CLUSTER_IP>:6262 # ClusterIP works as well
+# you can also kubectl logs on deployment pods to see the container logs
+kubectl delete svc foo
+kubectl delete deploy foo
+```
