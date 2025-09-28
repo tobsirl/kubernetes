@@ -1832,3 +1832,44 @@ wget -O- <SERVICE_CLUSTER_IP>:6262 # ClusterIP works as well
 kubectl delete svc foo
 kubectl delete deploy foo
 ```
+
+## Create an nginx deployment of 2 replicas, expose it via a ClusterIP service on port 80. Create a NetworkPolicy so that only pods with labels 'access: granted' can access the deployment and apply it.
+
+kubernetes.io > Documentation > Concepts > Services, Load Balancing, and Networking > Network Policies
+Note that network policies may not be enforced by default, depending on your k8s implementation. E.g. Azure AKS by default won't have policy enforcement, the cluster must be created with an explicit support for netpol https://docs.microsoft.com/en-us/azure/aks/use-network-policies#overview-of-network-policy
+
+```bash
+kubectl create deployment nginx --image=nginx --replicas=2
+kubectl expose deployment nginx --port=80
+
+kubectl describe svc nginx # see the 'app=nginx' selector for the pods
+
+# or
+kubectl get svc nginx -o yaml
+
+vi policy.yaml
+
+---
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: access-nginx # pick a name
+spec:
+  podSelector:
+    matchLabels:
+      app: nginx # selector for the pods
+  ingress: # allow ingress traffic
+  - from:
+    - podSelector: # from pods
+        matchLabels: # with this label
+          access: granted
+---
+
+# Create the NetworkPolicy
+kubectl create -f policy.yaml
+
+# Check if the Network Policy has been created correctly
+# make sure that your cluster's network provider supports Network Policy (https://kubernetes.io/docs/tasks/administer-cluster/declare-network-policy/#before-you-begin)
+kubectl run busybox --image=busybox --rm -it --restart=Never -- wget -O- http://nginx:80 --timeout 2                          # This should not work. --timeout is optional here. But it helps to get answer more quickly (in seconds vs minutes)
+kubectl run busybox --image=busybox --rm -it --restart=Never --labels=access=granted -- wget -O- http://nginx:80 --timeout 2  # This should be fine
+```
