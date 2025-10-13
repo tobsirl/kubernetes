@@ -1873,3 +1873,76 @@ kubectl create -f policy.yaml
 kubectl run busybox --image=busybox --rm -it --restart=Never -- wget -O- http://nginx:80 --timeout 2                          # This should not work. --timeout is optional here. But it helps to get answer more quickly (in seconds vs minutes)
 kubectl run busybox --image=busybox --rm -it --restart=Never --labels=access=granted -- wget -O- http://nginx:80 --timeout 2  # This should be fine
 ```
+
+## Create busybox pod with two containers, each one will have the image busybox and will run the 'sleep 3600' command. Make both containers mount an emptyDir at '/etc/foo'. Connect to the second busybox, write the first column of '/etc/passwd' file to '/etc/foo/passwd'. Connect to the first busybox and write '/etc/foo/passwd' file to standard output. Delete pod.
+
+```bash
+Easiest way to do this is to create a template pod with:
+
+kubectl run busybox --image=busybox --restart=Never -o yaml --dry-run=client -- /bin/sh -c 'sleep 3600' > pod.yaml
+vi pod.yaml
+
+Copy paste the container definition and type the lines that have a comment in the end:
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: busybox
+  name: busybox
+spec:
+  dnsPolicy: ClusterFirst
+  restartPolicy: Never
+  containers:
+  - args:
+    - /bin/sh
+    - -c
+    - sleep 3600
+    image: busybox
+    imagePullPolicy: IfNotPresent
+    name: busybox
+    resources: {}
+    volumeMounts: #
+    - name: myvolume #
+      mountPath: /etc/foo #
+  - args:
+    - /bin/sh
+    - -c
+    - sleep 3600
+    image: busybox
+    name: busybox2 # don't forget to change the name during copy paste, must be different from the first container's name!
+    volumeMounts: #
+    - name: myvolume #
+      mountPath: /etc/foo #
+  volumes: #
+  - name: myvolume #
+    emptyDir: {} #
+---
+
+In case you forget to add bash -- /bin/sh -c 'sleep 3600' in template pod create command, you can include command field in config file:
+
+---
+spec:
+  containers:
+  - image: busybox
+    name: busybox
+    command: ["/bin/sh", "-c", "sleep 3600"]
+---
+
+Connect to the second container:
+
+kubectl exec -it busybox -c busybox2 -- /bin/sh
+cat /etc/passwd | cut -f 1 -d ':' > /etc/foo/passwd # instead of cut command you can use awk -F ":" '{print $1}'
+cat /etc/foo/passwd # confirm that stuff has been written successfully
+exit
+
+Connect to the first container:
+
+kubectl exec -it busybox -c busybox -- /bin/sh
+mount | grep foo # confirm the mounting
+cat /etc/foo/passwd
+exit
+kubectl delete po busybox
+```
