@@ -17,3 +17,6 @@ nodes:
     hostPort: 443
     protocol: TCP
 EOF
+
+helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+helm repo update
