@@ -28,3 +28,12 @@ kubectl wait --namespace ingress-nginx \
   --for=condition=ready pod \
   --selector=app.kubernetes.io/component=controller \
   --timeout=90s
+
+helm upgrade -i argo-cd argo/argo-cd --namespace argocd --create-namespace \
+-f values-argocd-ingress.yaml
+
+helm repo add argo https://argoproj.github.io/argo-helm
+
+curl -H "Content-Type: application/json" \
+  -XPOST -k https://argocd.upandrunning.local/api/v1/session \
+  -d '{"username":"<USERNAME>","password":"<TOKEN>"}' | jq -r
