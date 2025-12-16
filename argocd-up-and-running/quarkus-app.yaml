@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: quarkus-app
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    namespace: demo
+    name: in-cluster
+  source:
+    helm:
+      parameters:
+        - name: build.enabled
+          value: "false"
+        - name: deploy.route.enabled
+          value: "false"
+        - name: image.name
+          value: quay.io/ablock/gitops-helm-quarkus
+    chart: quarkus
+    repoURL: https://redhat-developer.github.io/redhat-helm-charts
+    targetRevision: 0.0.3
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

@@ -37,3 +37,9 @@ helm repo add argo https://argoproj.github.io/argo-helm
 curl -H "Content-Type: application/json" \
   -XPOST -k https://argocd.upandrunning.local/api/v1/session \
   -d '{"username":"<USERNAME>","password":"<TOKEN>"}' | jq -r
+
+helm install quarkus-app --namespace demo --create-namespace --version 0.0.3 \
+--set build.enabled=false \
+--set deploy.route.enabled=false \
+--set image.name=quay.io/ablock/gitops-helm-quarkus \
+redhat-helm-charts/quarkus
