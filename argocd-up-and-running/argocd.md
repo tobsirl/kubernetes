@@ -1,0 +1,1 @@
+# ArgoCD Up and Running
