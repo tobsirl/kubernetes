@@ -1,0 +1,10 @@
+resources:
+  - mongo-depl.yaml
+  - api-depl.yaml
+  - mongo-service.yaml
+  - host-pv.yaml
+  - host-pvc.yaml
+
+patches:
+  - path: mongo-patch.yaml
+  - path: api-patch.yaml
