@@ -79,3 +79,18 @@ kubectl apply -f ./exam/course/3/job.yaml
 ```
 
 ### Explanation: activeDeadlineSeconds sets the maximum duration for a Job. If the Job runs longer than this, it will be terminated. This prevents runaway jobs from consuming resources indefinitely.
+
+## Question 4 | Helm Template Debug
+
+### Solution:
+
+```bash
+# Get the values from the installed release and render templates
+helm get values phoenix-web -n flare -o yaml > /tmp/phoenix-values.yaml
+helm template phoenix-web bitnami/nginx -n flare -f /tmp/phoenix-values.yaml > ./exam/course/4/rendered.yaml
+
+# Alternative: use helm get manifest for already installed release
+helm get manifest phoenix-web -n flare > ./exam/course/4/rendered.yaml
+```
+
+### Explanation: helm template renders chart templates locally without installing. helm get manifest retrieves the rendered manifests from an installed release. Both are useful for debugging Helm deployments.
