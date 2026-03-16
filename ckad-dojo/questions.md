@@ -47,3 +47,35 @@ kubectl apply -f ./exam/course/2/fire-app.yaml
 ```
 
 ### Explanation: The Recreate strategy terminates all existing pods before creating new ones. This is useful when you can't have multiple versions running simultaneously (unlike RollingUpdate which maintains availability during updates).
+
+## Question 3 | Job with Timeout
+
+### Solution:
+
+```yaml
+# Copy template and modify
+cp ./exam/course/3/job.yaml ./exam/course/3/job.yaml.bak
+
+# Edit the job to add activeDeadlineSeconds
+cat <<EOF > ./exam/course/3/job.yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: data-processor
+  namespace: spark
+spec:
+  activeDeadlineSeconds: 60
+  backoffLimit: 2
+  template:
+    spec:
+      containers:
+      - name: processor
+        image: busybox:1.36
+        command: ["sh", "-c", "echo 'Processing data...' && sleep 30 && echo 'Done'"]
+      restartPolicy: Never
+EOF
+
+kubectl apply -f ./exam/course/3/job.yaml
+```
+
+### Explanation: activeDeadlineSeconds sets the maximum duration for a Job. If the Job runs longer than this, it will be terminated. This prevents runaway jobs from consuming resources indefinitely.
