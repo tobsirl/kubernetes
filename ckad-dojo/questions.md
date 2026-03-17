@@ -135,3 +135,37 @@ kubectl get pod crash-app -n ember
 ```
 
 ### Explanation: CrashLoopBackOff indicates the container is crashing repeatedly. In this case, the command sleepx doesn't exist. The fix is to use the correct command sleep.
+
+## Question 6 | ConfigMap Items Mount
+
+### Solution:
+
+```yaml
+# Create pod with selective ConfigMap mount
+kubectl apply -f - <<EOF
+apiVersion: v1
+kind: Pod
+metadata:
+  name: config-reader
+  namespace: flame
+spec:
+  containers:
+  - name: reader
+    image: busybox:1.36
+    command: ["sleep", "3600"]
+    volumeMounts:
+    - name: config-volume
+      mountPath: /config
+  volumes:
+  - name: config-volume
+    configMap:
+      name: app-settings
+      items:
+      - key: database.host
+        path: database.host
+      - key: database.port
+        path: database.port
+EOF
+```
+
+### Explanation: Using items in a ConfigMap volume mount allows you to selectively mount specific keys rather than all keys. Each item maps a key to a file path within the mount directory.
