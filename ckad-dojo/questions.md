@@ -133,3 +133,5 @@ EOF
 # Verify
 kubectl get pod crash-app -n ember
 ```
+
+### Explanation: CrashLoopBackOff indicates the container is crashing repeatedly. In this case, the command sleepx doesn't exist. The fix is to use the correct command sleep.
