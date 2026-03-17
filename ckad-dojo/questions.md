@@ -94,3 +94,42 @@ helm get manifest phoenix-web -n flare > ./exam/course/4/rendered.yaml
 ```
 
 ### Explanation: helm template renders chart templates locally without installing. helm get manifest retrieves the rendered manifests from an installed release. Both are useful for debugging Helm deployments.
+
+## Question 5 | Fix CrashLoopBackOff
+
+### Solution:
+
+```yaml
+# Check the pod status and logs
+kubectl describe pod crash-app -n ember
+kubectl logs crash-app -n ember
+
+# The issue is the command "sleepx" which doesn't exist - should be "sleep"
+# Delete and recreate with correct command
+kubectl delete pod crash-app -n ember
+
+kubectl apply -f - <<EOF
+apiVersion: v1
+kind: Pod
+metadata:
+  name: crash-app
+  namespace: ember
+  labels:
+    app: crash-app
+spec:
+  containers:
+  - name: app
+    image: busybox:1.36
+    command: ["sleep", "3600"]
+    resources:
+      requests:
+        memory: "32Mi"
+        cpu: "50m"
+      limits:
+        memory: "64Mi"
+        cpu: "100m"
+EOF
+
+# Verify
+kubectl get pod crash-app -n ember
+```
