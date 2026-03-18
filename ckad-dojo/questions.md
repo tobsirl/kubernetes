@@ -169,3 +169,20 @@ EOF
 ```
 
 ### Explanation: Using items in a ConfigMap volume mount allows you to selectively mount specific keys rather than all keys. Each item maps a key to a file path within the mount directory.
+
+## Question 7 | Secret from File
+
+### Solution:
+
+```bash
+# Create the password file (without trailing newline)
+mkdir -p ./exam/course/7
+echo -n 'FirePhoenix2024!' > ./exam/course/7/password.txt
+
+# Create secret from file
+kubectl create secret generic db-credentials \
+  --from-file=password.txt=./exam/course/7/password.txt \
+  -n magma
+```
+
+### Explanation: kubectl create secret generic --from-file creates a secret from a file. The key in the secret will be the filename (or the specified key name). Using echo -n avoids adding a trailing newline.
