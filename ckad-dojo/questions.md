@@ -186,3 +186,27 @@ kubectl create secret generic db-credentials \
 ```
 
 ### Explanation: kubectl create secret generic --from-file creates a secret from a file. The key in the secret will be the filename (or the specified key name). Using echo -n avoids adding a trailing newline.
+
+## Question 8 | Headless Service
+
+### Solution:
+
+```yaml
+kubectl apply -f - <<EOF
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-headless
+  namespace: corona
+spec:
+  clusterIP: None
+  selector:
+    app: backend
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+EOF
+```
+
+### Explanation: A headless service (clusterIP: None) doesn't allocate a cluster IP. Instead, DNS returns the IP addresses of all pods matching the selector. This is commonly used with StatefulSets for direct pod addressing.
