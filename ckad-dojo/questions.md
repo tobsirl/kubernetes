@@ -260,3 +260,36 @@ EOF
 ```
 
 ### Explanation: Canary deployment introduces a new version alongside the stable version. The service selector (app: web-frontend) matches both deployments. With 3 stable replicas and 1 canary replica, traffic is split approximately 75%/25%.
+
+## Question 10 | Sidecar Data Processing
+
+### Solution:
+
+```yaml
+kubectl apply -f - <<EOF
+apiVersion: v1
+kind: Pod
+metadata:
+  name: data-transform
+  namespace: phoenix
+spec:
+  containers:
+  - name: producer
+    image: busybox:1.36
+    command: ["sh", "-c", "while true; do echo \$(date) >> /data/input.log; sleep 5; done"]
+    volumeMounts:
+    - name: shared-data
+      mountPath: /data
+  - name: transformer
+    image: busybox:1.36
+    command: ["sh", "-c", "tail -f /data/input.log | while read line; do echo \"PROCESSED: \$line\" >> /data/output.log; done"]
+    volumeMounts:
+    - name: shared-data
+      mountPath: /data
+  volumes:
+  - name: shared-data
+    emptyDir: {}
+EOF
+```
+
+### Explanation: The sidecar pattern uses multiple containers in a pod sharing a volume. The producer writes data, and the transformer processes it. emptyDir provides ephemeral storage that exists for the pod's lifetime.
