@@ -293,3 +293,37 @@ EOF
 ```
 
 ### Explanation: The sidecar pattern uses multiple containers in a pod sharing a volume. The producer writes data, and the transformer processes it. emptyDir provides ephemeral storage that exists for the pod's lifetime.
+
+## Question 11 | Cross-Namespace NetworkPolicy
+
+### Solution:
+
+```yaml
+# First, label the flame namespace
+kubectl label namespace flame name=flame --overwrite
+
+# Create the NetworkPolicy
+kubectl apply -f - <<EOF
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-from-flame
+  namespace: corona
+spec:
+  podSelector:
+    matchLabels:
+      app: backend
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: flame
+    ports:
+    - protocol: TCP
+      port: 80
+EOF
+```
+
+### Explanation: To allow traffic from a specific namespace, use namespaceSelector. The namespace must have a label that the selector can match. This policy allows ingress only from pods in the flame namespace on port 80.
