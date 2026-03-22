@@ -210,3 +210,51 @@ EOF
 ```
 
 ### Explanation: A headless service (clusterIP: None) doesn't allocate a cluster IP. Instead, DNS returns the IP addresses of all pods matching the selector. This is commonly used with StatefulSets for direct pod addressing.
+
+## Question 9 | Canary Deployment
+
+### Solution:
+
+```yaml
+# Create canary deployment
+kubectl apply -f - <<EOF
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: canary-v2
+  namespace: blaze
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web-frontend
+      version: v2
+  template:
+    metadata:
+      labels:
+        app: web-frontend
+        version: v2
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.22
+        ports:
+        - containerPort: 80
+EOF
+
+# Create service that routes to both stable and canary
+kubectl apply -f - <<EOF
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-svc
+  namespace: blaze
+spec:
+  type: ClusterIP
+  selector:
+    app: web-frontend
+  ports:
+  - port: 80
+    targetPort: 80
+EOF
+```
