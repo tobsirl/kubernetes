@@ -258,3 +258,5 @@ spec:
     targetPort: 80
 EOF
 ```
+
+### Explanation: Canary deployment introduces a new version alongside the stable version. The service selector (app: web-frontend) matches both deployments. With 3 stable replicas and 1 canary replica, traffic is split approximately 75%/25%.
