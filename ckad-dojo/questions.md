@@ -327,3 +327,36 @@ EOF
 ```
 
 ### Explanation: To allow traffic from a specific namespace, use namespaceSelector. The namespace must have a label that the selector can match. This policy allows ingress only from pods in the flame namespace on port 80.
+
+## Question 12 | Docker Build with ARG
+
+### Solution:
+
+```dockerfile
+# # Copy template
+mkdir -p ./exam/course/12
+cp ./templates/q12-image/* ./exam/course/12/
+
+# Modify Dockerfile
+cat <<EOF > ./exam/course/12/image/Dockerfile
+FROM nginx:1.21
+
+ARG APP_VERSION=1.0.0
+LABEL version=\${APP_VERSION}
+
+COPY index.html /usr/share/nginx/html/index.html
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
+EOF
+
+# Build with custom ARG value
+cd ./exam/course/12
+sudo docker build --build-arg APP_VERSION=2.0.0 -t localhost:5000/phoenix-app:2.0.0 .
+
+# Push to registry
+sudo docker push localhost:5000/phoenix-app:2.0.0Dockerfile for custom nginx image
+```
+
+### Explanation: ARG defines build-time variables. They can have default values and be overridden with --build-arg. LABEL adds metadata to the image. Using ${ARG_NAME} in LABEL allows dynamic labeling during build.
