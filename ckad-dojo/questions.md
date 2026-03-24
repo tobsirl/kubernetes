@@ -360,3 +360,18 @@ sudo docker push localhost:5000/phoenix-app:2.0.0Dockerfile for custom nginx ima
 ```
 
 ### Explanation: ARG defines build-time variables. They can have default values and be overridden with --build-arg. LABEL adds metadata to the image. Using ${ARG_NAME} in LABEL allows dynamic labeling during build.
+
+## Question 13 | Helm Values File
+
+### Solution:
+
+```yaml
+# Copy values template
+mkdir -p ./exam/course/13
+cp ./templates/q13-values.yaml ./exam/course/13/values.yaml
+
+# Install with values file
+helm install phoenix-api bitnami/nginx \
+  -n flare \
+  -f ./exam/course/13/values.yaml
+```
