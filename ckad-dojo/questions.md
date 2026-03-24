@@ -375,3 +375,5 @@ helm install phoenix-api bitnami/nginx \
   -n flare \
   -f ./exam/course/13/values.yaml
 ```
+
+### Explanation: Helm values files override default chart values. Using -f applies values from a file, which is more maintainable than multiple --set flags and allows version control of configuration.
