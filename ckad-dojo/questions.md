@@ -356,7 +356,9 @@ cd ./exam/course/12
 sudo docker build --build-arg APP_VERSION=2.0.0 -t localhost:5000/phoenix-app:2.0.0 .
 
 # Push to registry
-sudo docker push localhost:5000/phoenix-app:2.0.0Dockerfile for custom nginx image
+sudo docker push localhost:5000/phoenix-app:2.0.0
+
+Dockerfile for custom nginx image
 ```
 
 ### Explanation: ARG defines build-time variables. They can have default values and be overridden with --build-arg. LABEL adds metadata to the image. Using ${ARG_NAME} in LABEL allows dynamic labeling during build.
