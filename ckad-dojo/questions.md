@@ -379,3 +379,29 @@ helm install phoenix-api bitnami/nginx \
 ```
 
 ### Explanation: Helm values files override default chart values. Using -f applies values from a file, which is more maintainable than multiple --set flags and allows version control of configuration.
+
+## Question 14 | PostStart Lifecycle Hook
+
+### Solution:
+
+```yaml
+kubectl apply -f - <<EOF
+apiVersion: v1
+kind: Pod
+metadata:
+  name: lifecycle-pod
+  namespace: phoenix
+spec:
+  containers:
+  - name: main
+    image: nginx:1.21
+    ports:
+    - containerPort: 80
+    lifecycle:
+      postStart:
+        exec:
+          command: ["/bin/sh", "-c", "echo 'Started at \$(date)' > /usr/share/nginx/html/started.txt"]
+EOF
+```
+
+### Explanation: postStart hooks execute immediately after a container is created (but not necessarily before the container's entrypoint). They're useful for initialization tasks. The hook runs in parallel with the container's main process.
