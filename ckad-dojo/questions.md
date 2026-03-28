@@ -405,3 +405,30 @@ EOF
 ```
 
 ### Explanation: postStart hooks execute immediately after a container is created (but not necessarily before the container's entrypoint). They're useful for initialization tasks. The hook runs in parallel with the container's main process.
+
+## Question 15 | Guaranteed QoS Class
+
+### Solution:
+
+```yaml
+kubectl apply -f - <<EOF
+apiVersion: v1
+kind: Pod
+metadata:
+  name: qos-guaranteed
+  namespace: spark
+spec:
+  containers:
+  - name: web
+    image: nginx:1.21
+    resources:
+      requests:
+        memory: "128Mi"
+        cpu: "100m"
+      limits:
+        memory: "128Mi"
+        cpu: "100m"
+EOF
+```
+
+### Explanation: Guaranteed QoS requires that every container has both memory and CPU requests AND limits set, and requests must equal limits. This ensures the pod gets exactly the resources it requests, making it less likely to be evicted.
