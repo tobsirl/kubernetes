@@ -432,3 +432,37 @@ EOF
 ```
 
 ### Explanation: Guaranteed QoS requires that every container has both memory and CPU requests AND limits set, and requests must equal limits. This ensures the pod gets exactly the resources it requests, making it less likely to be evicted.
+
+## Question 16 | ServiceAccount Projected Token
+
+### Solution:
+
+```yaml
+kubectl apply -f - <<EOF
+apiVersion: v1
+kind: Pod
+metadata:
+  name: token-pod
+  namespace: magma
+spec:
+  serviceAccountName: fire-sa
+  containers:
+  - name: app
+    image: busybox:1.36
+    command: ["sleep", "3600"]
+    volumeMounts:
+    - name: fire-token
+      mountPath: /var/run/secrets/fire-token
+      readOnly: true
+  volumes:
+  - name: fire-token
+    projected:
+      sources:
+      - serviceAccountToken:
+          path: token
+          expirationSeconds: 3600
+          audience: api
+EOF
+```
+
+### Explanation: Projected volumes allow mounting ServiceAccount tokens with configurable expiration and audience. This is more secure than the default token mounting as tokens expire and can be scoped to specific audiences.
