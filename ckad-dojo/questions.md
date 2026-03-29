@@ -522,3 +522,41 @@ EOF
 ```
 
 ### Explanation: Named ports allow services to reference ports by name rather than number. This makes configuration more readable and allows pods to change their port numbers without updating service definitions.
+
+## Question 19 | Topology Spread Constraints
+
+### Solution:
+
+```yaml
+kubectl apply -f - <<EOF
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spread-deploy
+  namespace: blaze
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: spread-app
+  template:
+    metadata:
+      labels:
+        app: spread-app
+    spec:
+      topologySpreadConstraints:
+      - maxSkew: 1
+        topologyKey: kubernetes.io/hostname
+        whenUnsatisfiable: ScheduleAnyway
+        labelSelector:
+          matchLabels:
+            app: spread-app
+      containers:
+      - name: web
+        image: nginx:1.21
+        ports:
+        - containerPort: 80
+EOF
+```
+
+### Explanation: Topology spread constraints control how pods are distributed across topology domains (nodes, zones). maxSkew: 1 means the difference in pod count between nodes should be at most 1. ScheduleAnyway allows scheduling even if constraints can't be fully satisfied.
