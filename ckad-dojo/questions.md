@@ -560,3 +560,15 @@ EOF
 ```
 
 ### Explanation: Topology spread constraints control how pods are distributed across topology domains (nodes, zones). maxSkew: 1 means the difference in pod count between nodes should be at most 1. ScheduleAnyway allows scheduling even if constraints can't be fully satisfied.
+
+## Question 20 | Field Selectors
+
+### Solution:
+
+```bash
+# Use field selector to find running pods
+kubectl get pods --all-namespaces --field-selector=status.phase=Running \
+  -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}{end}' > ./exam/course/20/running-pods.txt
+```
+
+### Explanation: Field selectors filter resources based on resource fields (like status, metadata) rather than labels. --field-selector=status.phase=Running finds all pods in Running phase across all namespaces.
