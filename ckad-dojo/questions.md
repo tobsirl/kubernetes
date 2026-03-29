@@ -520,3 +520,5 @@ spec:
     protocol: TCP
 EOF
 ```
+
+### Explanation: Named ports allow services to reference ports by name rather than number. This makes configuration more readable and allows pods to change their port numbers without updating service definitions.
