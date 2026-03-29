@@ -466,3 +466,30 @@ EOF
 ```
 
 ### Explanation: Projected volumes allow mounting ServiceAccount tokens with configurable expiration and audience. This is more secure than the default token mounting as tokens expire and can be scoped to specific audiences.
+
+## Question 17 | TCP Liveness Probe
+
+### Solution:
+
+```yaml
+kubectl apply -f - <<EOF
+apiVersion: v1
+kind: Pod
+metadata:
+  name: tcp-health
+  namespace: ember
+spec:
+  containers:
+  - name: web
+    image: nginx:1.21
+    ports:
+    - containerPort: 80
+    livenessProbe:
+      tcpSocket:
+        port: 80
+      initialDelaySeconds: 10
+      periodSeconds: 5
+EOF
+```
+
+### Explanation: TCP socket probes check if a port is open and accepting connections. They're useful when HTTP probes aren't appropriate (e.g., non-HTTP services). The probe succeeds if the TCP connection is established.
