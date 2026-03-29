@@ -572,3 +572,26 @@ kubectl get pods --all-namespaces --field-selector=status.phase=Running \
 ```
 
 ### Explanation: Field selectors filter resources based on resource fields (like status, metadata) rather than labels. --field-selector=status.phase=Running finds all pods in Running phase across all namespaces.
+
+## Question 21 | Node Drain
+
+### Solution:
+
+```bash
+# Write the drain command to file (do not execute)
+mkdir -p ./exam/course/21
+cat <<'EOF' > ./exam/course/21/drain-command.sh
+kubectl drain worker-node-1 \
+  --ignore-daemonsets \
+  --delete-emptydir-data \
+  --force \
+  --timeout=60s
+EOF
+```
+
+### Explanation: kubectl drain safely evicts pods from a node for maintenance. Key flags:
+
+- --ignore-daemonsets: Don't fail if DaemonSet pods exist
+- --delete-emptydir-data: Delete pods with emptyDir volumes
+- --force: Force deletion of pods not managed by controllers
+- --timeout: Maximum time to wait for eviction
