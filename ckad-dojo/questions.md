@@ -493,3 +493,30 @@ EOF
 ```
 
 ### Explanation: TCP socket probes check if a port is open and accepting connections. They're useful when HTTP probes aren't appropriate (e.g., non-HTTP services). The probe succeeds if the TCP connection is established.
+
+## Question 18 | Service with Named Ports
+
+### Solution:
+
+```yaml
+kubectl apply -f - <<EOF
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-svc
+  namespace: flame
+spec:
+  type: ClusterIP
+  selector:
+    app: web-app
+  ports:
+  - name: http
+    port: 80
+    targetPort: http-web
+    protocol: TCP
+  - name: https
+    port: 443
+    targetPort: https-web
+    protocol: TCP
+EOF
+```
