@@ -56,3 +56,18 @@ spec:
       name: app-config
 EOF
 ```
+
+## Question 3 | ExternalName Service
+
+### Solution
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: external-api
+  namespace: hermes
+spec:
+  type: ExternalName
+  externalName: api.external-service.com
+```
