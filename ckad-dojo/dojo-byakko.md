@@ -71,3 +71,36 @@ spec:
   type: ExternalName
   externalName: api.external-service.com
 ```
+
+## Question 4 | LimitRange Configuration
+
+### Solution
+
+```yaml
+# LimitRange
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: resource-limits
+  namespace: apollo
+spec:
+  limits:
+    - type: Container
+      default:
+        cpu: 500m
+        memory: 256Mi
+      defaultRequest:
+        cpu: 100m
+        memory: 64Mi
+---
+# Pod (will get defaults from LimitRange)
+apiVersion: v1
+kind: Pod
+metadata:
+  name: limited-pod
+  namespace: apollo
+spec:
+  containers:
+    - name: app
+      image: nginx:1.21
+```
