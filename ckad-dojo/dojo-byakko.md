@@ -104,3 +104,35 @@ spec:
     - name: app
       image: nginx:1.21
 ```
+
+## Question 5 | SecurityContext - Read-Only Root Filesystem
+
+### Solution
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: secure-app
+  namespace: hades
+spec:
+  containers:
+    - name: nginx
+      image: nginx:1.21
+      securityContext:
+        readOnlyRootFilesystem: true
+      volumeMounts:
+        - name: tmp
+          mountPath: /tmp
+        - name: cache
+          mountPath: /var/cache/nginx
+        - name: run
+          mountPath: /var/run
+  volumes:
+    - name: tmp
+      emptyDir: {}
+    - name: cache
+      emptyDir: {}
+    - name: run
+      emptyDir: {}
+```
