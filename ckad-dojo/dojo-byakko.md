@@ -136,3 +136,38 @@ spec:
     - name: run
       emptyDir: {}
 ```
+
+## Question 6 | Pod with Multiple Init Containers
+
+### Solution
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: multi-init
+  namespace: poseidon
+spec:
+  initContainers:
+    - name: init-config
+      image: busybox:1.36
+      command: ["sh", "-c", "echo 'initialized' > /work/config.txt"]
+      volumeMounts:
+        - name: workdir
+          mountPath: /work
+    - name: init-permissions
+      image: busybox:1.36
+      command: ["chmod", "644", "/work/config.txt"]
+      volumeMounts:
+        - name: workdir
+          mountPath: /work
+  containers:
+    - name: app
+      image: nginx:1.21
+      volumeMounts:
+        - name: workdir
+          mountPath: /work
+  volumes:
+    - name: workdir
+      emptyDir: {}
+```
