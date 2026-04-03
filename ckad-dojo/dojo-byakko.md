@@ -171,3 +171,18 @@ spec:
     - name: workdir
       emptyDir: {}
 ```
+
+## Question 7 | Deployment with Pause/Resume
+
+### Solution
+
+```bash
+# Update the image
+kubectl set image deployment/battle-app nginx=nginx:1.21 -n ares
+
+# Pause the rollout immediately
+kubectl rollout pause deployment/battle-app -n ares
+
+# Save rollout status
+kubectl rollout status deployment/battle-app -n ares > ./exam/course/7/rollout-status.txt
+```
