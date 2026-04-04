@@ -230,3 +230,33 @@ spec:
           command: ["sh", "-c", "exit 1"]
       restartPolicy: Never
 ```
+
+## Question 10 | Secret Types - Docker Registry
+
+### Solution
+
+```bash
+# Create docker-registry secret
+kubectl create secret docker-registry registry-creds -n hera \
+  --docker-server=docker.io \
+  --docker-username=myuser \
+  --docker-password=mypassword \
+  --docker-email=user@example.com
+```
+
+```yaml
+# Create pod with imagePullSecret
+cat <<EOF | kubectl apply -f -
+apiVersion: v1
+kind: Pod
+metadata:
+  name: private-app
+  namespace: hera
+spec:
+  containers:
+  - name: app
+    image: nginx:1.21
+  imagePullSecrets:
+  - name: registry-creds
+EOF
+```
