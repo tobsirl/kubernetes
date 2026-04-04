@@ -186,3 +186,26 @@ kubectl rollout pause deployment/battle-app -n ares
 # Save rollout status
 kubectl rollout status deployment/battle-app -n ares > ./exam/course/7/rollout-status.txt
 ```
+
+## Question 8 | Ambassador Pattern - Sidecar Proxy
+
+### Solution
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ambassador-pod
+  namespace: olympus
+spec:
+  containers:
+    - name: app
+      image: nginx:1.21
+      ports:
+        - containerPort: 80
+    - name: proxy
+      image: envoyproxy/envoy:v1.28-latest
+      env:
+        - name: ENVOY_UID
+          value: "0"
+```
