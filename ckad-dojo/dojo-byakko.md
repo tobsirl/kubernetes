@@ -209,3 +209,24 @@ spec:
         - name: ENVOY_UID
           value: "0"
 ```
+
+## Question 9 | Job with Backoff Limit
+
+### Solution
+
+```yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: retry-job
+  namespace: artemis
+spec:
+  backoffLimit: 3
+  template:
+    spec:
+      containers:
+        - name: job
+          image: busybox:1.36
+          command: ["sh", "-c", "exit 1"]
+      restartPolicy: Never
+```
