@@ -260,3 +260,35 @@ spec:
   - name: registry-creds
 EOF
 ```
+
+Question 12 | Network Policy - Egress Rules
+
+### Solution
+
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: egress-policy
+  namespace: athena
+spec:
+  podSelector:
+    matchLabels:
+      app: restricted
+  policyTypes:
+    - Egress
+  egress:
+    - to:
+        - podSelector:
+            matchLabels:
+              app: database
+      ports:
+        - protocol: TCP
+          port: 5432
+    - to:
+        - ipBlock:
+            cidr: 10.0.0.0/8
+      ports:
+        - protocol: TCP
+          port: 443
+```
