@@ -322,3 +322,34 @@ kubectl create rolebinding deploy-binding -n hermes \
   --role=deploy-role \
   --serviceaccount=hermes:deployment-manager
 ```
+
+## Question 14 | Deployment Rolling Update Strategy
+
+### Solution
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rolling-app
+  namespace: apollo
+spec:
+  replicas: 4
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: rolling-app
+  template:
+    metadata:
+      labels:
+        app: rolling-app
+        version: v1
+    spec:
+      containers:
+        - name: web
+          image: nginx:1.21
+```
