@@ -292,3 +292,33 @@ spec:
         - protocol: TCP
           port: 443
 ```
+
+## Question 13 | RBAC - Service Account Permissions
+
+### Solution
+
+```yaml
+# Create ServiceAccount
+kubectl create serviceaccount deployment-manager -n hermes
+
+# Create Role
+cat <<EOF | kubectl apply -f -
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: deploy-role
+  namespace: hermes
+rules:
+- apiGroups: ["apps"]
+  resources: ["deployments"]
+  verbs: ["get", "list", "watch", "create", "update", "delete"]
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["get", "list"]
+EOF
+
+# Create RoleBinding
+kubectl create rolebinding deploy-binding -n hermes \
+  --role=deploy-role \
+  --serviceaccount=hermes:deployment-manager
+```
