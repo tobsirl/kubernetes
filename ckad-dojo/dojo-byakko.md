@@ -383,3 +383,30 @@ spec:
                 port:
                   number: 80
 ```
+
+## Question 16 | Pod with Token Projection
+
+### Solution
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: token-pod
+  namespace: hades
+spec:
+  containers:
+    - name: app
+      image: nginx:1.21
+      volumeMounts:
+        - name: token-volume
+          mountPath: /var/run/secrets/tokens
+  volumes:
+    - name: token-volume
+      projected:
+        sources:
+          - serviceAccountToken:
+              audience: api
+              expirationSeconds: 3600
+              path: token
+```
