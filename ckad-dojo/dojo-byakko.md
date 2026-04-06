@@ -410,3 +410,29 @@ spec:
               expirationSeconds: 3600
               path: token
 ```
+
+## Question 17 | CronJob with Concurrency Policy
+
+### Solution
+
+```yaml
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: scheduled-task
+  namespace: ares
+spec:
+  schedule: "*/5 * * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: task
+              image: busybox:1.36
+              command: ["sh", "-c", "echo Task executed at $(date)"]
+          restartPolicy: OnFailure
+```
