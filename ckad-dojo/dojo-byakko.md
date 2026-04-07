@@ -482,3 +482,23 @@ spec:
         - name: web
           image: nginx:1.21
 ```
+
+## Question 20 | Multi-Container Pod with Shared Process Namespace
+
+### Solution
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: shared-pid
+  namespace: artemis
+spec:
+  shareProcessNamespace: true
+  containers:
+    - name: app
+      image: nginx:1.21
+    - name: debug
+      image: busybox:1.36
+      command: ["sleep", "3600"]
+```
