@@ -453,3 +453,32 @@ spec:
     matchLabels:
       app: critical
 ```
+
+### Question 19 | Deployment with Annotations
+
+### Solution
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: annotated-app
+  namespace: olympus
+  annotations:
+    kubernetes.io/change-cause: "Initial deployment"
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: annotated-app
+  template:
+    metadata:
+      labels:
+        app: annotated-app
+      annotations:
+        prometheus.io/scrape: "true"
+    spec:
+      containers:
+        - name: web
+          image: nginx:1.21
+```
