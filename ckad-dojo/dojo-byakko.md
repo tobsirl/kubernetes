@@ -436,3 +436,20 @@ spec:
               command: ["sh", "-c", "echo Task executed at $(date)"]
           restartPolicy: OnFailure
 ```
+
+## Question 18 | Pod Disruption Budget
+
+### Solution
+
+```yaml
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: app-pdb
+  namespace: hera
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app: critical
+```
