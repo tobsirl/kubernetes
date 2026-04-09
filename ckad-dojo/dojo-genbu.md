@@ -147,3 +147,37 @@ EOF
 ```
 
 ### Explanation: Immutable ConfigMaps cannot be modified after creation. This improves cluster performance (no watches needed) and prevents accidental changes. To update, delete and recreate.
+
+## Question 6 | Projected Volume
+
+### Solution
+
+```yaml
+kubectl apply -f - <<EOF
+apiVersion: v1
+kind: Pod
+metadata:
+  name: config-aggregator
+  namespace: hunt
+spec:
+  serviceAccountName: hunt-sa
+  containers:
+  - name: aggregator
+    image: busybox:1.36
+    command: ["sleep", "3600"]
+    volumeMounts:
+    - name: combined-config
+      mountPath: /etc/config
+  volumes:
+  - name: combined-config
+    projected:
+      sources:
+      - serviceAccountToken:
+          path: token
+          expirationSeconds: 3600
+      - configMap:
+          name: app-config
+EOF
+```
+
+### Explanation: Projected volumes combine multiple sources into a single volume mount. This allows mounting a ServiceAccount token with custom expiration alongside a ConfigMap in the same directory.
