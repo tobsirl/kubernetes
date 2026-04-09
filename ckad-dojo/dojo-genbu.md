@@ -93,3 +93,32 @@ kubectl patch service web-service -n stripe -p '{"spec":{"selector":{"version":"
 # Verify
 kubectl get endpoints web-service -n stripe
 ```
+
+## Question 4 | CronJob Advanced
+
+### Solution
+
+```yaml
+# Suspend the CronJob first
+kubectl patch cronjob data-sync -n prowl -p '{"spec":{"suspend":true}}'
+
+# Add startingDeadlineSeconds and concurrencyPolicy
+kubectl patch cronjob data-sync -n prowl -p '{
+  "spec": {
+    "startingDeadlineSeconds": 200,
+    "concurrencyPolicy": "Forbid"
+  }
+}'
+
+# Resume the CronJob
+kubectl patch cronjob data-sync -n prowl -p '{"spec":{"suspend":false}}'
+
+# Verify
+kubectl get cronjob data-sync -n prowl -o yaml | grep -E "suspend|startingDeadline|concurrency"
+```
+
+### Explanation:
+
+- suspend: true pauses scheduling without deleting the CronJob
+- startingDeadlineSeconds: sets a deadline for starting jobs if missed
+- concurrencyPolicy: Forbid prevents concurrent job executions
