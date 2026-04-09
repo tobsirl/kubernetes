@@ -122,3 +122,28 @@ kubectl get cronjob data-sync -n prowl -o yaml | grep -E "suspend|startingDeadli
 - suspend: true pauses scheduling without deleting the CronJob
 - startingDeadlineSeconds: sets a deadline for starting jobs if missed
 - concurrencyPolicy: Forbid prevents concurrent job executions
+
+## Question 5 | Immutable ConfigMap
+
+### Solution
+
+```bash
+kubectl apply -f - <<EOF
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: locked-config
+  namespace: hunt
+data:
+  DB_HOST: postgres.hunt.svc
+  DB_PORT: "5432"
+  LOG_LEVEL: info
+immutable: true
+EOF
+
+# Try to modify (should fail)
+# kubectl patch configmap locked-config -n hunt -p '{"data":{"LOG_LEVEL":"debug"}}'
+# Error: ConfigMap is immutable
+```
+
+### Explanation: Immutable ConfigMaps cannot be modified after creation. This improves cluster performance (no watches needed) and prevents accidental changes. To update, delete and recreate.
