@@ -227,3 +227,37 @@ EOF
 ```
 
 ### Explanation: ExternalName services create CNAME DNS records pointing to external hostnames. No proxying occurs - it's purely DNS aliasing. Useful for referencing external services with internal names.
+
+## Question 9 | LimitRange
+
+### Solution
+
+```yaml
+kubectl apply -f - <<EOF
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: container-limits
+  namespace: pounce
+spec:
+  limits:
+  - type: Container
+    default:
+      cpu: "500m"
+      memory: "256Mi"
+    defaultRequest:
+      cpu: "100m"
+      memory: "64Mi"
+    min:
+      cpu: "50m"
+      memory: "32Mi"
+    max:
+      cpu: "1"
+      memory: "512Mi"
+EOF
+
+# Verify
+kubectl describe limitrange container-limits -n pounce
+```
+
+### Explanation: LimitRanges enforce resource constraints at namespace level. Containers without explicit resources get defaults. Min/max prevent over or under-provisioning.
