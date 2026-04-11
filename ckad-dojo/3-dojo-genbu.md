@@ -205,3 +205,25 @@ kubectl get pdb critical-pdb -n jungle
 ```
 
 ### Explanation: PodDisruptionBudgets protect applications during voluntary disruptions (node drains, cluster upgrades). With minAvailable: 3 on a 5-replica deployment, only 2 pods can be evicted at a time.
+
+## Question 8 | Service ExternalName
+
+### Solution
+
+```yaml
+kubectl apply -f - <<EOF
+apiVersion: v1
+kind: Service
+metadata:
+  name: external-api
+  namespace: fang
+spec:
+  type: ExternalName
+  externalName: api.external-service.com
+EOF
+
+# Test DNS resolution from a pod
+# nslookup external-api.fang.svc.cluster.local
+```
+
+### Explanation: ExternalName services create CNAME DNS records pointing to external hostnames. No proxying occurs - it's purely DNS aliasing. Useful for referencing external services with internal names.
