@@ -181,3 +181,27 @@ EOF
 ```
 
 ### Explanation: Projected volumes combine multiple sources into a single volume mount. This allows mounting a ServiceAccount token with custom expiration alongside a ConfigMap in the same directory.
+
+## Question 7 | PodDisruptionBudget
+
+### Solution
+
+```yaml
+kubectl apply -f - <<EOF
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: critical-pdb
+  namespace: jungle
+spec:
+  minAvailable: 3
+  selector:
+    matchLabels:
+      app: critical-app
+EOF
+
+# Verify
+kubectl get pdb critical-pdb -n jungle
+```
+
+### Explanation: PodDisruptionBudgets protect applications during voluntary disruptions (node drains, cluster upgrades). With minAvailable: 3 on a 5-replica deployment, only 2 pods can be evicted at a time.
