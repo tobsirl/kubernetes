@@ -261,3 +261,48 @@ kubectl describe limitrange container-limits -n pounce
 ```
 
 ### Explanation: LimitRanges enforce resource constraints at namespace level. Containers without explicit resources get defaults. Min/max prevent over or under-provisioning.
+
+## Question 10 | Pod Security Context
+
+### Solution
+
+```yaml
+kubectl apply -f - <<EOF
+apiVersion: v1
+kind: Pod
+metadata:
+  name: secure-pod
+  namespace: stalker
+spec:
+  securityContext:
+    runAsUser: 1000
+    runAsGroup: 3000
+    fsGroup: 2000
+  containers:
+  - name: secure-nginx
+    image: nginx:1.21
+    securityContext:
+      readOnlyRootFilesystem: true
+      allowPrivilegeEscalation: false
+    volumeMounts:
+    - name: tmp-volume
+      mountPath: /tmp
+    - name: cache-volume
+      mountPath: /var/cache/nginx
+    - name: run-volume
+      mountPath: /var/run
+    - name: conf-volume
+      mountPath: /etc/nginx/conf.d
+  volumes:
+  - name: tmp-volume
+    emptyDir: {}
+  - name: cache-volume
+    emptyDir: {}
+  - name: run-volume
+    emptyDir: {}
+  - name: conf-volume
+    emptyDir: {}
+EOF
+```
+
+### Explanation: Security contexts control pod/container privileges. runAsUser/Group sets the user identity. fsGroup sets group ownership for volumes. readOnlyRootFilesystem prevents writes to the container filesystem — nginx needs writable volumes at /tmp, /var/cache/nginx, /var/run, and /etc/nginx/conf.d (the entrypoint script modifies default.conf at startup).
