@@ -306,3 +306,26 @@ EOF
 ```
 
 ### Explanation: Security contexts control pod/container privileges. runAsUser/Group sets the user identity. fsGroup sets group ownership for volumes. readOnlyRootFilesystem prevents writes to the container filesystem — nginx needs writable volumes at /tmp, /var/cache/nginx, /var/run, and /etc/nginx/conf.d (the entrypoint script modifies default.conf at startup).
+
+## Question 11 | Deployment Rollout Control
+
+### Solution
+
+```bash
+# Step 1: Pause the rollout
+kubectl rollout pause deployment/rolling-app -n pounce
+
+# Step 2: Update the image
+kubectl set image deployment/rolling-app app=nginx:1.22 -n pounce
+
+# Step 3: Set revisionHistoryLimit
+kubectl patch deployment rolling-app -n pounce -p '{"spec":{"revisionHistoryLimit":5}}'
+
+# Step 4: Resume the rollout
+kubectl rollout resume deployment/rolling-app -n pounce
+
+# Verify
+kubectl rollout status deployment/rolling-app -n pounce
+```
+
+### Explanation: Pausing a rollout allows batching multiple changes before triggering an update. revisionHistoryLimit controls how many ReplicaSets are kept for rollback.
