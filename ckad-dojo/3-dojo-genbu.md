@@ -329,3 +329,17 @@ kubectl rollout status deployment/rolling-app -n pounce
 ```
 
 ### Explanation: Pausing a rollout allows batching multiple changes before triggering an update. revisionHistoryLimit controls how many ReplicaSets are kept for rollback.
+
+## Question 12 | kubectl exec Troubleshooting
+
+### Solution
+
+```bash
+# Read the nginx config
+kubectl exec config-pod -n stalker -- cat /etc/nginx/conf.d/custom.conf > ./exam/course/12/nginx-config.txt
+
+# Test the config works on port 8080
+kubectl exec config-pod -n stalker -- curl -s localhost:8080
+```
+
+### Explanation: kubectl exec runs commands inside containers for debugging. Use -- to separate kubectl arguments from the command to run.
