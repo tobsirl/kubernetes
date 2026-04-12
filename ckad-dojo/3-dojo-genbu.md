@@ -343,3 +343,23 @@ kubectl exec config-pod -n stalker -- curl -s localhost:8080
 ```
 
 ### Explanation: kubectl exec runs commands inside containers for debugging. Use -- to separate kubectl arguments from the command to run.
+
+## Question 13 | Resource Metrics
+
+### Solution
+
+```bash
+# Get pod metrics (requires metrics-server)
+kubectl top pods -n jungle > ./exam/course/13/pod-resources.txt 2>&1
+
+# Find top CPU consumer
+kubectl top pods -n jungle --sort-by=cpu 2>/dev/null | head -2 | tail -1 | awk '{print $1}' > ./exam/course/13/top-cpu-pod.txt
+
+# If metrics-server not available, document it
+if ! kubectl top pods -n jungle 2>/dev/null; then
+  echo "Metrics server not available" > ./exam/course/13/pod-resources.txt
+  echo "unknown" > ./exam/course/13/top-cpu-pod.txt
+fi
+```
+
+### Explanation: kubectl top requires metrics-server to be installed. It shows real-time CPU and memory usage. The --sort-by flag orders results.
