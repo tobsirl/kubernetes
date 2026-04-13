@@ -363,3 +363,41 @@ fi
 ```
 
 ### Explanation: kubectl top requires metrics-server to be installed. It shows real-time CPU and memory usage. The --sort-by flag orders results.
+
+## Question 14 | Downward API
+
+### Solution
+
+```yaml
+kubectl apply -f - <<EOF
+apiVersion: v1
+kind: Pod
+metadata:
+  name: metadata-pod
+  namespace: claw
+spec:
+  containers:
+  - name: info
+    image: busybox:1.36
+    command: ["sh", "-c", "env | grep POD && env | grep NODE && sleep 3600"]
+    env:
+    - name: POD_NAME
+      valueFrom:
+        fieldRef:
+          fieldPath: metadata.name
+    - name: POD_NAMESPACE
+      valueFrom:
+        fieldRef:
+          fieldPath: metadata.namespace
+    - name: POD_IP
+      valueFrom:
+        fieldRef:
+          fieldPath: status.podIP
+    - name: NODE_NAME
+      valueFrom:
+        fieldRef:
+          fieldPath: spec.nodeName
+EOF
+```
+
+### Explanation: The Downward API exposes pod and container metadata to running containers. Use fieldRef for pod fields and resourceFieldRef for resource fields.
