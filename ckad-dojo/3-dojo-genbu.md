@@ -401,3 +401,32 @@ EOF
 ```
 
 ### Explanation: The Downward API exposes pod and container metadata to running containers. Use fieldRef for pod fields and resourceFieldRef for resource fields.
+
+## Question 15 | Job TTL
+
+### Solution
+
+```yaml
+kubectl apply -f - <<EOF
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: cleanup-job
+  namespace: stripe
+spec:
+  ttlSecondsAfterFinished: 60
+  backoffLimit: 2
+  template:
+    spec:
+      containers:
+      - name: cleanup
+        image: busybox:1.36
+        command: ["sh", "-c", "echo 'Cleanup complete' && sleep 5"]
+      restartPolicy: Never
+EOF
+
+# Watch the job (it will be deleted 60 seconds after completion)
+kubectl get jobs -n stripe -w
+```
+
+### Explanation: ttlSecondsAfterFinished automatically cleans up completed Jobs. This prevents resource accumulation from many short-lived jobs. The job and its pods are deleted after the TTL expires.
