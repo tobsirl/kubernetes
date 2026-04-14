@@ -472,3 +472,26 @@ EOF
 ```
 
 ### Explanation: Linux capabilities provide fine-grained privilege control. Dropping ALL capabilities and adding only what's needed follows the principle of least privilege. NET_BIND_SERVICE allows binding to privileged ports (<1024) without full root. Running as user 101 (nginx) requires writable volumes for /var/cache/nginx, /var/run, and /etc/nginx/conf.d since the entrypoint modifies these paths.
+
+## Question 17 | Service Session Affinity
+
+### Solution
+
+```yaml
+# Patch the existing service
+kubectl patch service backend-svc -n claw -p '{
+  "spec": {
+    "sessionAffinity": "ClientIP",
+    "sessionAffinityConfig": {
+      "clientIP": {
+        "timeoutSeconds": 3600
+      }
+    }
+  }
+}'
+
+# Verify
+kubectl get service backend-svc -n claw -o yaml | grep -A5 sessionAffinity
+```
+
+### Explanation: Session affinity (sticky sessions) routes requests from the same client IP to the same pod. The timeout (1 hour) defines how long the affinity persists. Useful for stateful applications.
