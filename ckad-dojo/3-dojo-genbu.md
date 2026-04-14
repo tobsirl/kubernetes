@@ -495,3 +495,30 @@ kubectl get service backend-svc -n claw -o yaml | grep -A5 sessionAffinity
 ```
 
 ### Explanation: Session affinity (sticky sessions) routes requests from the same client IP to the same pod. The timeout (1 hour) defines how long the affinity persists. Useful for stateful applications.
+
+## Question 18 | Deployment Safe Rollout
+
+### Solution
+
+```yaml
+# Configure safe rollout settings
+kubectl patch deployment safe-deploy -n fang -p '{
+  "spec": {
+    "minReadySeconds": 30,
+    "progressDeadlineSeconds": 120
+  }
+}'
+
+# Update the image
+kubectl set image deployment/safe-deploy app=nginx:1.22 -n fang
+
+# Watch the rollout (should take at least 30 seconds per pod)
+kubectl rollout status deployment/safe-deploy -n fang
+```
+
+### Explanation:
+
+- minReadySeconds: New pods must be ready for this duration before being considered available
+- progressDeadlineSeconds: Maximum time for a rollout to progress before it's considered failed
+
+  These settings slow down rollouts to catch issues early.
