@@ -430,3 +430,45 @@ kubectl get jobs -n stripe -w
 ```
 
 ### Explanation: ttlSecondsAfterFinished automatically cleans up completed Jobs. This prevents resource accumulation from many short-lived jobs. The job and its pods are deleted after the TTL expires.
+
+## Question 16 | Container Capabilities
+
+### Solution
+
+```yaml
+kubectl apply -f - <<EOF
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hardened-pod
+  namespace: predator
+spec:
+  containers:
+  - name: secure-app
+    image: nginx:1.21
+    securityContext:
+      runAsNonRoot: true
+      runAsUser: 101
+      capabilities:
+        drop:
+        - ALL
+        add:
+        - NET_BIND_SERVICE
+    volumeMounts:
+    - name: cache-volume
+      mountPath: /var/cache/nginx
+    - name: run-volume
+      mountPath: /var/run
+    - name: conf-volume
+      mountPath: /etc/nginx/conf.d
+  volumes:
+  - name: cache-volume
+    emptyDir: {}
+  - name: run-volume
+    emptyDir: {}
+  - name: conf-volume
+    emptyDir: {}
+EOF
+```
+
+### Explanation: Linux capabilities provide fine-grained privilege control. Dropping ALL capabilities and adding only what's needed follows the principle of least privilege. NET_BIND_SERVICE allows binding to privileged ports (<1024) without full root. Running as user 101 (nginx) requires writable volumes for /var/cache/nginx, /var/run, and /etc/nginx/conf.d since the entrypoint modifies these paths.
