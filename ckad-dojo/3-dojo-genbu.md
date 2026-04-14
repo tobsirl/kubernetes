@@ -522,3 +522,30 @@ kubectl rollout status deployment/safe-deploy -n fang
 - progressDeadlineSeconds: Maximum time for a rollout to progress before it's considered failed
 
   These settings slow down rollouts to catch issues early.
+
+## Question 19 | Container Lifecycle Hook
+
+### Solution
+
+```yaml
+kubectl apply -f - <<EOF
+apiVersion: v1
+kind: Pod
+metadata:
+  name: graceful-pod
+  namespace: tiger
+spec:
+  terminationGracePeriodSeconds: 30
+  containers:
+  - name: main
+    image: nginx:1.21
+    ports:
+    - containerPort: 80
+    lifecycle:
+      preStop:
+        exec:
+          command: ["/bin/sh", "-c", "nginx -s quit && sleep 5"]
+EOF
+```
+
+### Explanation: preStop hooks run before container termination. nginx -s quit gracefully shuts down nginx, allowing in-flight requests to complete. The sleep ensures the hook completes before SIGKILL.
