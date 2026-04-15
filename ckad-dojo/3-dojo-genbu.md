@@ -549,3 +549,59 @@ EOF
 ```
 
 ### Explanation: preStop hooks run before container termination. nginx -s quit gracefully shuts down nginx, allowing in-flight requests to complete. The sleep ensures the hook completes before SIGKILL.
+
+## Question 20 | NetworkPolicy Default Deny
+
+### Solution
+
+```yaml
+# Step 1: Create default deny-all policy
+kubectl apply -f - <<EOF
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny-all
+  namespace: predator
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+  - Egress
+EOF
+
+# Step 2: Create allow policy for frontend to backend
+kubectl apply -f - <<EOF
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-frontend-to-api
+  namespace: predator
+spec:
+  podSelector:
+    matchLabels:
+      tier: backend
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          tier: frontend
+    ports:
+    - protocol: TCP
+      port: 80
+  egress:
+  - to: []
+    ports:
+    - protocol: UDP
+      port: 53
+    - protocol: TCP
+      port: 53
+EOF
+
+# Test connectivity
+kubectl exec -n predator <frontend-pod> -- curl api-svc:80
+```
+
+### Explanation: The "default deny" pattern first blocks all traffic, then explicitly allows only necessary connections. Empty podSelector: {} matches all pods. DNS egress (port 53) is essential for service discovery.
