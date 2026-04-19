@@ -107,3 +107,23 @@ kubectl apply -f /tmp/log-collector.yaml
 kubectl get pod log-collector -n marsh
 kubectl logs log-collector -n marsh
 ```
+
+## Question 4 | Fix Broken Pod with Correct ServiceAccount (4 points)
+
+### Solution
+
+```bash
+# Step 1: Investigate existing RBAC resources
+kubectl get rolebindings -n delta
+kubectl describe rolebinding monitor-binding -n delta
+kubectl describe role metrics-reader -n delta
+
+# Step 2: Update Pod to use monitor-sa
+kubectl get pod metrics-pod -n delta -o yaml > /tmp/metrics-pod.yaml
+# Edit to change serviceAccountName to monitor-sa
+kubectl delete pod metrics-pod -n delta
+kubectl apply -f /tmp/metrics-pod.yaml
+
+# Step 3: Verify
+kubectl logs metrics-pod -n delta
+```
