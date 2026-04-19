@@ -69,3 +69,41 @@ kubectl describe cronjob backup-job -n pond
 kubectl create job backup-job-test --from=cronjob/backup-job -n pond
 kubectl logs job/backup-job-test -n pond
 ```
+
+## Question 3 | ServiceAccount, Role, and RoleBinding (8 points)
+
+### Solution
+
+```bash
+# Step 1: Create ServiceAccount
+kubectl create sa log-sa -n marsh
+
+# Step 2: Create Role
+kubectl apply -f - <<EOF
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: log-role
+  namespace: marsh
+rules:
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["get", "list", "watch"]
+EOF
+
+# Step 3: Create RoleBinding
+kubectl create rolebinding log-rb \
+  --role=log-role \
+  --serviceaccount=marsh:log-sa \
+  -n marsh
+
+# Step 4: Update Pod to use ServiceAccount
+kubectl get pod log-collector -n marsh -o yaml > /tmp/log-collector.yaml
+# Edit to change serviceAccountName to log-sa
+kubectl delete pod log-collector -n marsh
+kubectl apply -f /tmp/log-collector.yaml
+
+# Verify
+kubectl get pod log-collector -n marsh
+kubectl logs log-collector -n marsh
+```
