@@ -1,4 +1,4 @@
-## Question 1 | Secret from Hardcoded Variables (4 points)
+## Question 1 | Secret from Hardcoded Variables (4 points) Hard
 
 ### Solution
 
