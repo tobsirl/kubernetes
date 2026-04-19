@@ -127,3 +127,22 @@ kubectl apply -f /tmp/metrics-pod.yaml
 # Step 3: Verify
 kubectl logs metrics-pod -n delta
 ```
+
+## Question 5 | Build Container Image and Save as Tarball (8 points)
+
+### Solution
+
+```bash
+# Step 1: Build the image
+cd ./exam/course/5/image
+docker build -t my-app:1.0 .
+
+# Verify
+docker images | grep my-app
+
+# Step 2: Save image as tarball
+docker save -o ../my-app.tar my-app:1.0
+
+# Verify
+ls -lh ../my-app.tar
+```
