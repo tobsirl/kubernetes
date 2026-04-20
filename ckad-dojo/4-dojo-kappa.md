@@ -146,3 +146,42 @@ docker save -o ../my-app.tar my-app:1.0
 # Verify
 ls -lh ../my-app.tar
 ```
+
+## Question 6 | Canary Deployment with Manual Traffic Split (8 points)
+
+### Solution
+
+```bash
+# Step 1: Scale existing Deployment
+kubectl scale deploy web-app --replicas=8 -n default
+
+# Step 2: Create canary Deployment
+kubectl apply -f - <<EOF
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-app-canary
+  namespace: default
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: webapp
+      version: v2
+  template:
+    metadata:
+      labels:
+        app: webapp
+        version: v2
+    spec:
+      containers:
+        - name: web
+          image: nginx:latest
+          ports:
+            - containerPort: 80
+EOF
+
+# Step 3: Verify Service selects both
+kubectl get endpoints web-service -n default
+kubectl get pods -n default -l app=webapp --show-labels
+```
