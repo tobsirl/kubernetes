@@ -202,3 +202,34 @@ kubectl label pod database -n spring role=db --overwrite
 # Verify
 kubectl get pods -n spring --show-labels
 ```
+
+## Question 8 | Fix Broken Deployment YAML (4 points)
+
+### Solution
+
+```bash
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: broken-app
+  namespace: default
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: myapp
+  template:
+    metadata:
+      labels:
+        app: myapp
+    spec:
+      containers:
+        - name: web
+          image: nginx
+
+
+# Apply and verify
+kubectl apply -f ./exam/course/8/broken-deploy.yaml
+kubectl get deploy broken-app
+kubectl rollout status deploy broken-app
+```
