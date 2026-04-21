@@ -185,3 +185,20 @@ EOF
 kubectl get endpoints web-service -n default
 kubectl get pods -n default -l app=webapp --show-labels
 ```
+
+## Question 7 | Fix NetworkPolicy by Updating Pod Labels (8 points)
+
+### Solution
+
+```bash
+# Step 1: View existing NetworkPolicies
+kubectl get networkpolicies -n spring -o yaml
+
+# Step 2: Update Pod labels
+kubectl label pod frontend -n spring role=frontend --overwrite
+kubectl label pod backend -n spring role=backend --overwrite
+kubectl label pod database -n spring role=db --overwrite
+
+# Verify
+kubectl get pods -n spring --show-labels
+```
