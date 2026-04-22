@@ -233,3 +233,28 @@ kubectl apply -f ./exam/course/8/broken-deploy.yaml
 kubectl get deploy broken-app
 kubectl rollout status deploy broken-app
 ```
+
+## Question 9 | Perform Rolling Update and Rollback (8 points)
+
+### Solution
+
+```bash
+# Step 1: Update the image
+kubectl set image deploy/app-v1 nginx=nginx:1.25 -n brook
+
+# Step 2: Monitor the rollout
+kubectl rollout status deploy app-v1 -n brook
+
+# Step 3: View rollout history
+kubectl rollout history deploy app-v1 -n brook
+
+# Step 4: Rollback to previous revision
+kubectl rollout undo deploy app-v1 -n brook
+
+# Step 5: Verify rollback
+kubectl rollout status deploy app-v1 -n brook
+kubectl get deploy app-v1 -n brook -o jsonpath='{.spec.template.spec.containers[0].image}'
+
+# Step 6: Save revision number
+kubectl rollout history deploy app-v1 -n brook | tail -1 | awk '{print $1}' > ./exam/course/9/rollback-revision.txt
+```
