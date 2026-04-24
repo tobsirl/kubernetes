@@ -282,3 +282,27 @@ spec:
 kubectl rollout status deploy api-deploy -n rapids
 kubectl describe deploy api-deploy -n rapids
 ```
+
+## Question 11 | Configure Pod and Container Security Context (6 points)
+
+### Solution
+
+```bash
+kubectl edit deploy secure-app -n cascade
+Add security contexts:
+
+spec:
+  template:
+    spec:
+      securityContext:
+        runAsUser: 1000
+      containers:
+        - name: app
+          securityContext:
+            capabilities:
+              add:
+                - NET_ADMIN
+# Verify
+kubectl rollout status deploy secure-app -n cascade
+kubectl get pod -n cascade -l app=secure-app -o yaml | grep -A 10 securityContext
+```
