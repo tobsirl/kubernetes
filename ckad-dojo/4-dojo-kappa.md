@@ -258,3 +258,27 @@ kubectl get deploy app-v1 -n brook -o jsonpath='{.spec.template.spec.containers[
 # Step 6: Save revision number
 kubectl rollout history deploy app-v1 -n brook | tail -1 | awk '{print $1}' > ./exam/course/9/rollback-revision.txt
 ```
+
+## Question 10 | Add Readiness Probe to Deployment (4 points)
+
+### Solution
+
+```bash
+kubectl edit deploy api-deploy -n rapids
+Add readiness probe:
+
+spec:
+  template:
+    spec:
+      containers:
+        - name: api
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+# Verify
+kubectl rollout status deploy api-deploy -n rapids
+kubectl describe deploy api-deploy -n rapids
+```
