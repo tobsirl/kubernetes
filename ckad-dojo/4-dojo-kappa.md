@@ -306,3 +306,23 @@ spec:
 kubectl rollout status deploy secure-app -n cascade
 kubectl get pod -n cascade -l app=secure-app -o yaml | grep -A 10 securityContext
 ```
+
+## Question 12 | Fix Service Selector (2 points)
+
+### Solution
+
+```bash
+# Check current state
+kubectl get pods -n shoal --show-labels
+kubectl get endpoints web-svc -n shoal
+
+# Fix selector
+kubectl edit svc web-svc -n shoal
+Change selector to:
+
+spec:
+  selector:
+    app: webapp
+# Verify
+kubectl get endpoints web-svc -n shoal
+```
