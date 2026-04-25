@@ -382,3 +382,30 @@ EOF
 kubectl get ingress web-ingress -n eddy
 kubectl describe ingress web-ingress -n eddy
 ```
+
+## Question 15 | Fix Ingress PathType (4 points)
+
+### Solution
+
+```bash
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: api-ingress
+  namespace: default
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: api-svc
+                port:
+                  number: 8080
+
+# Apply
+kubectl apply -f ./exam/course/15/fix-ingress.yaml
+kubectl get ingress api-ingress -n default
+```
