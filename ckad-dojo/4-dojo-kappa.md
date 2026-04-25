@@ -445,3 +445,34 @@ EOF
 kubectl get pod resource-pod -n pond
 kubectl describe pod resource-pod -n pond
 ```
+
+## Question 17 | Pod Topology Spread Constraints (3 points) - Preview
+
+### Solution
+
+```bash
+kubectl apply -f - <<EOF
+apiVersion: v1
+kind: Pod
+metadata:
+  name: spread-pod
+  namespace: eddy
+  labels:
+    app: spread
+spec:
+  topologySpreadConstraints:
+    - maxSkew: 1
+      topologyKey: kubernetes.io/hostname
+      whenUnsatisfiable: DoNotSchedule
+      labelSelector:
+        matchLabels:
+          app: spread
+  containers:
+    - name: nginx
+      image: nginx
+EOF
+
+# Verify
+kubectl get pod spread-pod -n eddy
+kubectl describe pod spread-pod -n eddy
+```
