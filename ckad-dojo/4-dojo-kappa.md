@@ -326,3 +326,29 @@ spec:
 # Verify
 kubectl get endpoints web-svc -n shoal
 ```
+
+## Question 13 | Create NodePort Service (4 points)
+
+### Solution
+
+```bash
+kubectl apply -f - <<EOF
+apiVersion: v1
+kind: Service
+metadata:
+  name: api-nodeport
+  namespace: default
+spec:
+  type: NodePort
+  selector:
+    app: api
+  ports:
+    - port: 80
+      targetPort: 9090
+      protocol: TCP
+EOF
+
+# Verify
+kubectl get svc api-nodeport -n default
+kubectl describe svc api-nodeport -n default
+```
