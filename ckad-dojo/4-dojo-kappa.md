@@ -409,3 +409,39 @@ spec:
 kubectl apply -f ./exam/course/15/fix-ingress.yaml
 kubectl get ingress api-ingress -n default
 ```
+
+## Question 16 | Add Resource Requests and Limits to Pod (4 points)
+
+### Solution
+
+```bash
+# Step 1: Check ResourceQuota
+kubectl get quota -n pond
+kubectl describe quota pond-quota -n pond
+
+# Step 2: Create Pod with half the quota limits
+# If quota shows limits.cpu: "2" and limits.memory: "4Gi"
+# Then use cpu: "1" and memory: "2Gi"
+kubectl apply -f - <<EOF
+apiVersion: v1
+kind: Pod
+metadata:
+  name: resource-pod
+  namespace: pond
+spec:
+  containers:
+    - name: web
+      image: nginx:latest
+      resources:
+        requests:
+          cpu: "100m"
+          memory: "128Mi"
+        limits:
+          cpu: "1"
+          memory: "2Gi"
+EOF
+
+# Verify
+kubectl get pod resource-pod -n pond
+kubectl describe pod resource-pod -n pond
+```
