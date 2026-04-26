@@ -270,3 +270,221 @@ kubectl expose deployment ...
 - `kubectl expose` = **fastest way to create a Service from existing resources**
 - It **auto-handles selectors**, reducing errors
 - Most useful for **exam scenarios and quick setups**
+
+Here’s a clean, exam-focused recap of everything we covered about **ResourceQuotas**—trimmed down to what actually matters under pressure.
+
+---
+
+# 🧠 Kubernetes ResourceQuota — Exam Notes
+
+## 🔹 What is a ResourceQuota?
+
+A **ResourceQuota** limits how much resource a **namespace** can consume.
+
+Used to control:
+
+- Compute (CPU, memory)
+- Object counts (pods, secrets, etc.)
+- Storage
+
+---
+
+## 🔹 Key Idea
+
+> ResourceQuota = **resource → max allowed**
+
+Example:
+
+```yaml
+pods: 10
+requests.cpu: 4
+limits.memory: 8Gi
+```
+
+---
+
+## 🔹 Imperative vs Declarative
+
+### ❌ Imperative (not ideal)
+
+```bash
+kubectl create quota namespace-limits \
+  -n shell \
+  --hard=pods=10,...
+```
+
+- One-off
+- Not reusable
+- Easy to mess up
+
+---
+
+### ✅ Declarative (recommended)
+
+```bash
+kubectl apply -f quota.yaml
+```
+
+- Source of truth = YAML
+- Version control
+- Repeatable
+
+---
+
+### ✅ Best hybrid approach (EXAM GOLD ⭐)
+
+Generate YAML fast:
+
+```bash
+kubectl create quota namespace-limits \
+  -n shell \
+  --hard=pods=10,requests.cpu=4,requests.memory=4Gi,limits.cpu=8,limits.memory=8Gi,configmaps=10,secrets=10 \
+  --dry-run=client -o yaml > quota.yaml
+```
+
+Then:
+
+```bash
+kubectl apply -f quota.yaml
+```
+
+👉 This is **declarative**, even though you used `create` to generate it.
+
+---
+
+## 🔹 Common `--hard` Keys (MEMORIZE THESE)
+
+### ✅ Compute
+
+```text
+requests.cpu
+requests.memory
+limits.cpu
+limits.memory
+```
+
+---
+
+### ✅ Object counts
+
+```text
+pods
+configmaps
+secrets
+persistentvolumeclaims
+services
+```
+
+---
+
+### ✅ Storage
+
+```text
+requests.storage
+```
+
+---
+
+### ⚠️ Important
+
+- You **cannot invent keys**
+- Must match Kubernetes resource names exactly
+
+---
+
+## 🔹 Full Example (Exam Task)
+
+### YAML:
+
+```yaml
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: namespace-limits
+  namespace: shell
+spec:
+  hard:
+    pods: "10"
+    requests.cpu: "4"
+    requests.memory: 4Gi
+    limits.cpu: "8"
+    limits.memory: 8Gi
+    configmaps: "10"
+    secrets: "10"
+```
+
+---
+
+### Apply:
+
+```bash
+kubectl apply -f quota.yaml
+```
+
+---
+
+### Verify:
+
+```bash
+kubectl describe quota namespace-limits -n shell
+```
+
+---
+
+## 🔹 Common Exam Pitfalls 🚨
+
+### ❌ Forgetting namespace
+
+```bash
+-n shell
+```
+
+---
+
+### ❌ Mixing up requests vs limits
+
+- `requests.*` = guaranteed
+- `limits.*` = max allowed
+
+---
+
+### ❌ Missing units
+
+- Memory needs units: `4Gi`
+- CPU can be:
+  - `"4"` (cores)
+  - `"500m"` (millicores)
+
+---
+
+### ❌ Empty YAML from dry-run
+
+If you forget `--hard`, you get:
+
+```yaml
+spec: {}
+```
+
+---
+
+## 🔹 Pro Tips (EXAM)
+
+- Use `--dry-run=client -o yaml` to avoid writing YAML manually
+- Always verify with:
+
+  ```bash
+  kubectl describe quota -n <namespace>
+  ```
+
+- Focus on:
+  - pods
+  - cpu/memory (requests + limits)
+  - configmaps / secrets
+
+---
+
+## 🔹 One-liner to remember
+
+> **“Quota limits what a namespace can create and consume.”**
+
+---
