@@ -21,3 +21,17 @@ spec:
 kubectl apply -f resourcequota.yaml
 kubectl describe quota namespace-limits -n shell
 ```
+
+## Question 2 | HorizontalPodAutoscaler (6 points) See Notes on HPA
+
+### Solution
+
+```bash
+kubectl autoscale deployment web-app -n ocean \
+  --name=web-app-hpa \
+  --min=2 \
+  --max=10 \
+  --cpu=70%
+
+kubectl get hpa -n ocean
+```
