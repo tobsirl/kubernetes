@@ -488,3 +488,177 @@ spec: {}
 > **“Quota limits what a namespace can create and consume.”**
 
 ---
+
+Here are your **clean, corrected exam notes** with the updated `--cpu` flag 👇
+
+---
+
+# 🧠 HPA (HorizontalPodAutoscaler) — kubectl autoscale Notes
+
+## 🔹 What is HPA?
+
+Automatically scales Pods in a Deployment (or other workload) based on metrics (usually CPU).
+
+---
+
+## 🔹 Imperative Command (kubectl autoscale)
+
+### ✅ Modern syntax (USE THIS)
+
+```bash
+kubectl autoscale deployment web-app \
+  -n ocean \
+  --name web-app-hpa \
+  --min=2 \
+  --max=10 \
+  --cpu=70%
+```
+
+---
+
+### ❌ Deprecated
+
+```bash
+--cpu-percent=70
+```
+
+👉 Replaced by `--cpu`
+
+---
+
+## 🔹 How `--cpu` Works
+
+### Two formats supported:
+
+| Format | Meaning                | Example        |
+| ------ | ---------------------- | -------------- |
+| `70%`  | CPU utilization target | ✅ most common |
+| `500m` | Absolute CPU usage     | ⚠️ rarely used |
+
+---
+
+### Maps to YAML:
+
+```yaml
+averageUtilization: 70
+```
+
+---
+
+## 🔹 Verify HPA
+
+```bash
+kubectl get hpa -n ocean
+```
+
+Detailed:
+
+```bash
+kubectl describe hpa web-app-hpa -n ocean
+```
+
+---
+
+## 🔹 Declarative (Recommended / Modern)
+
+```yaml
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: web-app-hpa
+  namespace: ocean
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: web-app
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
+```
+
+Apply:
+
+```bash
+kubectl apply -f hpa.yaml
+```
+
+---
+
+## 🔹 Imperative → YAML Mapping (EXAM GOLD ⭐)
+
+| Imperative           | YAML                           |
+| -------------------- | ------------------------------ |
+| `--cpu=70%`          | `averageUtilization: 70`       |
+| `--min=2`            | `minReplicas: 2`               |
+| `--max=10`           | `maxReplicas: 10`              |
+| `deployment web-app` | `scaleTargetRef.name: web-app` |
+
+---
+
+## 🔹 Common Pitfalls 🚨
+
+### ❌ Using old flag
+
+```bash
+--cpu-percent
+```
+
+---
+
+### ❌ Forgetting `%`
+
+```bash
+--cpu=70   ❌
+--cpu=70%  ✅
+```
+
+---
+
+### ❌ Metrics server missing
+
+If not installed:
+
+```bash
+kubectl get hpa
+```
+
+Shows:
+
+```text
+<unknown>
+```
+
+---
+
+### ❌ Using autoscale for advanced configs
+
+`kubectl autoscale`:
+
+- ✔ Simple CPU scaling
+- ❌ No multiple metrics
+- ❌ No advanced policies
+
+👉 Use YAML (`autoscaling/v2`) for full control
+
+---
+
+## 🔹 Exam Strategy 🧠
+
+- If question says:
+  - **“use kubectl autoscale”** → use imperative command
+  - **“create HPA” / “manifest”** → use YAML
+
+---
+
+## 🔹 One-liner to remember
+
+> **HPA scales pods automatically based on CPU → use `--cpu=70%`**
+
+---
