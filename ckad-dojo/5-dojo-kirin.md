@@ -35,3 +35,59 @@ kubectl autoscale deployment web-app -n ocean \
 
 kubectl get hpa -n ocean
 ```
+
+## Question 3 | StatefulSet (8 points)
+
+### Solution
+
+```bash
+apiVersion: v1
+kind: Service
+metadata:
+  name: db-headless
+  namespace: reef
+spec:
+  clusterIP: None
+  selector:
+    app: db-cluster
+  ports:
+  - port: 6379
+    targetPort: 6379
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: db-cluster
+  namespace: reef
+spec:
+  serviceName: db-headless
+  replicas: 3
+  selector:
+    matchLabels:
+      app: db-cluster
+  template:
+    metadata:
+      labels:
+        app: db-cluster
+    spec:
+      containers:
+      - name: redis
+        image: redis:7-alpine
+        ports:
+        - containerPort: 6379
+        volumeMounts:
+        - name: data
+          mountPath: /data
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: 100Mi
+
+kubectl apply -f statefulset.yaml
+kubectl get statefulset db-cluster -n reef
+kubectl get pods -n reef -l app=db-cluster
+```
