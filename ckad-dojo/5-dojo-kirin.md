@@ -129,3 +129,32 @@ kubectl apply -f daemonset.yaml
 kubectl get daemonset node-monitor -n deep
 kubectl get pods -n deep -o wide
 ```
+
+## Question 5 | PriorityClass (5 points)
+
+### Solution
+
+```bash
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: critical-priority
+value: 1000000
+globalDefault: false
+description: "Critical workloads priority"
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: critical-pod
+  namespace: tide
+spec:
+  priorityClassName: critical-priority
+  containers:
+  - name: nginx
+    image: nginx:1.21
+
+kubectl apply -f priorityclass.yaml
+kubectl get priorityclass critical-priority
+kubectl get pod critical-pod -n tide -o yaml | grep priority
+```
