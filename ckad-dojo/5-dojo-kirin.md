@@ -158,3 +158,35 @@ kubectl apply -f priorityclass.yaml
 kubectl get priorityclass critical-priority
 kubectl get pod critical-pod -n tide -o yaml | grep priority
 ```
+
+## Question 6 | startupProbe (5 points)
+
+### Solution
+
+```bash
+apiVersion: v1
+kind: Pod
+metadata:
+  name: slow-starter
+  namespace: wave
+spec:
+  containers:
+  - name: app
+    image: nginx:1.21
+    ports:
+    - containerPort: 80
+    startupProbe:
+      httpGet:
+        path: /
+        port: 80
+      failureThreshold: 30
+      periodSeconds: 10
+    livenessProbe:
+      httpGet:
+        path: /
+        port: 80
+
+kubectl apply -f slow-starter.yaml
+kubectl get pod slow-starter -n wave
+kubectl describe pod slow-starter -n wave | grep -A5 "Startup"
+```
