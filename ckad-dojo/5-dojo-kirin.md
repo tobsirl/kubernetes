@@ -190,3 +190,42 @@ kubectl apply -f slow-starter.yaml
 kubectl get pod slow-starter -n wave
 kubectl describe pod slow-starter -n wave | grep -A5 "Startup"
 ```
+
+## Question 7 | Pod Affinity (6 points)
+
+### Solution
+
+```bash
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-frontend
+  namespace: coral
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: web-frontend
+  template:
+    metadata:
+      labels:
+        app: web-frontend
+        tier: frontend
+    spec:
+      affinity:
+        podAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchLabels:
+                  app: cache
+              topologyKey: kubernetes.io/hostname
+      containers:
+      - name: frontend
+        image: nginx:1.21
+
+kubectl apply -f web-frontend.yaml
+kubectl get deployment web-frontend -n coral
+kubectl get pods -n coral -o wide
+```
