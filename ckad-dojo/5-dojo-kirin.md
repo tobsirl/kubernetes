@@ -229,3 +229,39 @@ kubectl apply -f web-frontend.yaml
 kubectl get deployment web-frontend -n coral
 kubectl get pods -n coral -o wide
 ```
+
+## Question 8 | Ingress with Path Routing (6 points)
+
+### Solution
+
+```bash
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: api-routing
+  namespace: lagoon
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: api.lagoon.local
+    http:
+      paths:
+      - path: /v1
+        pathType: Prefix
+        backend:
+          service:
+            name: api-v1-svc
+            port:
+              number: 80
+      - path: /v2
+        pathType: Prefix
+        backend:
+          service:
+            name: api-v2-svc
+            port:
+              number: 80
+
+kubectl apply -f ingress.yaml
+kubectl get ingress api-routing -n lagoon
+kubectl describe ingress api-routing -n lagoon
+```
