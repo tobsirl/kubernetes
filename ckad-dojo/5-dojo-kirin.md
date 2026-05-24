@@ -265,3 +265,30 @@ kubectl apply -f ingress.yaml
 kubectl get ingress api-routing -n lagoon
 kubectl describe ingress api-routing -n lagoon
 ```
+
+## Question 9 | Job with Completions and Parallelism (5 points)
+
+### Solution
+
+```bash
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: parallel-processor
+  namespace: current
+spec:
+  completions: 6
+  parallelism: 3
+  backoffLimit: 4
+  template:
+    spec:
+      containers:
+      - name: processor
+        image: busybox:1.36
+        command: ["sh", "-c", "echo Processing batch $RANDOM && sleep 5"]
+      restartPolicy: Never
+
+kubectl apply -f job.yaml
+kubectl get jobs -n current
+kubectl get pods -n current -l job-name=parallel-processor
+```
