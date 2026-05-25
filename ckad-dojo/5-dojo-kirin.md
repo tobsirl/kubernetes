@@ -292,3 +292,30 @@ kubectl apply -f job.yaml
 kubectl get jobs -n current
 kubectl get pods -n current -l job-name=parallel-processor
 ```
+
+## Question 10 | kubectl debug (4 points)
+
+### Solution
+
+```bash
+Using ephemeral containers (K8s 1.25+):
+
+kubectl debug troubled-app -n anchor -it --image=busybox:1.36 --target=app -c debugger -- sh
+
+# Inside the container
+ls -la /data > /tmp/output.txt
+exit
+```
+
+```bash
+Alternative using copy-to:
+
+kubectl debug troubled-app -n anchor -it --copy-to=troubled-app-debug --image=busybox:1.36 -- sh
+ls -la /data
+```
+
+```bash
+Save output:
+
+kubectl exec troubled-app -n anchor -- ls -la /data > ./exam/course/10/debug-output.txt
+```
