@@ -319,3 +319,26 @@ Save output:
 
 kubectl exec troubled-app -n anchor -- ls -la /data > ./exam/course/10/debug-output.txt
 ```
+
+## Question 11 | EndpointSlice (3 points)
+
+### Solution
+
+```bash
+# List EndpointSlices for the service
+kubectl get endpointslices -n shell -l kubernetes.io/service-name=backend-svc
+
+# Get detailed information
+kubectl describe endpointslice -n shell -l kubernetes.io/service-name=backend-svc
+
+# Save to file
+cat > ./exam/course/11/endpoints-info.txt << 'EOF'
+EndpointSlice: backend-svc-xxxxx
+Number of endpoints: 3
+IP addresses:
+  - 10.244.0.10
+  - 10.244.0.11
+  - 10.244.0.12
+Ports: 80/TCP
+EOF
+```
