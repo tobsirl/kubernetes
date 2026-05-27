@@ -342,3 +342,19 @@ IP addresses:
 Ports: 80/TCP
 EOF
 ```
+
+## Question 12 | Service internalTrafficPolicy (4 points)
+
+### Solution
+
+```bash
+kubectl patch service local-svc -n ocean \
+  -p '{"spec":{"internalTrafficPolicy":"Local"}}'
+
+kubectl edit svc local-svc -n ocean
+# Add: internalTrafficPolicy: Local
+
+Verification:
+
+kubectl get svc local-svc -n ocean -o yaml | grep internalTrafficPolicy
+```
