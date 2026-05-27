@@ -402,3 +402,42 @@ kubectl apply -f cache-pod.yaml
 kubectl get pod cache-pod -n reef
 kubectl describe pod cache-pod -n reef | grep -A5 "Volumes"
 ```
+
+## Question 14 | Secret with stringData (4 points)
+
+### Solution
+
+```bash
+apiVersion: v1
+kind: Secret
+metadata:
+  name: app-credentials
+  namespace: deep
+immutable: true
+stringData:
+  api-key: super-secret-key-12345
+  db-password: postgres@secure!
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: secret-consumer
+  namespace: deep
+spec:
+  containers:
+  - name: consumer
+    image: busybox:1.36
+    command: ["sh", "-c", "cat /secrets/api-key && sleep 3600"]
+    volumeMounts:
+    - name: secret-volume
+      mountPath: /secrets
+      readOnly: true
+  volumes:
+  - name: secret-volume
+    secret:
+      secretName: app-credentials
+
+kubectl apply -f secret.yaml
+kubectl get secret app-credentials -n deep -o yaml
+kubectl exec secret-consumer -n deep -- cat /secrets/api-key
+```
