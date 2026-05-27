@@ -358,3 +358,47 @@ Verification:
 
 kubectl get svc local-svc -n ocean -o yaml | grep internalTrafficPolicy
 ```
+
+## Question 13 | EmptyDir with sizeLimit (4 points)
+
+### Solution
+
+```bash
+apiVersion: v1
+kind: Pod
+metadata:
+  name: cache-pod
+  namespace: reef
+spec:
+  containers:
+  - name: cache
+    image: redis:7-alpine
+    volumeMounts:
+    - name: cache-volume
+      mountPath: /cache
+  volumes:
+  - name: cache-volume
+    emptyDir:
+      medium: Memory
+      sizeLimit: 100MiapiVersion: v1
+kind: Pod
+metadata:
+  name: cache-pod
+  namespace: reef
+spec:
+  containers:
+  - name: cache
+    image: redis:7-alpine
+    volumeMounts:
+    - name: cache-volume
+      mountPath: /cache
+  volumes:
+  - name: cache-volume
+    emptyDir:
+      medium: Memory
+      sizeLimit: 100Mi
+
+kubectl apply -f cache-pod.yaml
+kubectl get pod cache-pod -n reef
+kubectl describe pod cache-pod -n reef | grep -A5 "Volumes"
+```
