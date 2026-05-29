@@ -511,3 +511,29 @@ spec:
     - protocol: TCP
       port: 443
 ```
+
+## Question 17 | Pod with hostNetwork (5 points)
+
+### Solution
+
+```bash
+apiVersion: v1
+kind: Pod
+metadata:
+  name: network-diagnostic
+  namespace: coral
+spec:
+  hostNetwork: true
+  hostPID: true
+  containers:
+  - name: netshoot
+    image: nicolaka/netshoot:latest
+    command: ["sleep", "3600"]
+    securityContext:
+      privileged: true
+
+kubectl apply -f network-diagnostic.yaml
+kubectl get pod network-diagnostic -n coral
+kubectl exec network-diagnostic -n coral -- ip addr
+kubectl exec network-diagnostic -n coral -- ps aux | head
+```
