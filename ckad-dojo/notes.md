@@ -662,3 +662,276 @@ Shows:
 > **HPA scales pods automatically based on CPU → use `--cpu=70%`**
 
 ---
+
+# 🧠 Kubernetes Patching Deployments — CKAD Exam Notes
+
+---
+
+## 📝 `kubectl patch` – Common Deployment Pitfall
+
+### ❌ Error / Warning
+
+```bash
+kubectl patch deploy patch-demo -n tide \
+-p '{"spec":{"containers":[{"image":"nginx:1.22"}]}}'
+```
+
+Output:
+
+```text
+Warning: unknown field "spec.containers"
+deployment.apps/patch-demo patched (no change)
+```
+
+---
+
+## 🔍 Cause
+
+A Deployment does **not** have a `containers` field directly under `spec`.
+
+Deployment structure:
+
+```yaml
+spec:
+  template:
+    spec:
+      containers:
+```
+
+The container definition lives inside the **Pod template**.
+
+---
+
+## ❌ Incorrect
+
+```yaml
+spec:
+  containers:
+    - image: nginx:1.22
+```
+
+---
+
+## ✅ Correct
+
+```yaml
+spec:
+  template:
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.22
+```
+
+---
+
+## 🔧 Strategic Merge Patch Example
+
+Update container image:
+
+```bash
+kubectl patch deploy patch-demo -n tide \
+-p '{"spec":{"template":{"spec":{"containers":[{"name":"nginx","image":"nginx:1.22"}]}}}}'
+```
+
+---
+
+## ⚠️ Important
+
+When patching containers with a strategic merge patch:
+
+```json
+{
+  "name": "nginx",
+  "image": "nginx:1.22"
+}
+```
+
+The container **name** must be specified.
+
+Without it Kubernetes cannot identify which container to update.
+
+---
+
+## 📝 JSON Patch – Adding an Environment Variable
+
+### Create `env` array (if it doesn't exist)
+
+```bash
+kubectl patch deploy patch-demo -n tide \
+--type='json' \
+-p='[
+  {
+    "op":"add",
+    "path":"/spec/template/spec/containers/0/env",
+    "value":[
+      {
+        "name":"ENV_MODE",
+        "value":"production"
+      }
+    ]
+  }
+]'
+```
+
+---
+
+### Append to existing `env` array
+
+```bash
+kubectl patch deploy patch-demo -n tide \
+--type='json' \
+-p='[
+  {
+    "op":"add",
+    "path":"/spec/template/spec/containers/0/env/-",
+    "value":{
+      "name":"ENV_MODE",
+      "value":"production"
+    }
+  }
+]'
+```
+
+---
+
+## 🧠 JSON Patch Operations (Memorize)
+
+| Operation | Purpose               |
+| --------- | --------------------- |
+| `add`     | Add field/value       |
+| `replace` | Update existing value |
+| `remove`  | Delete field/value    |
+
+Example:
+
+```json
+{
+  "op": "replace",
+  "path": "/spec/replicas",
+  "value": 5
+}
+```
+
+---
+
+## 🔑 JSON Pointer Paths
+
+JSON Patch uses paths:
+
+```text
+/spec/template/spec/containers/0/image
+```
+
+Where:
+
+```text
+0 = first container
+1 = second container
+```
+
+Append to array:
+
+```text
+/env/-
+```
+
+---
+
+## 🔍 Verification Commands
+
+Check image:
+
+```bash
+kubectl get deploy patch-demo -n tide \
+-o jsonpath='{.spec.template.spec.containers[0].image}'
+```
+
+Check environment variables:
+
+```bash
+kubectl get deploy patch-demo -n tide \
+-o yaml | grep -A5 env:
+```
+
+Check rollout:
+
+```bash
+kubectl rollout status deploy patch-demo -n tide
+```
+
+---
+
+## 🚨 Common Exam Pitfalls
+
+### ❌ Wrong Deployment Path
+
+```yaml
+spec:
+  containers:
+```
+
+Should be:
+
+```yaml
+spec:
+  template:
+    spec:
+      containers:
+```
+
+---
+
+### ❌ Forgetting Container Name
+
+Strategic merge patch:
+
+```json
+{ "image": "nginx:1.22" }
+```
+
+May not work as expected.
+
+Use:
+
+```json
+{ "name": "nginx", "image": "nginx:1.22" }
+```
+
+---
+
+### ❌ Using `/env/-` When `env` Doesn't Exist
+
+```text
+The path "/env" must already exist
+```
+
+Create `env` first, then append.
+
+---
+
+## 💡 Exam Gold ⭐
+
+If you need to patch anything inside a Deployment, remember:
+
+```text
+Deployment
+ └── spec
+      └── template
+           └── spec
+                └── containers
+```
+
+Most patch failures happen because candidates forget the:
+
+```text
+template.spec
+```
+
+part of the path.
+
+---
+
+## 🔑 One-liner to Remember
+
+> **For Deployments, containers always live under `spec.template.spec.containers` — never directly under `spec`.**
