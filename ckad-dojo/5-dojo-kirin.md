@@ -441,3 +441,29 @@ kubectl apply -f secret.yaml
 kubectl get secret app-credentials -n deep -o yaml
 kubectl exec secret-consumer -n deep -- cat /secrets/api-key
 ```
+
+## Question 15 | kubectl patch (5 points)
+
+### Solution
+
+```bash
+patch-commands.sh:
+
+#!/bin/bash
+
+# 1. Strategic merge patch - Update image
+kubectl patch deployment patch-demo -n tide \
+  -p '{"spec":{"template":{"spec":{"containers":[{"name":"nginx","image":"nginx:1.22"}]}}}}'
+
+# 2. JSON patch - Add environment variable
+kubectl patch deployment patch-demo -n tide --type='json' \
+  -p='[{"op":"add","path":"/spec/template/spec/containers/0/env/0","value":{"name":"ENV_MODE","value":"production"}}]'
+
+# 3. JSON patch - Update replicas
+kubectl patch deployment patch-demo -n tide --type='json' \
+  -p='[{"op":"replace","path":"/spec/replicas","value":4}]'
+
+chmod +x ./exam/course/15/patch-commands.sh
+./exam/course/15/patch-commands.sh
+kubectl describe deployment patch-demo -n tide
+```
