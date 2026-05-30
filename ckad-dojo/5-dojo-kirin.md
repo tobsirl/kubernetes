@@ -580,3 +580,27 @@ roleRef:
 kubectl apply -f rbac.yaml
 kubectl auth can-i list nodes --as=system:serviceaccount:lagoon:node-monitor-sa
 ```
+
+## Question 19 | kubectl auth can-i (4 points)
+
+### Solution
+
+```bash
+# Check permissions for app-deployer ServiceAccount
+SA="system:serviceaccount:current:app-deployer"
+
+kubectl auth can-i create deployments -n current --as=$SA
+kubectl auth can-i delete deployments -n current --as=$SA
+kubectl auth can-i create pods -n current --as=$SA
+kubectl auth can-i delete secrets -n current --as=$SA
+kubectl auth can-i list nodes --as=$SA
+
+# Save results
+cat > ./exam/course/19/permissions.txt << 'EOF'
+create deployments: yes
+delete deployments: no
+create pods: no
+delete secrets: no
+list nodes: no
+EOF
+```
