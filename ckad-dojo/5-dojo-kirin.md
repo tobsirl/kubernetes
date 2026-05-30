@@ -604,3 +604,43 @@ delete secrets: no
 list nodes: no
 EOF
 ```
+
+## Question 20 | Multi-Container with Shared Volume (6 points)
+
+### Solution
+
+```bash
+apiVersion: v1
+kind: Pod
+metadata:
+  name: data-pipeline
+  namespace: anchor
+spec:
+  containers:
+  - name: producer
+    image: busybox:1.36
+    command: ["sh", "-c", "while true; do date >> /data/log.txt; sleep 5; done"]
+    volumeMounts:
+    - name: shared-data
+      mountPath: /data
+  - name: consumer
+    image: busybox:1.36
+    command: ["sh", "-c", "tail -f /data/log.txt"]
+    volumeMounts:
+    - name: shared-data
+      mountPath: /data
+  - name: monitor
+    image: busybox:1.36
+    command: ["sh", "-c", "while true; do wc -l /data/log.txt; sleep 10; done"]
+    volumeMounts:
+    - name: shared-data
+      mountPath: /data
+  volumes:
+  - name: shared-data
+    emptyDir: {}
+
+kubectl apply -f data-pipeline.yaml
+kubectl get pod data-pipeline -n anchor
+kubectl logs data-pipeline -n anchor -c consumer
+kubectl logs data-pipeline -n anchor -c monitor
+```
