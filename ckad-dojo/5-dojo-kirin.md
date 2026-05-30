@@ -537,3 +537,46 @@ kubectl get pod network-diagnostic -n coral
 kubectl exec network-diagnostic -n coral -- ip addr
 kubectl exec network-diagnostic -n coral -- ps aux | head
 ```
+
+## Question 18 | ClusterRole and ClusterRoleBinding (6 points)
+
+### Solution
+
+```bash
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: node-monitor-sa
+  namespace: lagoon
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: node-reader
+rules:
+- apiGroups: [""]
+  resources: ["nodes"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: [""]
+  resources: ["nodes/status"]
+  verbs: ["get"]
+- apiGroups: [""]
+  resources: ["namespaces"]
+  verbs: ["get", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: node-reader-binding
+subjects:
+- kind: ServiceAccount
+  name: node-monitor-sa
+  namespace: lagoon
+roleRef:
+  kind: ClusterRole
+  name: node-reader
+  apiGroup: rbac.authorization.k8s.io
+
+kubectl apply -f rbac.yaml
+kubectl auth can-i list nodes --as=system:serviceaccount:lagoon:node-monitor-sa
+```
