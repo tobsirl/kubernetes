@@ -20,3 +20,26 @@ spec:
     image: nginx:1.25
   restartPolicy: Never
 ```
+
+## Question 2 | Pod with Environment Variables (5 points)
+
+### Solution:
+
+```bash
+kubectl run envpod --image=busybox:1.36 --restart=Never -n summit --env=VAR1=value1 -- env
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: envpod
+  namespace: summit
+spec:
+  containers:
+  - name: envpod
+    image: busybox:1.36
+    command: ["env"]
+    env:
+    - name: VAR1
+      value: "value1"
+  restartPolicy: Never
+```
