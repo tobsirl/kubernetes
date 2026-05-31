@@ -43,3 +43,22 @@ spec:
       value: "value1"
   restartPolicy: Never
 ```
+
+## Question 3 | ResourceQuota (6 points)
+
+### Solution:
+
+```bash
+kubectl create quota cliff-quota -n cliff --hard=cpu=1,memory=1G,pods=2
+
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: cliff-quota
+  namespace: cliff
+spec:
+  hard:
+    cpu: "1"
+    memory: 1G
+    pods: "2"
+```
