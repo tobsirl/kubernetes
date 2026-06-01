@@ -62,3 +62,20 @@ spec:
     memory: 1G
     pods: "2"
 ```
+
+## Question 4 | Labels and Selectors (5 points)
+
+### Solutions
+
+```bash
+# Create 3 pods with label app=v1
+kubectl run nginx1 --image=nginx:1.25 --restart=Never -n ridge --labels=app=v1
+kubectl run nginx2 --image=nginx:1.25 --restart=Never -n ridge --labels=app=v1
+kubectl run nginx3 --image=nginx:1.25 --restart=Never -n ridge --labels=app=v1
+
+# Change nginx2 label to app=v2
+kubectl label po nginx2 -n ridge app=v2 --overwrite
+
+# Add tier=web to pods with app=v1
+kubectl label po -n ridge -l app=v1 tier=web
+```
