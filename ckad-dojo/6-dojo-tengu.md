@@ -123,3 +123,18 @@ kubectl rollout status deployment/nginx-deploy -n valley
 # Check history
 kubectl rollout history deployment/nginx-deploy -n valley
 ```
+
+## Question 7 | Deployment Rollback (5 points)
+
+### Solution
+
+```bash
+# Check rollout status (will show it's failing)
+kubectl rollout status deployment/rollback-deploy -n cave
+
+# Rollback to previous revision
+kubectl rollout undo deployment/rollback-deploy -n cave
+
+# Verify pods are running
+kubectl get pods -n cave -l app=rollback-deploy
+```
