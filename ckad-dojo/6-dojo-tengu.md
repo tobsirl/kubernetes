@@ -108,3 +108,11 @@ spec:
         ports:
         - containerPort: 80
 ```
+
+## Question 6 | Deployment Rollout (5 points)
+
+### Solution
+
+```bash
+
+```
