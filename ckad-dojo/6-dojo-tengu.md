@@ -114,5 +114,12 @@ spec:
 ### Solution
 
 ```bash
+# Update image
+kubectl set image deployment/nginx-deploy nginx=nginx:1.19.8 -n valley
 
+# Verify rollout
+kubectl rollout status deployment/nginx-deploy -n valley
+
+# Check history
+kubectl rollout history deployment/nginx-deploy -n valley
 ```
