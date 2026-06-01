@@ -79,3 +79,32 @@ kubectl label po nginx2 -n ridge app=v2 --overwrite
 # Add tier=web to pods with app=v1
 kubectl label po -n ridge -l app=v1 tier=web
 ```
+
+## Question 5 | Deployment Creation (6 points)
+
+### Solution
+
+```bash
+kubectl create deployment nginx-deploy --image=nginx:1.18.0 --replicas=2 --port=80 -n valley
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deploy
+  namespace: valley
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx-deploy
+  template:
+    metadata:
+      labels:
+        app: nginx-deploy
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.18.0
+        ports:
+        - containerPort: 80
+```
