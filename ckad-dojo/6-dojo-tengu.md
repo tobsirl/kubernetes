@@ -163,3 +163,11 @@ spec:
 
 kubectl apply -f job.yaml
 ```
+
+## Question 9 | CronJob (5 points)
+
+### Solution
+
+```bash
+kubectl create cronjob date-job --image=busybox:1.36 --schedule="*/1 * * * *" -n mist -- /bin/sh -c 'date; echo Hello from Kubernetes'
+```
