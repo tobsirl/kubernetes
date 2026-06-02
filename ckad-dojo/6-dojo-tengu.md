@@ -138,3 +138,28 @@ kubectl rollout undo deployment/rollback-deploy -n cave
 # Verify pods are running
 kubectl get pods -n cave -l app=rollback-deploy
 ```
+
+## Question 8 | Job with Completions (5 points)
+
+### Solution
+
+```bash
+kubectl create job echo-job --image=busybox:1.36 -n stone --dry-run=client -o yaml -- /bin/sh -c 'echo hello; sleep 5; echo world' > job.yaml
+
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: echo-job
+  namespace: stone
+spec:
+  completions: 5
+  template:
+    spec:
+      containers:
+      - name: echo-job
+        image: busybox:1.36
+        command: ["/bin/sh", "-c", "echo hello; sleep 5; echo world"]
+      restartPolicy: Never
+
+kubectl apply -f job.yaml
+```
