@@ -222,3 +222,11 @@ spec:
   - name: workdir
     emptyDir: {}
 ```
+
+## Question 12 | ConfigMap from Literals (4 points)
+
+### Solution
+
+```bash
+kubectl create configmap app-config --from-literal=foo=lala --from-literal=foo2=lolo -n peak
+```
