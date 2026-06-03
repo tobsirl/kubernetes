@@ -171,3 +171,23 @@ kubectl apply -f job.yaml
 ```bash
 kubectl create cronjob date-job --image=busybox:1.36 --schedule="*/1 * * * *" -n mist -- /bin/sh -c 'date; echo Hello from Kubernetes'
 ```
+
+## Question 10 | Multi-Container Pod (6 points)
+
+### Solutions
+
+```bash
+apiVersion: v1
+kind: Pod
+metadata:
+  name: multi-container
+  namespace: alpine
+spec:
+  containers:
+  - name: container1
+    image: busybox:1.36
+    command: ["/bin/sh", "-c", "echo hello; sleep 3600"]
+  - name: container2
+    image: busybox:1.36
+    command: ["/bin/sh", "-c", "echo hello; sleep 3600"]
+```
