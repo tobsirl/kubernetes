@@ -191,3 +191,34 @@ spec:
     image: busybox:1.36
     command: ["/bin/sh", "-c", "echo hello; sleep 3600"]
 ```
+
+## Question 11 | Init Container (6 points)
+
+### Solutions
+
+```bash
+apiVersion: v1
+kind: Pod
+metadata:
+  name: init-pod
+  namespace: crest
+spec:
+  initContainers:
+  - name: init
+    image: busybox:1.36
+    command: ["/bin/sh", "-c", "echo 'Initialized' > /work-dir/index.html"]
+    volumeMounts:
+    - name: workdir
+      mountPath: /work-dir
+  containers:
+  - name: nginx
+    image: nginx:1.25
+    ports:
+    - containerPort: 80
+    volumeMounts:
+    - name: workdir
+      mountPath: /usr/share/nginx/html
+  volumes:
+  - name: workdir
+    emptyDir: {}
+```
