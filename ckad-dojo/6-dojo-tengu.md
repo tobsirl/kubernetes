@@ -230,3 +230,29 @@ spec:
 ```bash
 kubectl create configmap app-config --from-literal=foo=lala --from-literal=foo2=lolo -n peak
 ```
+
+## Question 13 | ConfigMap as Environment Variable (5 points)
+
+### Solution
+
+```bash
+# Create ConfigMap
+kubectl create configmap options --from-literal=var5=val5 -n summit
+
+# Create Pod
+apiVersion: v1
+kind: Pod
+metadata:
+  name: config-pod
+  namespace: summit
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.25
+    env:
+    - name: OPTION
+      valueFrom:
+        configMapKeyRef:
+          name: options
+          key: var5
+```
