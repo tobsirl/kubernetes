@@ -256,3 +256,30 @@ spec:
           name: options
           key: var5
 ```
+
+## Question 14 | ConfigMap as Volume (5 points)
+
+### Solution
+
+```bash
+# Create ConfigMap
+kubectl create configmap cmvolume --from-literal=var8=val8 --from-literal=var9=val9 -n cliff
+
+# Create Pod
+apiVersion: v1
+kind: Pod
+metadata:
+  name: vol-pod
+  namespace: cliff
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.25
+    volumeMounts:
+    - name: config-volume
+      mountPath: /etc/lala
+  volumes:
+  - name: config-volume
+    configMap:
+      name: cmvolume
+```
