@@ -283,3 +283,30 @@ spec:
     configMap:
       name: cmvolume
 ```
+
+## Question 15 | Secret Creation and Usage (5 points)
+
+### Solution
+
+```bash
+# Create Secret
+kubectl create secret generic mysecret --from-literal=password=mypass -n ridge
+
+# Create Pod
+apiVersion: v1
+kind: Pod
+metadata:
+  name: secret-pod
+  namespace: ridge
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.25
+    volumeMounts:
+    - name: secret-volume
+      mountPath: /etc/foo
+  volumes:
+  - name: secret-volume
+    secret:
+      secretName: mysecret
+```
