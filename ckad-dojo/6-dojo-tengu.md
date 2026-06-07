@@ -330,3 +330,26 @@ spec:
     image: busybox:1.36
     command: ["sleep", "3600"]
 ```
+
+## Question 17 | Resource Requests and Limits (5 points)
+
+### Solutions
+
+```bash
+apiVersion: v1
+kind: Pod
+metadata:
+  name: resource-pod
+  namespace: cave
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.25
+    resources:
+      requests:
+        cpu: "100m"
+        memory: "256Mi"
+      limits:
+        cpu: "200m"
+        memory: "512Mi"
+```
