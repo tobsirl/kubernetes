@@ -353,3 +353,25 @@ spec:
         cpu: "200m"
         memory: "512Mi"
 ```
+
+## Question 18 | Liveness Probe (5 points)
+
+### Solutions
+
+```bash
+apiVersion: v1
+kind: Pod
+metadata:
+  name: liveness-pod
+  namespace: stone
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.25
+    livenessProbe:
+      exec:
+        command:
+        - ls
+      initialDelaySeconds: 5
+      periodSeconds: 5
+```
