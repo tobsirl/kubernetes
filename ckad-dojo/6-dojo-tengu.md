@@ -310,3 +310,23 @@ spec:
     secret:
       secretName: mysecret
 ```
+
+## Question 16 | SecurityContext (5 points)
+
+### Solutions
+
+```bash
+apiVersion: v1
+kind: Pod
+metadata:
+  name: secure-pod
+  namespace: valley
+spec:
+  securityContext:
+    runAsUser: 101
+  restartPolicy: Never
+  containers:
+  - name: secure-pod
+    image: busybox:1.36
+    command: ["sleep", "3600"]
+```
