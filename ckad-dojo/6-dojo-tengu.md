@@ -405,3 +405,57 @@ spec:
         matchLabels:
           access: granted
 ```
+
+## Question 20 | PersistentVolume and PersistentVolumeClaim (8 points)
+
+### Solutions
+
+```bash
+# PersistentVolume (cluster-scoped)
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: myvolume
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+    - ReadWriteMany
+  storageClassName: normal
+  hostPath:
+    path: /etc/foo
+---
+# PersistentVolumeClaim
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mypvc
+  namespace: alpine
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: normal
+  resources:
+    requests:
+      storage: 4Gi
+---
+# Pod using PVC
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pv-pod
+  namespace: alpine
+spec:
+  containers:
+  - name: busybox
+    image: busybox:1.36
+    command: ["sleep", "3600"]
+    volumeMounts:
+    - name: pv-storage
+      mountPath: /etc/foo
+  volumes:
+  - name: pv-storage
+    persistentVolumeClaim:
+      claimName: mypvc
+```
