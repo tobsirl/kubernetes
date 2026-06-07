@@ -375,3 +375,33 @@ spec:
       initialDelaySeconds: 5
       periodSeconds: 5
 ```
+
+## Question 19 | Service and NetworkPolicy (6 points)
+
+### Solutions
+
+```bash
+# Create Deployment
+kubectl create deployment web --image=nginx:1.25 --replicas=2 -n mist
+
+# Expose as Service
+kubectl expose deployment web --port=80 -n mist
+
+# Create NetworkPolicy
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: web-policy
+  namespace: mist
+spec:
+  podSelector:
+    matchLabels:
+      app: web
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          access: granted
+```
