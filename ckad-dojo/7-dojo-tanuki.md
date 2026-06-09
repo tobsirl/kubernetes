@@ -82,3 +82,27 @@ spec:
 
 kubectl apply -f gpu-pod.yaml
 ```
+
+## Question 6 | Pod with Tolerations (6 points)
+
+### Solutions
+
+```bash
+apiVersion: v1
+kind: Pod
+metadata:
+  name: tolerate-pod
+  namespace: moss
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.25
+  tolerations:
+  - key: "tier"
+    operator: "Equal"
+    value: "frontend"
+    effect: "NoSchedule"
+
+
+kubectl apply -f tolerate-pod.yaml
+```
