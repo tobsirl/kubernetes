@@ -61,3 +61,24 @@ sleep 2
 mkdir -p ./exam/course/4
 kubectl logs debug-pod -n meadow > ./exam/course/4/error.txt 2>&1
 ```
+
+## Question 5 | Pod with Node Selector (6 points)
+
+### Solutions
+
+```bash
+apiVersion: v1
+kind: Pod
+metadata:
+  name: gpu-pod
+  namespace: fern
+spec:
+  nodeSelector:
+    accelerator: nvidia
+  containers:
+  - name: nginx
+    image: nginx:1.25
+
+
+kubectl apply -f gpu-pod.yaml
+```
