@@ -45,3 +45,19 @@ kubectl wait --for=condition=Ready pod/logger -n glade --timeout=30s
 mkdir -p ./exam/course/3
 kubectl logs logger -n glade | head -10 > ./exam/course/3/logs.txt
 ```
+
+## Question 4 | Debug Pod with Error (5 points)
+
+### Solutions
+
+```bash
+# Create the Pod with error command
+kubectl run debug-pod --image=busybox:1.36 --restart=Never -n meadow -- ls /notexist
+
+# Wait a moment for the Pod to complete
+sleep 2
+
+# Get logs and save
+mkdir -p ./exam/course/4
+kubectl logs debug-pod -n meadow > ./exam/course/4/error.txt 2>&1
+```
