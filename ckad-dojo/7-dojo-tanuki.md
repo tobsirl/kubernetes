@@ -159,3 +159,24 @@ Verify:
 
 kubectl get hpa app-deploy -n root
 ```
+
+## Question 10 | Deployment Rollout Pause and Resume (6 points)
+
+### Solutions
+
+```bash
+# Pause the rollout
+kubectl rollout pause deployment/pause-deploy -n bark
+
+# Update the image
+kubectl set image deployment/pause-deploy nginx=nginx:1.19.0 -n bark
+
+# Check rollout history (no new revision should appear)
+kubectl rollout history deployment/pause-deploy -n bark
+
+# Resume the rollout
+kubectl rollout resume deployment/pause-deploy -n bark
+
+# Verify the image
+kubectl describe deployment pause-deploy -n bark | grep Image
+```
