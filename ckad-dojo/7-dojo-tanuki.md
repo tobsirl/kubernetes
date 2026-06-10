@@ -106,3 +106,33 @@ spec:
 
 kubectl apply -f tolerate-pod.yaml
 ```
+
+## Question 7 | Deployment with Replicas (5 points)
+
+### Solutions
+
+```bark
+kubectl create deployment app-deploy --image=nginx:1.18.0 --replicas=3 --port=80 -n root
+Or using YAML:
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-deploy
+  namespace: root
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: app-deploy
+  template:
+    metadata:
+      labels:
+        app: app-deploy
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.18.0
+        ports:
+        - containerPort: 80
+```
