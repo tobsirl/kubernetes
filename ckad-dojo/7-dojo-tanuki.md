@@ -148,3 +148,14 @@ Verify:
 kubectl get deployment app-deploy -n root
 kubectl get pods -n root -l app=app-deploy
 ```
+
+## Question 9 | Horizontal Pod Autoscaler (6 points)
+
+### Solutions
+
+```bash
+kubectl autoscale deployment app-deploy --min=5 --max=10 --cpu-percent=80 -n root
+Verify:
+
+kubectl get hpa app-deploy -n root
+```
