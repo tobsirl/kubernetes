@@ -136,3 +136,15 @@ spec:
         ports:
         - containerPort: 80
 ```
+
+## Question 8 | Scale Deployment (4 points)
+
+### Solutions
+
+```bash
+kubectl scale deployment app-deploy --replicas=5 -n root
+Verify:
+
+kubectl get deployment app-deploy -n root
+kubectl get pods -n root -l app=app-deploy
+```
