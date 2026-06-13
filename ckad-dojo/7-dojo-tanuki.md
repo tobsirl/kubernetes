@@ -379,3 +379,24 @@ spec:
 kubectl apply -f sa-pod.yaml
 kubectl get pod sa-pod -n root -o jsonpath='{.spec.serviceAccountName}'
 ```
+
+## Question 20 | Copy File from Pod (5 points)
+
+### Solutions
+
+```bash
+# Create Pod
+kubectl run copy-pod --image=busybox:1.36 --restart=Never -n bark -- sleep 3600
+
+# Wait for Pod to be ready
+kubectl wait --for=condition=Ready pod/copy-pod -n bark --timeout=30s
+
+# Copy file from Pod
+mkdir -p ./exam/course/20
+kubectl cp bark/copy-pod:/etc/passwd ./exam/course/20/passwd
+
+
+Verify:
+
+cat ./exam/course/20/passwd
+```
