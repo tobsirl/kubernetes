@@ -280,3 +280,29 @@ Verify:
 
 kubectl get configmap file-config -n glade -o yaml
 ```
+
+## Question 16 | ConfigMap with envFrom (5 points)
+
+### Solutions
+
+```bash
+# Create ConfigMap
+kubectl create configmap env-config --from-literal=var6=val6 --from-literal=var7=val7 -n meadow
+
+# Create Pod
+apiVersion: v1
+kind: Pod
+metadata:
+  name: env-pod
+  namespace: meadow
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.25
+    envFrom:
+    - configMapRef:
+        name: env-config
+
+kubectl apply -f env-pod.yaml
+kubectl exec -n meadow env-pod -- env | grep var
+```
