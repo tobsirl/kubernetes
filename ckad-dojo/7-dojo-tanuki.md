@@ -264,3 +264,11 @@ kubectl create cronjob source-cron --image=busybox:1.36 --schedule="*/5 * * * *"
 # Create a Job from the CronJob
 kubectl create job manual-job --from=cronjob/source-cron -n thicket
 ```
+
+## Question 15 | ConfigMap from File (5 points)
+
+### Solutions
+
+```bash
+
+```
