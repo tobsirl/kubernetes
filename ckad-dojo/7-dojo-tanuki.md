@@ -306,3 +306,21 @@ spec:
 kubectl apply -f env-pod.yaml
 kubectl exec -n meadow env-pod -- env | grep var
 ```
+
+## Question 17 | Secret from File (5 points)
+
+### Solutions
+
+```bash
+# Create the file
+mkdir -p ./exam/course/17
+echo -n "admin" > ./exam/course/17/username
+
+# Create Secret from file
+kubectl create secret generic file-secret --from-file=./exam/course/17/username -n fern
+
+
+Verify:
+
+kubectl get secret file-secret -n fern -o yaml
+```
