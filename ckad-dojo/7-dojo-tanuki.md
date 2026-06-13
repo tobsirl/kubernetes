@@ -226,3 +226,29 @@ spec:
 
 kubectl apply -f deadline-job.yaml
 ```
+
+## Question 13 | CronJob with Starting Deadline (5 points)
+
+### Solutions
+
+```bash
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: deadline-cron
+  namespace: grove
+spec:
+  schedule: "* * * * *"
+  startingDeadlineSeconds: 17
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: busybox
+            image: busybox:1.36
+            command: ["/bin/sh", "-c", "date; echo Hello from CronJob"]
+          restartPolicy: Never
+
+kubectl apply -f deadline-cron.yaml
+```
