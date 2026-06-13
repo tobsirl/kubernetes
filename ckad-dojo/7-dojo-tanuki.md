@@ -252,3 +252,15 @@ spec:
 
 kubectl apply -f deadline-cron.yaml
 ```
+
+## Question 14 | Create Job from CronJob (4 points)
+
+### Solutions
+
+```bash
+# Create the CronJob
+kubectl create cronjob source-cron --image=busybox:1.36 --schedule="*/5 * * * *" -n thicket -- echo "source job"
+
+# Create a Job from the CronJob
+kubectl create job manual-job --from=cronjob/source-cron -n thicket
+```
