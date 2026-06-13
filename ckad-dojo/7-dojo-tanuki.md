@@ -203,3 +203,25 @@ spec:
 
 kubectl apply -f parallel-job.yaml
 ```
+
+## Question 12 | Job with Active Deadline (5 points)
+
+### Solutions
+
+```bash
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: deadline-job
+  namespace: hollow
+spec:
+  activeDeadlineSeconds: 30
+  template:
+    spec:
+      containers:
+      - name: busybox
+        image: busybox:1.36
+        command: ["/bin/sh", "-c", "while true; do echo hello; sleep 10; done"]
+      restartPolicy: Never
+kubectl apply -f deadline-job.yaml
+```
