@@ -354,3 +354,28 @@ spec:
 kubectl apply -f api-pod.yaml
 kubectl exec -n moss api-pod -- env | grep API_KEY
 ```
+
+## Question 19 | ServiceAccount and Pod (5 points)
+
+### Solutions
+
+```bash
+# Create ServiceAccount
+kubectl create serviceaccount app-sa -n root
+
+# Create Pod
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sa-pod
+  namespace: root
+spec:
+  serviceAccountName: app-sa
+  containers:
+  - name: nginx
+    image: nginx:1.25
+
+
+kubectl apply -f sa-pod.yaml
+kubectl get pod sa-pod -n root -o jsonpath='{.spec.serviceAccountName}'
+```
