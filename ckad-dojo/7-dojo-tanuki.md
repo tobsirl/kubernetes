@@ -324,3 +324,33 @@ Verify:
 
 kubectl get secret file-secret -n fern -o yaml
 ```
+
+## Question 18 | Secret as Environment Variable (5 points)
+
+### Solutions
+
+```bash
+# Create Secret
+kubectl create secret generic api-secret --from-literal=API_KEY=LmLHbYhsgWZwNifiqaRorH8T -n moss
+
+# Create Pod
+apiVersion: v1
+kind: Pod
+metadata:
+  name: api-pod
+  namespace: moss
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.25
+    env:
+    - name: API_KEY
+      valueFrom:
+        secretKeyRef:
+          name: api-secret
+          key: API_KEY
+
+
+kubectl apply -f api-pod.yaml
+kubectl exec -n moss api-pod -- env | grep API_KEY
+```
