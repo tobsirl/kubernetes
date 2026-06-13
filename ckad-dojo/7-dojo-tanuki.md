@@ -180,3 +180,26 @@ kubectl rollout resume deployment/pause-deploy -n bark
 # Verify the image
 kubectl describe deployment pause-deploy -n bark | grep Image
 ```
+
+## Question 11 | Job with Parallelism (5 points)
+
+### Solutions
+
+```bash
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: parallel-job
+  namespace: canopy
+spec:
+  parallelism: 5
+  template:
+    spec:
+      containers:
+      - name: busybox
+        image: busybox:1.36
+        command: ["/bin/sh", "-c", "echo hello; sleep 5; echo world"]
+      restartPolicy: Never
+
+kubectl apply -f parallel-job.yaml
+```
