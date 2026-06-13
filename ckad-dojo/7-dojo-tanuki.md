@@ -270,5 +270,13 @@ kubectl create job manual-job --from=cronjob/source-cron -n thicket
 ### Solutions
 
 ```bash
+# Create the file
+mkdir -p ./exam/course/15
+echo -e "foo3=lili\nfoo4=lele" > ./exam/course/15/config.txt
 
+# Create ConfigMap from file
+kubectl create configmap file-config --from-file=./exam/course/15/config.txt -n glade
+Verify:
+
+kubectl get configmap file-config -n glade -o yaml
 ```
