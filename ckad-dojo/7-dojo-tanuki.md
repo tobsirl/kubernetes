@@ -223,5 +223,6 @@ spec:
         image: busybox:1.36
         command: ["/bin/sh", "-c", "while true; do echo hello; sleep 10; done"]
       restartPolicy: Never
+
 kubectl apply -f deadline-job.yaml
 ```
