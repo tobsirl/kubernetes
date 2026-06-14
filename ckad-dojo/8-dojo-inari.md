@@ -27,3 +27,15 @@ Or use edit:
 kubectl edit svc app-svc -n grain
 # Change spec.type from ClusterIP to NodePort
 ```
+
+## Question 3 | Deployment with Service (6 points)
+
+### Solution
+
+```bash
+# Create Deployment
+kubectl create deployment backend --image=nginx:1.25 --replicas=3 --port=8080 -n rice
+
+# Expose Deployment
+kubectl expose deployment backend --port=6262 --target-port=8080 -n rice
+```
