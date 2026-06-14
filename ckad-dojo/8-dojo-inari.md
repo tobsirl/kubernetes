@@ -15,3 +15,15 @@ Verify:
 kubectl get svc web -n harvest
 kubectl get ep web -n harvest
 ```
+
+## Question 2 | Convert Service to NodePort (5 points)
+
+### Solution
+
+```bash
+kubectl patch svc app-svc -n grain -p '{"spec":{"type":"NodePort"}}'
+
+Or use edit:
+kubectl edit svc app-svc -n grain
+# Change spec.type from ClusterIP to NodePort
+```
