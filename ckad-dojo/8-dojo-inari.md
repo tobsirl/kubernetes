@@ -61,3 +61,25 @@ spec:
         path: /
         port: 80
 ```
+
+## Question 5 | Liveness Probe with Delay (5 points)
+
+### Solutions
+
+```bash
+apiVersion: v1
+kind: Pod
+metadata:
+  name: live-pod
+  namespace: shrine
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.25
+    livenessProbe:
+      exec:
+        command:
+        - ls
+      initialDelaySeconds: 5
+      periodSeconds: 10
+```
