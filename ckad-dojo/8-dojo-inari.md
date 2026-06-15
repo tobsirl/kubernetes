@@ -39,3 +39,25 @@ kubectl create deployment backend --image=nginx:1.25 --replicas=3 --port=8080 -n
 # Expose Deployment
 kubectl expose deployment backend --port=6262 --target-port=8080 -n rice
 ```
+
+## Question 4 | Readiness Probe HTTP (5 points)
+
+### Solutions
+
+```bash
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ready-pod
+  namespace: field
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.25
+    ports:
+    - containerPort: 80
+    readinessProbe:
+      httpGet:
+        path: /
+        port: 80
+```
