@@ -83,3 +83,22 @@ spec:
       initialDelaySeconds: 5
       periodSeconds: 10
 ```
+
+## Question 6 | LimitRange for Namespace (6 points)
+
+### Solutions
+
+```bash
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: pod-limits
+  namespace: blessing
+spec:
+  limits:
+  - max:
+      memory: "500Mi"
+    min:
+      memory: "100Mi"
+    type: Pod
+```
