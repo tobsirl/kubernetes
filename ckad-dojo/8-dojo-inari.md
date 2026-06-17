@@ -102,3 +102,26 @@ spec:
       memory: "100Mi"
     type: Pod
 ```
+
+## Question 7 | ResourceQuota with Requests and Limits (6 points)
+
+### Solution
+
+```bash
+kubectl create quota compute-quota -n fortune \
+  --hard=requests.cpu=1,requests.memory=1Gi,limits.cpu=2,limits.memory=2Gi
+
+Or YAML:
+
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: compute-quota
+  namespace: fortune
+spec:
+  hard:
+    requests.cpu: "1"
+    requests.memory: 1Gi
+    limits.cpu: "2"
+    limits.memory: 2Gi
+```
