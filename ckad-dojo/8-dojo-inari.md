@@ -125,3 +125,26 @@ spec:
     limits.cpu: "2"
     limits.memory: 2Gi
 ```
+
+## Question 8 | Pod within ResourceQuota (5 points)
+
+### Solution
+
+```bash
+apiVersion: v1
+kind: Pod
+metadata:
+  name: quota-pod
+  namespace: fortune
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.25
+    resources:
+      requests:
+        cpu: "0.5"
+        memory: "512Mi"
+      limits:
+        cpu: "1"
+        memory: "1Gi"
+```
