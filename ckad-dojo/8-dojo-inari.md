@@ -148,3 +148,24 @@ spec:
         cpu: "1"
         memory: "1Gi"
 ```
+
+## Question 9 | Security Context with Capabilities (6 points)
+
+### Solutions
+
+```bash
+apiVersion: v1
+kind: Pod
+metadata:
+  name: cap-pod
+  namespace: golden
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.25
+    securityContext:
+      capabilities:
+        add:
+        - NET_ADMIN
+        - SYS_TIME
+```
