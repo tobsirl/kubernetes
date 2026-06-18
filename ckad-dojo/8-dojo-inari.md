@@ -198,3 +198,12 @@ spec:
   - name: shared-data
     emptyDir: {}
 ```
+
+## Question 11 | Annotations (4 points)
+
+### Solution
+
+```bash
+kubectl run annotated-pod --image=nginx:1.25 --restart=Never -n prosperity
+kubectl annotate pod annotated-pod owner=marketing -n prosperity
+```
