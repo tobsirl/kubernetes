@@ -169,3 +169,32 @@ spec:
         - NET_ADMIN
         - SYS_TIME
 ```
+
+## Question 10 | Shared Volume Between Containers (6 points)
+
+### Solution
+
+```bash
+apiVersion: v1
+kind: Pod
+metadata:
+  name: shared-pod
+  namespace: bounty
+spec:
+  containers:
+  - name: writer
+    image: busybox:1.36
+    command: ["sleep", "3600"]
+    volumeMounts:
+    - name: shared-data
+      mountPath: /data
+  - name: reader
+    image: busybox:1.36
+    command: ["sleep", "3600"]
+    volumeMounts:
+    - name: shared-data
+      mountPath: /data
+  volumes:
+  - name: shared-data
+    emptyDir: {}
+```
