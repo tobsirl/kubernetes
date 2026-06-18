@@ -207,3 +207,22 @@ spec:
 kubectl run annotated-pod --image=nginx:1.25 --restart=Never -n prosperity
 kubectl annotate pod annotated-pod owner=marketing -n prosperity
 ```
+
+## Question 12 | Labels Selection (5 points)
+
+### Solution
+
+```bash
+# Create pods
+kubectl run pod1 --image=nginx:1.25 --restart=Never -n harvest
+kubectl run pod2 --image=nginx:1.25 --restart=Never -n harvest
+kubectl run pod3 --image=nginx:1.25 --restart=Never -n harvest
+
+# Label pods
+kubectl label pod pod1 pod2 env=prod -n harvest
+kubectl label pod pod3 env=dev -n harvest
+
+# List and save
+mkdir -p ./exam/course/12
+kubectl get pods -n harvest -l env=prod > ./exam/course/12/pods.txt
+```
