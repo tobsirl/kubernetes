@@ -226,3 +226,12 @@ kubectl label pod pod3 env=dev -n harvest
 mkdir -p ./exam/course/12
 kubectl get pods -n harvest -l env=prod > ./exam/course/12/pods.txt
 ```
+
+## Question 13 | Helm Add Repository (4 points)
+
+### Solution
+
+```bash
+helm repo add bitnami https://charts.bitnami.com/bitnami
+helm repo update
+```
