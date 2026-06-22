@@ -244,3 +244,12 @@ helm repo update
 mkdir -p ./exam/course/14
 helm show values bitnami/nginx | head -50 > ./exam/course/14/values.txt
 ```
+
+## Question 15 | Helm List Releases (4 points)
+
+### Solution
+
+```bash
+mkdir -p ./exam/course/15
+helm list -A > ./exam/course/15/releases.txt
+```
