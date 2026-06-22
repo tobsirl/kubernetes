@@ -235,3 +235,12 @@ kubectl get pods -n harvest -l env=prod > ./exam/course/12/pods.txt
 helm repo add bitnami https://charts.bitnami.com/bitnami
 helm repo update
 ```
+
+## Question 14 | Helm Show Values (5 points)
+
+### Solution
+
+```bash
+mkdir -p ./exam/course/14
+helm show values bitnami/nginx | head -50 > ./exam/course/14/values.txt
+```
