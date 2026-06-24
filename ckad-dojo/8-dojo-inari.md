@@ -253,3 +253,70 @@ helm show values bitnami/nginx | head -50 > ./exam/course/14/values.txt
 mkdir -p ./exam/course/15
 helm list -A > ./exam/course/15/releases.txt
 ```
+
+## Question 16 | Canary Deployment Setup (6 points)
+
+### Solution
+
+```bash
+# app-v1 Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-v1
+  namespace: grain
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: myapp
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: myapp
+        version: v1
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.18.0
+        ports:
+        - containerPort: 80
+---
+# app-v2 Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-v2
+  namespace: grain
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: myapp
+      version: v2
+  template:
+    metadata:
+      labels:
+        app: myapp
+        version: v2
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.19.0
+        ports:
+        - containerPort: 80
+---
+# Service selecting both versions
+apiVersion: v1
+kind: Service
+metadata:
+  name: app
+  namespace: grain
+spec:
+  selector:
+    app: myapp  # Only select on app label, not version
+  ports:
+  - port: 80
+    targetPort: 80
+```
