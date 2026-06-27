@@ -382,3 +382,16 @@ spec:
         matchLabels:
           access: "true"
 ```
+
+## Question 20 | Generate API Token for ServiceAccount (5 points)
+
+### Solution
+
+```bash
+# Create ServiceAccount
+kubectl create serviceaccount token-sa -n blessing
+
+# Generate token and save
+mkdir -p ./exam/course/20
+kubectl create token token-sa -n blessing > ./exam/course/20/token.txt
+```
