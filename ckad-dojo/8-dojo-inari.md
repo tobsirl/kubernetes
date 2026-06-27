@@ -320,3 +320,32 @@ spec:
   - port: 80
     targetPort: 80
 ```
+
+## Question 17 | emptyDir Volume for Data Sharing (5 points)
+
+### Solution
+
+```bash
+apiVersion: v1
+kind: Pod
+metadata:
+  name: data-pod
+  namespace: rice
+spec:
+  containers:
+  - name: producer
+    image: busybox:1.36
+    command: ["sleep", "3600"]
+    volumeMounts:
+    - name: data-volume
+      mountPath: /shared
+  - name: consumer
+    image: busybox:1.36
+    command: ["sleep", "3600"]
+    volumeMounts:
+    - name: data-volume
+      mountPath: /shared
+  volumes:
+  - name: data-volume
+    emptyDir: {}
+```
