@@ -359,3 +359,26 @@ mkdir -p ./exam/course/18
 
 kubectl run busybox --rm -it --restart=Never --image=busybox:1.36 -n field -- sh -c 'nslookup web-svc' > ./exam/course/18/dns.txt
 ```
+
+## Question 19 | Network Policy Allow Specific Label (6 points)
+
+### Solution
+
+```bash
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: db-policy
+  namespace: shrine
+spec:
+  podSelector:
+    matchLabels:
+      app: db
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          access: "true"
+```
