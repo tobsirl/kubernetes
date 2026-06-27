@@ -349,3 +349,13 @@ spec:
   - name: data-volume
     emptyDir: {}
 ```
+
+## Question 18 | Pod DNS Resolution (5 points)
+
+### Solution
+
+```bash
+mkdir -p ./exam/course/18
+
+kubectl run busybox --rm -it --restart=Never --image=busybox:1.36 -n field -- sh -c 'nslookup web-svc' > ./exam/course/18/dns.txt
+```
