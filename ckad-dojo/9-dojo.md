@@ -23,3 +23,12 @@ helm repo update
 # Install with custom values
 helm install my-release bitnami/nginx -n tide --set replicaCount=2
 ```
+
+## Question 3 | Helm Upgrade Release
+
+### Solution
+
+```bash
+# Upgrade the release with new replica count
+helm upgrade my-release bitnami/nginx -n tide --set replicaCount=3
+```
