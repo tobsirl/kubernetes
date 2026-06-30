@@ -150,3 +150,18 @@ kubectl run echo-pod -n current --image=busybox:1.36 --restart=Never -- /bin/sh 
 # Alternatively with --rm flag (auto-delete after completion)
 kubectl run echo-pod -n current --image=busybox:1.36 --restart=Never --rm -it -- /bin/sh -c 'echo "hello world"'
 ```
+
+## Question 10 | Get Pod YAML
+
+### Solution
+
+```bash
+# Create directory
+mkdir -p ./exam/course/10
+
+# Create the Pod
+kubectl run inspect-pod --image=nginx:1.25 -n abyss
+
+# Export YAML
+kubectl get pod inspect-pod -n abyss -o yaml > ./exam/course/10/pod.yaml
+```
