@@ -88,3 +88,30 @@ spec:
       storage: 2Gi
 EOF
 ```
+
+## Question 7 | Pod with PVC
+
+### Solution
+
+```bash
+# Create Pod with PVC mount
+cat <<EOF | kubectl apply -f -
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pvc-pod
+  namespace: depths
+spec:
+  containers:
+  - name: busybox
+    image: busybox:1.36
+    command: ["sleep", "3600"]
+    volumeMounts:
+    - name: data-volume
+      mountPath: /data
+  volumes:
+  - name: data-volume
+    persistentVolumeClaim:
+      claimName: sea-pvc
+EOF
+```
