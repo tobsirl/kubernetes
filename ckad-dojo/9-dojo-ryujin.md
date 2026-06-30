@@ -138,3 +138,15 @@ spec:
     image: nginx:1.25
 EOF
 ```
+
+## Question 9 | Pod Lifecycle - Echo and Exit
+
+### Solution
+
+```bash
+# Create Pod that echoes and exits
+kubectl run echo-pod -n current --image=busybox:1.36 --restart=Never -- /bin/sh -c 'echo "hello world"'
+
+# Alternatively with --rm flag (auto-delete after completion)
+kubectl run echo-pod -n current --image=busybox:1.36 --restart=Never --rm -it -- /bin/sh -c 'echo "hello world"'
+```
