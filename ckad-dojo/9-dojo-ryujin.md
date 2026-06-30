@@ -115,3 +115,26 @@ spec:
       claimName: sea-pvc
 EOF
 ```
+
+## Question 8 | Pod with nodeName
+
+### Solution
+
+```bash
+# Get the first node name
+NODE=$(kubectl get nodes -o jsonpath='{.items[0].metadata.name}')
+
+# Create Pod with nodeName
+cat <<EOF | kubectl apply -f -
+apiVersion: v1
+kind: Pod
+metadata:
+  name: direct-pod
+  namespace: coral
+spec:
+  nodeName: $NODE
+  containers:
+  - name: nginx
+    image: nginx:1.25
+EOF
+```
