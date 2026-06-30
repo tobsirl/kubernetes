@@ -66,3 +66,25 @@ spec:
     path: /data/sea
 EOF
 ```
+
+## Question 6 | PersistentVolumeClaim
+
+### Solution
+
+```bash
+# Create PVC YAML
+cat <<EOF | kubectl apply -f -
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sea-pvc
+  namespace: depths
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: manual
+  resources:
+    requests:
+      storage: 2Gi
+EOF
+```
