@@ -32,3 +32,15 @@ helm install my-release bitnami/nginx -n tide --set replicaCount=2
 # Upgrade the release with new replica count
 helm upgrade my-release bitnami/nginx -n tide --set replicaCount=3
 ```
+
+## Question 4 | Helm Rollback
+
+### Solution
+
+```bash
+# Check current revision
+helm history rollback-app -n wave
+
+# Rollback to revision 1
+helm rollback rollback-app 1 -n wave
+```
