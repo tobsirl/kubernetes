@@ -44,3 +44,25 @@ helm history rollback-app -n wave
 # Rollback to revision 1
 helm rollback rollback-app 1 -n wave
 ```
+
+## Question 5 | PersistentVolume Creation
+
+### Solution
+
+```bash
+# Create PersistentVolume YAML
+cat <<EOF | kubectl apply -f -
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: sea-pv
+spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: manual
+  hostPath:
+    path: /data/sea
+EOF
+```
