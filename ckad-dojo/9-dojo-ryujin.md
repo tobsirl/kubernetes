@@ -195,3 +195,15 @@ kubectl wait --for=condition=Ready pod/exec-pod -n storm --timeout=60s
 # Execute hostname and save output
 kubectl exec exec-pod -n storm -- hostname > ./exam/course/12/hostname.txt
 ```
+
+## Question 13 | Get Previous Container Logs
+
+### Solution
+
+```bash
+# Create directory
+mkdir -p ./exam/course/13
+
+# Get previous container logs
+kubectl logs restart-pod -n harbor --previous > ./exam/course/13/previous.txt
+```
