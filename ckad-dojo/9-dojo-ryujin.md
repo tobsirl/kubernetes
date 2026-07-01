@@ -165,3 +165,15 @@ kubectl run inspect-pod --image=nginx:1.25 -n abyss
 # Export YAML
 kubectl get pod inspect-pod -n abyss -o yaml > ./exam/course/10/pod.yaml
 ```
+
+## Question 11 | Describe Pod and Find Events
+
+### Solution
+
+```bash
+# Create directory
+mkdir -p ./exam/course/11
+
+# Describe the Pod and extract Events section
+kubectl describe pod problem-pod -n pearl | sed -n '/^Events:/,$p' > ./exam/course/11/events.txt
+```
