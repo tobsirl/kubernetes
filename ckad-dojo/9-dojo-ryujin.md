@@ -207,3 +207,15 @@ mkdir -p ./exam/course/13
 # Get previous container logs
 kubectl logs restart-pod -n harbor --previous > ./exam/course/13/previous.txt
 ```
+
+## Question 14 | Top Nodes
+
+### Solution
+
+```bash
+# Create directory
+mkdir -p ./exam/course/14
+
+# Get node resource utilization
+kubectl top nodes > ./exam/course/14/nodes.txt
+```
