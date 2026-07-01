@@ -177,3 +177,21 @@ mkdir -p ./exam/course/11
 # Describe the Pod and extract Events section
 kubectl describe pod problem-pod -n pearl | sed -n '/^Events:/,$p' > ./exam/course/11/events.txt
 ```
+
+## Question 12 | Execute Command in Pod
+
+### Solution
+
+```bash
+# Create directory
+mkdir -p ./exam/course/12
+
+# Create the Pod
+kubectl run exec-pod --image=nginx:1.25 -n storm
+
+# Wait for Pod to be ready
+kubectl wait --for=condition=Ready pod/exec-pod -n storm --timeout=60s
+
+# Execute hostname and save output
+kubectl exec exec-pod -n storm -- hostname > ./exam/course/12/hostname.txt
+```
