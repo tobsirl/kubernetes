@@ -288,3 +288,37 @@ EOF
 # Or using kubectl create job
 kubectl create job pi-job -n coral --image=perl:5.34 -- perl -Mbignum=bpi -wle 'print bpi(100)'
 ```
+
+## Question 19 | Multi-Container Pod with Shared Volume
+
+### Solution
+
+```bash
+# Create multi-container Pod with sidecar pattern
+cat <<EOF | kubectl apply -f -
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sidecar-pod
+  namespace: abyss
+spec:
+  containers:
+  - name: app
+    image: busybox:1.36
+    command: ["/bin/sh", "-c"]
+    args: ["while true; do echo \"\$(date)\" >> /logs/app.log; sleep 5; done"]
+    volumeMounts:
+    - name: log-volume
+      mountPath: /logs
+  - name: sidecar
+    image: busybox:1.36
+    command: ["/bin/sh", "-c"]
+    args: ["tail -f /logs/app.log"]
+    volumeMounts:
+    - name: log-volume
+      mountPath: /logs
+  volumes:
+  - name: log-volume
+    emptyDir: {}
+EOF
+```
