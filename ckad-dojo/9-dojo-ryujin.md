@@ -237,3 +237,15 @@ EOF
 # Create ConfigMap from .env file
 kubectl create configmap env-config -n voyage --from-env-file=./exam/course/15/config.env
 ```
+
+## Question 16 | Deployment Rollout to Specific Revision
+
+### Solution
+
+```bash
+# Check rollout history
+kubectl rollout history deployment/web-deploy -n tide
+
+# Rollback to revision 2
+kubectl rollout undo deployment/web-deploy -n tide --to-revision=2
+```
