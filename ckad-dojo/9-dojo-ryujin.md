@@ -219,3 +219,21 @@ mkdir -p ./exam/course/14
 # Get node resource utilization
 kubectl top nodes > ./exam/course/14/nodes.txt
 ```
+
+## Question 15 | ConfigMap from .env File
+
+### Solution
+
+```bash
+# Create directory
+mkdir -p ./exam/course/15
+
+# Create the .env file
+cat > ./exam/course/15/config.env << 'EOF'
+DB_HOST=localhost
+DB_PORT=5432
+EOF
+
+# Create ConfigMap from .env file
+kubectl create configmap env-config -n voyage --from-env-file=./exam/course/15/config.env
+```
