@@ -261,3 +261,30 @@ mkdir -p ./exam/course/17
 # Get details of revision 3
 kubectl rollout history deployment/history-deploy -n wave --revision=3 > ./exam/course/17/revision.txt
 ```
+
+## Question 18 | Job with Perl Image
+
+### Solution
+
+```bash
+# Create Job to calculate Pi
+cat <<EOF | kubectl apply -f -
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: pi-job
+  namespace: coral
+spec:
+  template:
+    spec:
+      containers:
+      - name: pi
+        image: perl:5.34
+        command: ["perl", "-Mbignum=bpi", "-wle", "print bpi(100)"]
+      restartPolicy: Never
+  backoffLimit: 4
+EOF
+
+# Or using kubectl create job
+kubectl create job pi-job -n coral --image=perl:5.34 -- perl -Mbignum=bpi -wle 'print bpi(100)'
+```
