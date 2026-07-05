@@ -322,3 +322,15 @@ spec:
     emptyDir: {}
 EOF
 ```
+
+## Question 20 | Resource Utilization of Pods
+
+### Solution
+
+```bash
+# Create directory
+mkdir -p ./exam/course/20
+
+# Get Pod resource utilization in storm namespace
+kubectl top pods -n storm > ./exam/course/20/top-pods.txt
+```
