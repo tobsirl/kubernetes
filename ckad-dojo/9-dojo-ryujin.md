@@ -249,3 +249,15 @@ kubectl rollout history deployment/web-deploy -n tide
 # Rollback to revision 2
 kubectl rollout undo deployment/web-deploy -n tide --to-revision=2
 ```
+
+## Question 17 | Check Rollout History Details
+
+### Solution
+
+```bash
+# Create directory
+mkdir -p ./exam/course/17
+
+# Get details of revision 3
+kubectl rollout history deployment/history-deploy -n wave --revision=3 > ./exam/course/17/revision.txt
+```
