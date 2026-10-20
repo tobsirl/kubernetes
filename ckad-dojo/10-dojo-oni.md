@@ -43,3 +43,40 @@ spec:
           key: DB_PASS
 kubectl apply -f webapp-fixed.yaml
 ```
+
+## Question 2 | Fix a Broken Ingress (6 points)
+
+### Solution
+
+```bash
+Inspect the Service:
+
+kubectl get svc frontend-svc -n bastion
+# NAME           TYPE        CLUSTER-IP     PORT(S)   AGE
+# frontend-svc   ClusterIP   10.96.x.x     80/TCP    ...
+Inspect the broken Ingress:
+
+kubectl get ingress frontend-ingress -n bastion -o yaml
+The problems are:
+
+Service name is frontend instead of frontend-svc
+Port is 8080 instead of 80
+pathType is missing
+Fix the Ingress:
+
+kubectl edit ingress frontend-ingress -n bastion
+Corrected spec:
+
+spec:
+  rules:
+  - host: frontend.example.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: frontend-svc
+            port:
+              number: 80
+```
