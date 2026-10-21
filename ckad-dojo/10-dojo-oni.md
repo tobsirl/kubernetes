@@ -80,3 +80,34 @@ spec:
             port:
               number: 80
 ```
+
+## Question 3 | Create a New Ingress (5 points)
+
+### Solution
+
+```bash
+kubectl create ingress api-ingress \
+  --rule="api.example.com/app=api-svc:80" \
+  --annotation="nginx.ingress.kubernetes.io/rewrite-target=/" \
+  -n citadel
+Or YAML:
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: api-ingress
+  namespace: citadel
+spec:
+  rules:
+  - host: api.example.com
+    http:
+      paths:
+      - path: /app
+        pathType: Prefix
+        backend:
+          service:
+            name: api-svc
+            port:
+              number: 80
+kubectl apply -f api-ingress.yaml
+```
