@@ -111,3 +111,26 @@ spec:
               number: 80
 kubectl apply -f api-ingress.yaml
 ```
+
+## Question 4 | NetworkPolicy — Label Pods for Communication (6 points)
+
+### Solution
+
+```bash
+Inspect the NetworkPolicies:
+
+kubectl describe networkpolicy -n rampart
+The policies use these selectors:
+
+allow-frontend-to-backend: ingress on port 80 to pods with tier=backend, from pods with tier=frontend
+allow-backend-to-db: ingress on port 5432 to pods with tier=database, from pods with tier=backend
+default-deny: denies all ingress by default
+Label the pods:
+
+kubectl label pod frontend tier=frontend -n rampart
+kubectl label pod backend tier=backend -n rampart
+kubectl label pod database tier=database -n rampart
+Verify:
+
+kubectl get pods -n rampart --show-labels
+```
