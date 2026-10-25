@@ -134,3 +134,29 @@ Verify:
 
 kubectl get pods -n rampart --show-labels
 ```
+
+## Question 5 | Resource Requests and Limits (5 points)
+
+### Solution
+
+```bash
+kubectl set resources deployment compute-app -n tower \
+  --requests=cpu=100m,memory=128Mi \
+  --limits=cpu=200m,memory=256Mi
+Or edit directly:
+
+kubectl edit deployment compute-app -n tower
+Add under the container spec:
+
+resources:
+  requests:
+    cpu: "100m"
+    memory: "128Mi"
+  limits:
+    cpu: "200m"
+    memory: "256Mi"
+Verify:
+
+kubectl get pods -n tower
+kubectl get deployment compute-app -n tower -o jsonpath='{.spec.template.spec.containers[0].resources}'
+```
