@@ -160,3 +160,26 @@ Verify:
 kubectl get pods -n tower
 kubectl get deployment compute-app -n tower -o jsonpath='{.spec.template.spec.containers[0].resources}'
 ```
+
+## Question 6 | Fix ResourceQuota Issue (5 points)
+
+### Solution
+
+```bash
+Check the quota:
+
+kubectl describe quota compute-quota -n garrison
+# Hard limits: requests.cpu=500m, requests.memory=512Mi
+Check current deployment resources:
+
+kubectl get deployment quota-app -n garrison -o jsonpath='{.spec.template.spec.containers[0].resources}'
+# requests.cpu=1, requests.memory=1Gi — exceeds the quota
+Reduce resources to fit within quota:
+
+kubectl set resources deployment quota-app -n garrison \
+  --requests=cpu=250m,memory=256Mi \
+  --limits=cpu=500m,memory=512Mi
+Verify Pods are now running:
+
+kubectl get pods -n garrison
+```
