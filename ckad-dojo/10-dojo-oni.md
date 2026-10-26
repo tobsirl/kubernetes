@@ -202,3 +202,37 @@ Verify:
 docker images | grep oni-app
 ls -la ./exam/course/7/oni-app.tar
 ```
+
+## Question 8 | Canary Deployment (6 points)
+
+### Solution
+
+```bash
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: canary-app
+  namespace: bulwark
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webapp
+      version: v2
+  template:
+    metadata:
+      labels:
+        app: webapp
+        version: v2
+    spec:
+      containers:
+      - name: webapp
+        image: nginx:1.25
+        ports:
+        - containerPort: 80
+kubectl apply -f canary-app.yaml
+Verify both deployments are selected by the Service:
+
+kubectl get ep app-svc -n bulwark
+# Should show IPs from both stable-app and canary-app pods
+```
