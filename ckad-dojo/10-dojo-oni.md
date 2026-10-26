@@ -183,3 +183,22 @@ Verify Pods are now running:
 
 kubectl get pods -n garrison
 ```
+
+## Question 7 | Docker Image Build and Save (5 points)
+
+### Solution
+
+```bash
+# Build the image
+docker build -t localhost:5000/oni-app:1.0 ./exam/course/7/image/
+
+# Save as tar archive
+docker save -o ./exam/course/7/oni-app.tar localhost:5000/oni-app:1.0
+
+# Push to local registry
+docker push localhost:5000/oni-app:1.0
+Verify:
+
+docker images | grep oni-app
+ls -la ./exam/course/7/oni-app.tar
+```
