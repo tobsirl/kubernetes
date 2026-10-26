@@ -236,3 +236,30 @@ Verify both deployments are selected by the Service:
 kubectl get ep app-svc -n bulwark
 # Should show IPs from both stable-app and canary-app pods
 ```
+
+## Question 9 | Fix Service Selector Mismatch (4 points)
+
+### Solution
+
+```bash
+Check Pod labels:
+
+kubectl get pods -n parapet --show-labels
+# app=backend-api
+Check Service selector:
+
+kubectl get svc backend-svc -n parapet -o jsonpath='{.spec.selector}'
+# {"app":"backend-wrong"}
+Fix the selector:
+
+kubectl patch svc backend-svc -n parapet -p '{"spec":{"selector":{"app":"backend-api"}}}'
+Or edit:
+
+kubectl edit svc backend-svc -n parapet
+# Change selector.app from "backend-wrong" to "backend-api"
+Verify:
+
+kubectl get endpoints backend-svc -n parapet
+# Should now show Pod IPs
+
+```
