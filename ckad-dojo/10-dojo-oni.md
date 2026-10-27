@@ -263,3 +263,39 @@ kubectl get endpoints backend-svc -n parapet
 # Should now show Pod IPs
 
 ```
+
+## Question 10 | CronJob with Proper Exit (5 points)
+
+### Solution
+
+```bash
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: cleanup-job
+  namespace: stronghold
+spec:
+  schedule: "*/5 * * * *"
+  jobTemplate:
+    spec:
+      activeDeadlineSeconds: 30
+      template:
+        spec:
+          containers:
+          - name: cleanup
+            image: busybox:1.36
+            command: ["sh", "-c", "echo \"Cleanup completed at $(date)\""]
+          restartPolicy: Never
+kubectl apply -f cleanup-job.yaml
+Or one-liner:
+
+kubectl create cronjob cleanup-job \
+  --image=busybox:1.36 \
+  --schedule="*/5 * * * *" \
+  --restart=Never \
+  -n stronghold \
+  -- sh -c 'echo "Cleanup completed at $(date)"'
+
+# Then edit to add activeDeadlineSeconds:
+kubectl edit cronjob cleanup-job -n stronghold
+```
