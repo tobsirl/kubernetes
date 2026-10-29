@@ -299,3 +299,27 @@ kubectl create cronjob cleanup-job \
 # Then edit to add activeDeadlineSeconds:
 kubectl edit cronjob cleanup-job -n stronghold
 ```
+
+## Question 11 | SecurityContext — Merge Settings (5 points)
+
+### Solution
+
+```bash
+Solution
+kubectl edit deployment secure-app -n fortress
+The existing securityContext:
+
+securityContext:
+  readOnlyRootFilesystem: true
+  allowPrivilegeEscalation: false
+Add runAsUser: 10000 at the same level:
+
+securityContext:
+  readOnlyRootFilesystem: true
+  allowPrivilegeEscalation: false
+  runAsUser: 10000
+Verify:
+
+kubectl get pods -n fortress -l app=secure-app
+kubectl get deployment secure-app -n fortress -o jsonpath='{.spec.template.spec.containers[0].securityContext}'
+```
