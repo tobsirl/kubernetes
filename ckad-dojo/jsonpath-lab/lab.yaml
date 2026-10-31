@@ -1,0 +1,155 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: jsonpath-lab
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+  namespace: jsonpath-lab
+data:
+  LOG_LEVEL: debug
+  MAX_CONN: "50"
+  app.properties: |
+    color=blue
+    mode=fast
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: db-creds
+  namespace: jsonpath-lab
+type: Opaque
+stringData:
+  username: admin
+  password: s3cr3t-pass
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+  namespace: jsonpath-lab
+  labels:
+    app: web
+    tier: frontend
+    app.kubernetes.io/name: web-frontend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+        tier: frontend
+    spec:
+      containers:
+      - name: web
+        image: nginx:1.27
+        ports:
+        - containerPort: 80
+        env:
+        - name: MODE
+          value: production
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 100m
+            memory: 128Mi
+      - name: sidecar
+        image: busybox:1.36
+        command: ["sh", "-c", "while true; do sleep 3600; done"]
+        resources:
+          requests:
+            cpu: 10m
+            memory: 16Mi
+          limits:
+            cpu: 20m
+            memory: 32Mi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api
+  namespace: jsonpath-lab
+  labels:
+    app: api
+    tier: backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: api
+  template:
+    metadata:
+      labels:
+        app: api
+        tier: backend
+    spec:
+      containers:
+      - name: api
+        image: httpd:2.4
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: db
+  namespace: jsonpath-lab
+  labels:
+    app: db
+    tier: data
+spec:
+  securityContext:
+    runAsUser: 999
+    fsGroup: 2000
+  containers:
+  - name: db
+    image: busybox:1.36
+    command: ["sh", "-c", "while true; do sleep 3600; done"]
+    envFrom:
+    - configMapRef:
+        name: app-config
+    volumeMounts:
+    - name: data
+      mountPath: /data
+    - name: config
+      mountPath: /etc/config
+  volumes:
+  - name: data
+    emptyDir: {}
+  - name: config
+    configMap:
+      name: app-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-svc
+  namespace: jsonpath-lab
+spec:
+  selector:
+    app: web
+  ports:
+  - name: http
+    port: 80
+    targetPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: api-svc
+  namespace: jsonpath-lab
+spec:
+  type: NodePort
+  selector:
+    app: api
+  ports:
+  - name: http
+    port: 8080
+    targetPort: 80
