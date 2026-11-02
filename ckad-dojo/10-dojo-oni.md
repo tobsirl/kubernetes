@@ -349,3 +349,27 @@ Restart the Pod to pick up the new permissions:
 
 kubectl rollout restart deployment pod-reader -n bastion
 ```
+
+## Question 13 | Deployment Rollback (5 points)
+
+### Solution
+
+```bash
+Check rollout history:
+
+kubectl rollout history deployment web-server -n citadel
+Save history to file:
+
+kubectl rollout history deployment web-server -n citadel > ./exam/course/13/rollout-history.txt
+Roll back to the working revision:
+
+kubectl rollout undo deployment web-server -n citadel
+Or if you need a specific revision:
+
+kubectl rollout undo deployment web-server -n citadel --to-revision=2
+Verify:
+
+kubectl rollout status deployment web-server -n citadel
+kubectl get deployment web-server -n citadel -o jsonpath='{.spec.template.spec.containers[0].image}'
+# Should show nginx:1.25
+```
