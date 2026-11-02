@@ -323,3 +323,29 @@ Verify:
 kubectl get pods -n fortress -l app=secure-app
 kubectl get deployment secure-app -n fortress -o jsonpath='{.spec.template.spec.containers[0].securityContext}'
 ```
+
+## Question 12 | RBAC — Fix Forbidden Error (7 points)
+
+### Solution
+
+```bash
+Create the Role:
+
+kubectl create role pod-reader-role \
+  --verb=get,list,watch \
+  --resource=pods \
+  -n bastion
+Create the RoleBinding:
+
+kubectl create rolebinding pod-reader-binding \
+  --role=pod-reader-role \
+  --serviceaccount=bastion:pod-reader-sa \
+  -n bastion
+Verify:
+
+kubectl auth can-i list pods -n bastion --as=system:serviceaccount:bastion:pod-reader-sa
+# yes
+Restart the Pod to pick up the new permissions:
+
+kubectl rollout restart deployment pod-reader -n bastion
+```
